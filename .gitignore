@@ -1,0 +1,11 @@
+#ignorer les fichiers invisibles OS X
+.DS_Store
+
+#ignorer tout le contenu du dossier Xilinx ISE
+Morpion/*
+
+#sauf les VHDL, les configs de pins, les configs de testbench et les bitstreams
+!Morpion/*.vhd
+!Morpion/*.ucf
+!Morpion/*.wcfg
+!Morpion/*.bit
