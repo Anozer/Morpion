@@ -1,53 +1,55 @@
-START:		
-			; Acquisition BP
-			LDA BP			;2	BT+:1111 1110	BT-:1111 1101	BTok:1111 1011
-			ADD ONE			;1	BT+:1111 1111	BT-:1111 1110	BTok:1111 1100
-			JCC BPDETECT	;1	saut si un BP appuyé
-			JCC START		;1	on recommence
+;						BT next		BT prev		BT val		Autres
+START:
+	LDA BP			;2	1111 1110	1111 1101	1111 1011	1101 1111	1111 1111
+	ADD ONE			;1	1111 1111	1111 1110	1111 1100	1110 0000	0000 0000C
+	JCC BPDETECT	;1	JUMP		JUMP		JUMP		JUMP		0000 0000
+	JCC START		;1													JUMP
 							
-BPDETECT:	
-			NOT				;1	BT+:0000 0000	BT-:0000 0001	BTok:0000 0011
-			ADD ALLONE		;1	BT+:1111 1111	BT-:0000 0000C	BTok:0000 0010C
-			JCC BT_NEXT		;1	BT+: JUMP		BT-:0000 0000	BTok:0000 0010
-			ADD ALLONE		;1					BT-:1111 1111	BTok:0000 0001C
-			JCC BT_PREV		;1					BT-: JUMP		BTok:0000 0001
-			JCC BT_VAL		;1 									BTok: JUMP
-			
-BT_VAL:		
-			LDA POS			;2	chargement de la position
-			STA AFF_POSVAL	;1	envoi vers Affichage
-			LDA JOUEUR		;2	chargement du joueur
-			STA AFF_J		;1	envoi vers Affichage		
-			NOT				;1	changement de joueur
-			STA JOUEUR		;1	sauvegarde du nouveau joueur
-			JCC START		;1	retour
-									
-BT_NEXT:		
-			LDA POS			;2	ACCU: 0000 0010		ACCU: 0000 1000
-			ADD ONE			;1	ACCU: 0000 0011		ACCU: 0000 1001
-			STA POS			;1	POS=ACCU			POS=ACCU
-			ADD VAL_247		;1	ACCU: 1111 1010		ACCU: 0000 0000C
-			JCC SENDPOS		;1	JUMP				ACCU: 0000 0000	
-			STA POS			;1  					POS=ACCU
-			JCC SENDPOS		;1						JUMP
+BPDETECT:
+	NOT				;1	0000 0000	0000 0001	0000 0011	0001 1111
+	ADD ALLONE		;1	1111 1111	0000 0000C	0000 0010C	0001 1110C
+	JCC BT_NEXT		;1	JUMP		0000 0000	0000 0010	0001 1110
+	ADD ALLONE		;1				1111 1111	0000 0001C	0001 1101C
+	JCC BT_PREV		;1				JUMP		0000 0001	0001 1101
+	JCC BT_VAL		;1 							JUMP		JUMP
 
-BT_PREV:		
-			LDA ALLONE		;2	1111 1111		1111 1111
-			ADD ONE			;1	0000 0000C		0000 0000C
-			LDA POS			;2	0000 0011C		0000 0000C
-			ADD ALLONE		;1	0000 0010C		1111 1111C
-			JCC START		;1	0000 0010		1111 1111
-			STA POS			;1	POS=ACCU		POS=ACCU
-			ADD ONE			;1	0000 0011		0000 0000C
-			JCC SENDPOS		;1	JUMP			0000 0000
-			ADD VAL_8		;1					0000 1000
-			STA POS			;1					POS=ACCU
-			JCC SENDPOS		;1					JUMP
+;						Position 3 joueur 0
+BT_VAL:		
+	LDA POS			;2	accu		= MEM[pos]
+	STA AFF_POSVAL	;1	AFF[val]	= accu
+	LDA JOUEUR		;2	accu		= MEM[joueur]
+	STA AFF_J		;1	AFF[joueur]	= accu
+	NOT				;1	accu		= !accu
+	STA JOUEUR		;1	MEM[joueur]	= accu
+	JCC START		;1	retour
+
+;						Position 2		Position 8
+BT_NEXT:		
+	LDA POS			;2	0000 0010		0000 1000
+	ADD ONE			;1	0000 0011		0000 1001
+	STA POS			;1	MEM[pos]=accu	MEM[pos]=accu
+	ADD VAL_247		;1	1111 1010		0000 0000C
+	JCC SENDPOS		;1	JUMP			0000 0000	
+	STA POS			;1  				MEM[pos]=accu
+	JCC SENDPOS		;1					JUMP
+
+;						Position 3		Position 0
+BT_PREV:			;	1111 1111		1111 1111
+	ADD ONE			;1	0000 0000C		0000 0000C
+	LDA POS			;2	0000 0011C		0000 0000C
+	ADD ALLONE		;1	0000 0010C		1111 1111C
+	JCC START		;1	0000 0010		1111 1111
+	STA POS			;1	MEM[pos]=accu	MEM[pos]=accu
+	ADD ONE			;1	0000 0011		0000 0000C
+	JCC SENDPOS		;1	JUMP			0000 0000
+	ADD VAL_8		;1					0000 1000
+	STA POS			;1					MEM[pos]=accu
+	JCC SENDPOS		;1					JUMP
 			
 SENDPOS:	
-			LDA POS			;1	chargement de la nouvelle position
-			STA AFF_POSMOD	;1	envoi sur le périphérique jeu
-			JCC START		;1	retour au début
+	LDA POS			;1	accu	= MEM[pos]
+	STA AFF_POSMOD	;1	AFF[pos]=accu
+	JCC START		;1	retour
 
 ; données mémoire
 
@@ -59,6 +61,6 @@ SENDPOS:
 ; POS		= 0000 0000
 ; JOUEUR	= 0000 0000
 			
-; 39 instructions + 7 données = 46 octets
+; 44 instructions + 7 données = 51 octets
 			
 			
