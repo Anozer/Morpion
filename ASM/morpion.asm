@@ -1,4 +1,4 @@
-;						BT next		BT prev		BT val		Autres
+;						BT next		BT prev		BT val		Autres		Pas de BP
 START:
 	LDA BP			;2	1111 1110	1111 1101	1111 1011	1101 1111	1111 1111
 	ADD ONE			;1	1111 1111	1111 1110	1111 1100	1110 0000	0000 0000C
