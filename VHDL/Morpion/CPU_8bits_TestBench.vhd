@@ -2,10 +2,10 @@
 -- Company: 
 -- Engineer:
 --
--- Create Date:   17:19:03 02/22/2013
+-- Create Date:   16:09:32 03/25/2013
 -- Design Name:   
--- Module Name:   Z:/Dev/VHDL/Processeur Elementaire/Processeur8bits/CPU_8bits_TestBench.vhd
--- Project Name:  Processeur8bits
+-- Module Name:   Z:/Dev/VHDL/Morpion/VHDL/Morpion/CPU_8bits_TestBench.vhd
+-- Project Name:  Morpion
 -- Target Device:  
 -- Tool versions:  
 -- Description:   
@@ -42,92 +42,90 @@ ARCHITECTURE behavior OF CPU_8bits_TestBench IS
     COMPONENT CPU_8bits
     PORT(
          reset : IN  std_logic;
-         clk100M : IN  std_logic;
-         valid_saisie : IN  std_logic;
-         AN1 : OUT  std_logic;
-         AN2 : OUT  std_logic;
-         AN3 : OUT  std_logic;
-         AN4 : OUT  std_logic;
-         Sevenseg : OUT  std_logic_vector(7 downto 0);
-         LED : OUT  std_logic_vector(7 downto 0);
-         pdb : INOUT  std_logic_vector(7 downto 0);
-         astb : IN  std_logic;
-         dstb : IN  std_logic;
-         pwr : IN  std_logic;
-         pwait : OUT  std_logic;
-         ldg : OUT  std_logic
+         clk : IN  std_logic;
+         ce : IN  std_logic;
+         data_in : IN  std_logic_vector(7 downto 0);
+         data_out : OUT  std_logic_vector(7 downto 0);
+         addr : OUT  std_logic_vector(5 downto 0);
+         enable : OUT  std_logic;
+         rw : OUT  std_logic
         );
     END COMPONENT;
-    
+	 
+	 COMPONENT RAM_SP_64_8
+	 Port (ADD		: in  STD_LOGIC_VECTOR (5 downto 0);
+			DATA_IN	: in  STD_LOGIC_VECTOR (7 downto 0);
+			R_W		: in  STD_LOGIC;
+			ENABLE	: in  STD_LOGIC;
+			clk		: in  STD_LOGIC;
+			Ce			: in  STD_LOGIC;
+			DATA_OUT	: out STD_LOGIC_VECTOR (7 downto 0));
+    END COMPONENT;
 
    --Inputs
    signal reset : std_logic := '0';
-   signal clk100M : std_logic := '0';
-   signal valid_saisie : std_logic := '0';
-   signal astb : std_logic := '0';
-   signal dstb : std_logic := '0';
-   signal pwr : std_logic := '0';
-
-	--BiDirs
-   signal pdb : std_logic_vector(7 downto 0);
+   signal clk : std_logic := '0';
+   signal ce : std_logic := '0';
+   signal data_in : std_logic_vector(7 downto 0) := (others => '0');
 
  	--Outputs
-   signal AN1 : std_logic;
-   signal AN2 : std_logic;
-   signal AN3 : std_logic;
-   signal AN4 : std_logic;
-   signal Sevenseg : std_logic_vector(7 downto 0);
-   signal LED : std_logic_vector(7 downto 0);
-   signal pwait : std_logic;
-   signal ldg : std_logic;
+   signal data_out : std_logic_vector(7 downto 0);
+   signal addr : std_logic_vector(5 downto 0);
+   signal enable : std_logic;
+   signal rw : std_logic;
 
    -- Clock period definitions
-   constant clk100M_period : time := 10 ns;
+   constant clk_period : time := 10 ns;
  
 BEGIN
  
 	-- Instantiate the Unit Under Test (UUT)
    uut: CPU_8bits PORT MAP (
           reset => reset,
-          clk100M => clk100M,
-          valid_saisie => valid_saisie,
-          AN1 => AN1,
-          AN2 => AN2,
-          AN3 => AN3,
-          AN4 => AN4,
-          Sevenseg => Sevenseg,
-          LED => LED,
-          pdb => pdb,
-          astb => astb,
-          dstb => dstb,
-          pwr => pwr,
-          pwait => pwait,
-          ldg => ldg
+          clk => clk,
+          ce => ce,
+          data_in => data_in,
+          data_out => data_out,
+          addr => addr,
+          enable => enable,
+          rw => rw
         );
+		  
+	ram: RAM_SP_64_8 PORT MAP (
+			ADD => addr,
+			DATA_IN => data_out,
+			R_W => rw,
+			ENABLE => enable,
+			clk => clk,
+			Ce	=> ce,
+			DATA_OUT => data_in);
 
    -- Clock process definitions
-   clk100M_process :process
+   clk_process :process
    begin
-		clk100M <= '0';
-		wait for clk100M_period/2;
-		clk100M <= '1';
-		wait for clk100M_period/2;
+		clk <= '0';
+		wait for clk_period/2;
+		clk <= '1';
+		wait for clk_period/2;
    end process;
  
+	ce_process :process
+	begin
+		ce <= '0';
+		wait for clk_period;
+		ce <= '1';
+		wait for clk_period;
+	end process;
 
    -- Stimulus process
    stim_proc: process
    begin		
-      -- hold reset state for 100 ns.
-      wait for 100 ns;	
 
-      --wait for clk100M_period*10;
-		
-		reset <= '1';
-		wait for 100 ns;
+      reset <= '1';
+	   wait for 40 ns;
 		reset <= '0';
 
-      -- insert stimulus here 
+ 
 
       wait;
    end process;
