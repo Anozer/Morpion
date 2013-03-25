@@ -5,10 +5,10 @@
 NO SYNC
 
 #ignorer tout le contenu du dossier Xilinx ISE
-VHDL/*
+VHDL/Morpion/*
 
 #sauf les VHDL, les configs de pins, les configs de testbench et les bitstreams
-!VHDL/*.vhd
-!VHDL/*.ucf
-!VHDL/*.wcfg
-!VHDL/*.bit
+!VHDL/Morpion/*.vhd
+!VHDL/Morpion/*.ucf
+!VHDL/Morpion/*.wcfg
+!VHDL/Morpion/*.bit
