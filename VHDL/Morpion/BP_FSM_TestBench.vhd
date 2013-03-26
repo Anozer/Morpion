@@ -47,6 +47,7 @@ ARCHITECTURE behavior OF BP_FSM_TestBench IS
          BP_NEXT : IN  std_logic;
          BP_PREV : IN  std_logic;
          BP_OK : IN  std_logic;
+			BP_ENABLE	: IN  STD_LOGIC;
          Data_out : OUT  std_logic_vector(7 downto 0);
          Load : OUT  std_logic
         );
@@ -56,6 +57,7 @@ ARCHITECTURE behavior OF BP_FSM_TestBench IS
    --Inputs
    signal Clk : std_logic := '0';
    signal Rst : std_logic := '0';
+	signal BP_ENABLE	: STD_LOGIC :='0';
    signal CE : std_logic := '1';
    signal BP_NEXT : std_logic := '0';
    signal BP_PREV : std_logic := '0';
@@ -77,6 +79,7 @@ BEGIN
           CE => CE,
           BP_NEXT => BP_NEXT,
           BP_PREV => BP_PREV,
+			 BP_ENABLE => BP_ENABLE,
           BP_OK => BP_OK,
           Data_out => Data_out,
           Load => Load
@@ -102,10 +105,15 @@ BEGIN
 		wait for 30 ns;
 			BP_NEXT <= '0';
 		
+		wait for 30 ns;
+			BP_ENABLE <= '1';
+			
 		wait for 20 ns;
 			BP_PREV <= '1';
+			
 		wait for 30 ns;
-			BP_PREV <= '0';	
+			BP_PREV <= '0';
+			BP_ENABLE <= '0';			
       -- insert stimulus here 
 
       wait;

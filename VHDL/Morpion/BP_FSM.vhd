@@ -36,6 +36,8 @@ ENTITY BP_FSM IS
            BP_NEXT 	: IN  STD_LOGIC;
 			  BP_PREV 	: IN  STD_LOGIC;
 			  BP_OK	 	: IN  STD_LOGIC;
+			  BP_ENABLE	: IN  STD_LOGIC;
+			  CLR			: OUT  STD_LOGIC;
            Data_out	: OUT  STD_LOGIC_VECTOR (7 DOWNTO 0);
            Load 		: OUT  STD_LOGIC);
 END BP_FSM;
@@ -43,7 +45,7 @@ END BP_FSM;
 ARCHITECTURE Behavioral OF BP_FSM IS
 
 -- Types et signaux correspondant aux états de la FSM
-TYPE etats IS (WAIT_RELEASE, WAIT_PRESS, BP_DETECT);
+TYPE etats IS (WAIT_RELEASE, WAIT_PRESS, BP_DETECT, WAIT_ENABLE);
 SIGNAL etat_present	:etats := WAIT_RELEASE;
 SIGNAL etat_futur		:etats := WAIT_RELEASE;
 
@@ -67,7 +69,7 @@ BEGIN
 	END PROCESS;
 	
 	-- Definition des etats futurs en fonction de la FSM				
-	PROCESS (etat_present, BP_NEXT, BP_PREV, BP_OK)
+	PROCESS (etat_present, BP_NEXT, BP_PREV, BP_OK, BP_ENABLE)
 	BEGIN
 		CASE etat_present IS
 		
@@ -84,7 +86,15 @@ BEGIN
 				END IF;
 				
 			WHEN BP_DETECT		=>
-				etat_futur <= WAIT_RELEASE;
+				etat_futur <= WAIT_ENABLE;
+				
+			WHEN WAIT_ENABLE		=>
+				IF (BP_ENABLE ='1') THEN
+					etat_futur <= WAIT_RELEASE;
+				ELSE 
+					etat_futur <= WAIT_ENABLE;
+				END IF;
+				
 
 		END CASE;
 	END PROCESS;
@@ -95,6 +105,11 @@ BEGIN
 	
 		IF	(etat_present = WAIT_RELEASE) THEN --
 			Load 							<= '0';
+			CLR							<= '1';
+
+		ELSIF	(etat_present = WAIT_PRESS) THEN --
+			Load 							<= '0';
+			CLR							<= '0';
 
 		ELSIF (etat_present = BP_DETECT) THEN -- 
 			Load 							<= '1';
@@ -102,6 +117,9 @@ BEGIN
 			Data_out(1)					<= (BP_PREV);
 			Data_out(2)					<= (BP_OK);
 			Data_out(7 DOWNTO 3)		<= "00000";
+			
+		ELSIF	(etat_present = WAIT_PRESS) THEN --
+			Load 							<= '0';
 
 		END IF;
 	END PROCESS;
