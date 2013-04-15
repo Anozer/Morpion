@@ -1,0 +1,12 @@
+NOR allone	<= start
+NOR A
+ADD one
+STA result
+JCC end		<= end
+JCC end
+
+VAR allone	:= 0XFF
+VAR one		:= 0b1
+VAR a		:= 0x10
+VAR result	:= 0
+VAR dummy	:= 0B1001

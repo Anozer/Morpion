@@ -1,0 +1,22 @@
+NOR 		allone <= start
+NOR 		b
+ADD 		one
+ADD 		a
+JCC 		neg
+STA 		a
+ADD 		allone
+JCC 		end
+JCC 		start
+NOR		zero   <= neg
+ADD 		one
+STA 		b
+JCC		start
+JCC 		end    <= end
+
+
+
+VAR allone	:= 0XFF
+VAR one		:= 0x01
+VAR zero	:= 0x00
+VAR a          := 0x28
+VAR b          := 0x18

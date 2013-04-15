@@ -1,0 +1,36 @@
+# Define clock period for 50 MHz oscillator
+NET "CLK" PERIOD = 20.0ns HIGH 40%;
+NET "CLK" LOC = "V10" | IOSTANDARD = LVCMOS33 ;
+NET "RESET" LOC = "B8";
+
+## VGA Connector
+NET "R"      LOC = "U7"  | IOSTANDARD = "LVCMOS33";   # Bank = 2, Pin name = IO_L43P,                          Sch name = RED0
+#NET "vgaRed<1>"      LOC = "V7"  | IOSTANDARD = "LVCMOS33";   # Bank = 2, Pin name = IO_L43N,                          Sch name = RED1
+#NET "vgaRed<2>"      LOC = "N7"  | IOSTANDARD = "LVCMOS33";   # Bank = 2, Pin name = IO_L44P,                          Sch name = RED2
+NET "G"    LOC = "P8"  | IOSTANDARD = "LVCMOS33";   # Bank = 2, Pin name = IO_L44N,                          Sch name = GRN0
+#NET "vgaGreen<1>"    LOC = "T6"  | IOSTANDARD = "LVCMOS33";   # Bank = 2, Pin name = IO_L45P,                          Sch name = GRN1
+#NET "vgaGreen<2>"    LOC = "V6"  | IOSTANDARD = "LVCMOS33";   # Bank = 2, Pin name = IO_L45N,                          Sch name = GRN2
+NET "B"     LOC = "R7"  | IOSTANDARD = "LVCMOS33";   # Bank = 2, Pin name = IO_L46P,                          Sch name = BLU1
+#NET "vgaBlue<2>"     LOC = "T7"  | IOSTANDARD = "LVCMOS33";   # Bank = 2, Pin name = IO_L46N,                          Sch name = BLU2
+NET "HS"          LOC = "N6"  | IOSTANDARD = "LVCMOS33";   # Bank = 2, Pin name = IO_L47P,                          Sch name = HSYNC
+NET "VS"          LOC = "P7"  | IOSTANDARD = "LVCMOS33";   # Bank = 2, Pin name = IO_L47N
+
+# Switches
+NET "SW<0>"          LOC = "T10" | IOSTANDARD = "LVCMOS33";   #Bank = 2, Pin name = IO_L29N_GCLK2,                     Sch name = SW0
+NET "SW<1>"          LOC = "T9"  | IOSTANDARD = "LVCMOS33";   #Bank = 2, Pin name = IO_L32P_GCLK29,                    Sch name = SW1
+NET "SW<2>"          LOC = "V9"  | IOSTANDARD = "LVCMOS33";   #Bank = 2, Pin name = IO_L32N_GCLK28,                    Sch name = SW2
+NET "SW<3>"          LOC = "M8"  | IOSTANDARD = "LVCMOS33";   #Bank = 2, Pin name = IO_L40P,                           Sch name = SW3
+
+# USB
+NET "astb"  LOC = "H1"  ;
+NET "dstb"  LOC = "K4"  ;
+NET "pwait"  LOC = "C2"  ;
+NET "pwr"  LOC = "F5"  ;
+NET "pdb<0>" LOC = "E1"; # Bank = 2
+NET "pdb<1>" LOC = "F4"; # Bank = 2
+NET "pdb<2>" LOC = "F3"; # Bank = 3
+NET "pdb<3>" LOC = "D2"; # Bank = 3
+NET "pdb<4>" LOC = "D1"; # Bank = 3
+NET "pdb<5>" LOC = "H7"; # Bank = 3
+NET "pdb<6>" LOC = "G6"; # Bank = 3
+NET "pdb<7>" LOC = "E4"; # Bank = 3
