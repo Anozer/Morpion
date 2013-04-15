@@ -11,12 +11,12 @@ BPDETECT:
 	JCC BT_NEXT		;1	JUMP		0000 0000	0000 0010	0001 1110
 	ADD ALLONE		;1				1111 1111	0000 0001C	0001 1101C
 	JCC BT_PREV		;1				JUMP		0000 0001	0001 1101
-	JCC BT_VAL		;1 							JUMP		JUMP
+	JCC BT_OK		;1 							JUMP		JUMP
 
 ;						Position 3 joueur 0
-BT_VAL:		
+BT_OK:		
 	LDA POS			;2	accu		= MEM[pos]
-	STA AFF_POSVAL	;1	AFF[val]	= accu
+	STA AFF_OK	;1	AFF[val]	= accu
 	LDA JOUEUR		;2	accu		= MEM[joueur]
 	STA AFF_J		;1	AFF[joueur]	= accu
 	NOT				;1	accu		= !accu
@@ -62,3 +62,7 @@ SENDPOS:
 ; JOUEUR	= 0000 0000
 
 ; 44 instructions + 7 données = 51 octets
+; BP 		= 111000 = 0x38
+; AFF_J 	= 111001 = 0x39
+; AFF_POS 	= 111010 = 0x3A
+; AFF_OK 	= 111011 = 0x3B
