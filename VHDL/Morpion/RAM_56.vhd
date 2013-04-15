@@ -2,9 +2,9 @@
 -- Company: 
 -- Engineer: 
 -- 
--- Create Date:    12:15:40 02/14/2013 
+-- Create Date:    10:33:32 04/15/2013 
 -- Design Name: 
--- Module Name:    RAM_SP_64_8 - Behavioral 
+-- Module Name:    RAM_56 - Behavioral 
 -- Project Name: 
 -- Target Devices: 
 -- Tool versions: 
@@ -19,7 +19,6 @@
 ----------------------------------------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
---use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
 -- Uncomment the following library declaration if using
 -- arithmetic functions with Signed or Unsigned values
@@ -30,8 +29,7 @@ use IEEE.NUMERIC_STD.ALL;
 --library UNISIM;
 --use UNISIM.VComponents.all;
 
-entity RAM_SP_64_8 is
-				
+entity RAM_56 is
 	Port (ADD		: in  STD_LOGIC_VECTOR (5 downto 0);
 			DATA_IN	: in  STD_LOGIC_VECTOR (7 downto 0);
 			R_W		: in  STD_LOGIC;
@@ -39,13 +37,12 @@ entity RAM_SP_64_8 is
 			clk		: in  STD_LOGIC;
 			Ce			: in  STD_LOGIC;
 			DATA_OUT	: out STD_LOGIC_VECTOR (7 downto 0));
-				
-end RAM_SP_64_8;
+end RAM_56;
 
-architecture Behavioral of RAM_SP_64_8 is
+architecture Behavioral of RAM_56 is
 
-type tab64 is array (integer range 0 to 63) of STD_LOGIC_VECTOR(7 downto 0);
-signal memoire : tab64 := (
+type tab56 is array (integer range 0 to 55) of STD_LOGIC_VECTOR(7 downto 0);
+signal memoire : tab56 := (
 	0 => x"2B",
 	1 => x"38",
 	2 => x"6D",
@@ -97,7 +94,7 @@ signal memoire : tab64 := (
 	48 => x"00",
 	49 => x"00",
 	others => x"00");
-									
+
 begin
 
 	process (clk)
@@ -122,6 +119,7 @@ begin
 		end if;
 		
 	end process;
+
 
 end Behavioral;
 

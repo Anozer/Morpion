@@ -30,14 +30,15 @@ use IEEE.STD_LOGIC_1164.ALL;
 --use UNISIM.VComponents.all;
 
 entity BP is
-	Port (Clk				: in   STD_LOGIC;
-			CE					: in   STD_LOGIC;
-			Reset				: in   STD_LOGIC;
+	Port (Clk				: in  STD_LOGIC;
+			CE					: in  STD_LOGIC;
+			Reset				: in  STD_LOGIC;
 			BP_NEXT 			: IN  STD_LOGIC;
 			BP_PREV 			: IN  STD_LOGIC;
 			BP_OK	 			: IN  STD_LOGIC;
 			BP_ENABLE		: IN  STD_LOGIC;
-			BP_out			: OUT  STD_LOGIC_VECTOR (7 DOWNTO 0));
+			RW					: IN	STD_LOGIC;
+			BP_out			: OUT STD_LOGIC_VECTOR (7 DOWNTO 0));
 end BP;
 
 architecture Behavioral of BP is
@@ -65,11 +66,22 @@ architecture Behavioral of BP is
 						Load 			: OUT  STD_LOGIC);
 	end component;
 	
-	signal Clear		: STD_LOGIC;
-	signal Load			: STD_LOGIC;
-	signal Data			: STD_LOGIC_VECTOR(7 downto 0);
+	signal Clear			: STD_LOGIC;
+	signal Load				: STD_LOGIC;
+	signal Data				: STD_LOGIC_VECTOR(7 downto 0);
+	signal Data_Out		: STD_LOGIC_VECTOR(7 downto 0);
 
 begin
+	process (Clk)
+	begin
+		if (Clk'event AND Clk = '1') then
+			if (BP_ENABLE = '1') then
+				if (RW = '0') then
+					BP_out <= Data_OUT;
+				end if;
+			end if;
+		end if;
+	end process;
 
 	BoutonsPoussoirs_FSM : BP_FSM port map (
 		Clk,
@@ -90,7 +102,7 @@ begin
 		Load,
 		Clear,
 		Data (7 downto 0),
-		BP_out (7 downto 0));
+		Data_Out (7 downto 0));
 
 end Behavioral;
 

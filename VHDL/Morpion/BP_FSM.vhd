@@ -118,7 +118,7 @@ BEGIN
 			Data_out(2)					<= (BP_OK);
 			Data_out(7 DOWNTO 3)		<= "00000";
 			
-		ELSIF	(etat_present = WAIT_PRESS) THEN --
+		ELSIF	(etat_present = WAIT_ENABLE) THEN --
 			Load 							<= '0';
 
 		END IF;
