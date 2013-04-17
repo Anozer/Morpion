@@ -96,9 +96,11 @@ BEGIN
 		BT <= "00100"; -- reset
 		wait for 100 ns;
 		
-		
-		BT <= "00010";
+		BT <= "00000"; -- rien
 		wait for 200 ns;
+		
+		BT <= "00010";	-- next
+		wait for 100 ns;
 		BT <= "00000";
 		
       -- insert stimulus here 

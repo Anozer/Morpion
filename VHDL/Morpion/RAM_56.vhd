@@ -113,7 +113,8 @@ begin
 						memoire(to_integer(unsigned(ADD))) <= Data_In;
 						
 					end if;
-					
+				else
+					Data_Out <= "ZZZZZZZZ";
 				end if;
 			end if;
 		end if;
