@@ -4,7 +4,7 @@
 -- 
 -- Create Date:    08:21:41 04/15/2013 
 -- Design Name: 
--- Module Name:    AdrDecode - Behavioral 
+-- Module Name:    busArbiter - Behavioral 
 -- Project Name: 
 -- Target Devices: 
 -- Tool versions: 
@@ -29,15 +29,15 @@ use IEEE.STD_LOGIC_1164.ALL;
 --library UNISIM;
 --use UNISIM.VComponents.all;
 
-entity AdrDecode is
+entity busArbiter is
 	Port (ENABLE		: in	STD_LOGIC;
 			ADDR			: in	STD_LOGIC_VECTOR(5 downto 0);
 			ENABLE_RAM	: out	STD_LOGIC;
 			ENABLE_BP	: out	STD_LOGIC;
 			ENABLE_DISP	: out	STD_LOGIC);
-end AdrDecode;
+end busArbiter;
 
-architecture Behavioral of AdrDecode is
+architecture Behavioral of busArbiter is
 
 begin
 	ENABLE_RAM	<= ENABLE AND (NOT(ADDR(5)) OR (ADDR(5) AND NOT(ADDR(4))) OR (ADDR(5) AND ADDR(4) AND NOT(ADDR(3))));

@@ -4,13 +4,13 @@
 --
 -- Create Date:   08:48:35 04/15/2013
 -- Design Name:   
--- Module Name:   Z:/Dev/VHDL/Morpion/VHDL/Morpion/AdrDecode_TestBench.vhd
+-- Module Name:   Z:/Dev/VHDL/Morpion/VHDL/Morpion/busArbiter_TestBench.vhd
 -- Project Name:  Morpion
 -- Target Device:  
 -- Tool versions:  
 -- Description:   
 -- 
--- VHDL Test Bench Created by ISE for module: AdrDecode
+-- VHDL Test Bench Created by ISE for module: busArbiter
 -- 
 -- Dependencies:
 -- 
@@ -32,14 +32,14 @@ USE ieee.std_logic_1164.ALL;
 -- arithmetic functions with Signed or Unsigned values
 --USE ieee.numeric_std.ALL;
  
-ENTITY AdrDecode_TestBench IS
-END AdrDecode_TestBench;
+ENTITY busArbiter_TestBench IS
+END busArbiter_TestBench;
  
-ARCHITECTURE behavior OF AdrDecode_TestBench IS 
+ARCHITECTURE behavior OF busArbiter_TestBench IS 
  
     -- Component Declaration for the Unit Under Test (UUT)
  
-    COMPONENT AdrDecode
+    COMPONENT busArbiter
     PORT(
          ENABLE : IN  std_logic;
          ADDR : IN  std_logic_vector(5 downto 0);
@@ -66,7 +66,7 @@ ARCHITECTURE behavior OF AdrDecode_TestBench IS
 BEGIN
  
 	-- Instantiate the Unit Under Test (UUT)
-   uut: AdrDecode PORT MAP (
+   uut: busArbiter PORT MAP (
           ENABLE => ENABLE,
           ADDR => ADDR,
           ENABLE_RAM => ENABLE_RAM,

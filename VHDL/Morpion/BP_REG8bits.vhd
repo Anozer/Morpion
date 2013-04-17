@@ -39,7 +39,7 @@ begin
 		
 	end process;
 	
-	Data_out <= NOT (Tmp) ;
+	Data_out <= Tmp;
 
 end Behavioral;
 

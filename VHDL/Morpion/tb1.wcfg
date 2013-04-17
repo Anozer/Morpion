@@ -13,7 +13,7 @@
          </top_modules>
       </db_ref>
    </db_ref_list>
-   <WVObjectSize size="17" />
+   <WVObjectSize size="21" />
    <wvobject fp_name="/morpion_testbench/clk" type="logic" db_ref_id="1">
       <obj_property name="ElementShortName">clk</obj_property>
       <obj_property name="ObjectShortName">clk</obj_property>
@@ -38,6 +38,16 @@
       <obj_property name="ElementShortName">enable_disp</obj_property>
       <obj_property name="ObjectShortName">enable_disp</obj_property>
    </wvobject>
+   <wvobject fp_name="/morpion_testbench/uut/databus_bp2cpu" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">databus_bp2cpu[7:0]</obj_property>
+      <obj_property name="ObjectShortName">databus_bp2cpu[7:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/morpion_testbench/uut/databus_ram2cpu" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">databus_ram2cpu[7:0]</obj_property>
+      <obj_property name="ObjectShortName">databus_ram2cpu[7:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
    <wvobject fp_name="/morpion_testbench/uut/databus_p2cpu" type="array" db_ref_id="1">
       <obj_property name="ElementShortName">databus_p2cpu[7:0]</obj_property>
       <obj_property name="ObjectShortName">databus_p2cpu[7:0]</obj_property>
@@ -57,10 +67,6 @@
       <obj_property name="ElementShortName">cpt_dataout[5:0]</obj_property>
       <obj_property name="ObjectShortName">cpt_dataout[5:0]</obj_property>
       <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
-   </wvobject>
-   <wvobject fp_name="/morpion_testbench/uut/The_CPU/UT/ualdata_out" type="array" db_ref_id="1">
-      <obj_property name="ElementShortName">ualdata_out[7:0]</obj_property>
-      <obj_property name="ObjectShortName">ualdata_out[7:0]</obj_property>
    </wvobject>
    <wvobject fp_name="/morpion_testbench/uut/The_CPU/UC/UC_FSM/etat_present" type="other" db_ref_id="1">
       <obj_property name="ElementShortName">etat_present</obj_property>
@@ -103,13 +109,25 @@
          <obj_property name="ObjectShortName">instruction[0]</obj_property>
       </wvobject>
    </wvobject>
-   <wvobject fp_name="/morpion_testbench/uut/The_CPU/UT/carry" type="logic" db_ref_id="1">
-      <obj_property name="ElementShortName">carry</obj_property>
-      <obj_property name="ObjectShortName">carry</obj_property>
-   </wvobject>
    <wvobject fp_name="/morpion_testbench/uut/The_CPU/UT/regdata_out" type="array" db_ref_id="1">
       <obj_property name="ElementShortName">regdata_out[7:0]</obj_property>
       <obj_property name="ObjectShortName">regdata_out[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/morpion_testbench/uut/The_CPU/UT/regaccu_out" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">regaccu_out[7:0]</obj_property>
+      <obj_property name="ObjectShortName">regaccu_out[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/morpion_testbench/uut/The_CPU/UT/ualdata_out" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">ualdata_out[7:0]</obj_property>
+      <obj_property name="ObjectShortName">ualdata_out[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/morpion_testbench/uut/The_CPU/UT/sel_ual" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">sel_ual</obj_property>
+      <obj_property name="ObjectShortName">sel_ual</obj_property>
+   </wvobject>
+   <wvobject fp_name="/morpion_testbench/uut/The_CPU/UT/carry" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">carry</obj_property>
+      <obj_property name="ObjectShortName">carry</obj_property>
    </wvobject>
    <wvobject fp_name="/morpion_testbench/uut/The_CPU/UT/load_reg1" type="logic" db_ref_id="1">
       <obj_property name="ElementShortName">load_reg1</obj_property>

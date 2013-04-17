@@ -63,7 +63,7 @@ architecture Behavioral of Morpion is
 				BP_out			: OUT  STD_LOGIC_VECTOR (7 DOWNTO 0));
 	end component;
 
-	component AdrDecode
+	component busArbiter
 		Port (ENABLE		: in	STD_LOGIC;
 				ADDR			: in	STD_LOGIC_VECTOR(5 downto 0);
 				ENABLE_RAM	: out	STD_LOGIC;
@@ -82,22 +82,27 @@ architecture Behavioral of Morpion is
 	end component;
 
 
-	signal reset			: std_logic;
-	signal ce				: std_logic;
-	signal dataBus_p2cpu	: std_logic_vector(7 downto 0);
-	signal dataBus_cpu2p	: std_logic_vector(7 downto 0);
-	signal addr_bus		: std_logic_vector(5 downto 0);
-	signal rw				: std_logic;
-	signal enable			: std_logic;
-	signal enable_ram 	: std_logic;
-	signal enable_bp		: std_logic;
-	signal enable_disp	: std_logic;
+	signal reset				: std_logic;
+	signal ce					: std_logic;
+	signal dataBus_cpu2p		: std_logic_vector(7 downto 0);
+	signal dataBus_p2cpu		: std_logic_vector(7 downto 0);
+	signal dataBus_bp2cpu	: std_logic_vector(7 downto 0); 
+	signal dataBus_ram2cpu	: std_logic_vector(7 downto 0);
+	signal addr_bus			: std_logic_vector(5 downto 0);
+	signal rw					: std_logic;
+	signal enable				: std_logic;
+	signal enable_ram 		: std_logic;
+	signal enable_bp			: std_logic;
+	signal enable_disp		: std_logic;
 	
 begin
-
 	reset <= BT(2);
 	ce <= '1';
-
+	
+	-- MUX du bus de données (periph vers cpu)
+	dataBus_p2cpu <=	dataBus_ram2cpu	WHEN enable_ram = '1' ELSE
+							dataBus_bp2cpu		WHEN enable_bp = '1';
+	
 	The_CPU : CPU_8bits port map (
 		reset,
 		clk,
@@ -118,10 +123,10 @@ begin
 		bt(4),
 		enable_bp,
 		rw,
-		dataBus_p2cpu
+		dataBus_bp2cpu
 	);
 	
-	The_AdrDecode : AdrDecode port map (
+	The_busArbiter : busArbiter port map (
 		enable,
 		addr_bus,
 		enable_ram,
@@ -136,7 +141,7 @@ begin
 		enable_ram,
 		clk,
 		ce,
-		dataBus_p2cpu
+		dataBus_ram2cpu
 	);
 
 end Behavioral;
