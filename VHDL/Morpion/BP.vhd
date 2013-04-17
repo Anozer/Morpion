@@ -72,21 +72,8 @@ architecture Behavioral of BP is
 	signal Data_Out		: STD_LOGIC_VECTOR(7 downto 0);
 
 begin
-	process (Clk)
-	begin
-		if (Clk'event AND Clk = '1') then	-- front
-			if (ce = '1') then					-- clock enable
-				if (BP_ENABLE = '1') then		-- enable des BP
-					if (RW = '0') then			-- opération lecture
-						BP_out <= Data_OUT;
-					end if;
-				else
-					BP_out <= "ZZZZZZZZ";
-				end if;
-			end if;
-		end if;
-	end process;
-
+	BP_out <= not(Data_out);
+	
 	BoutonsPoussoirs_FSM : BP_FSM port map (
 		Clk,
 		Reset,
