@@ -30,7 +30,7 @@ use IEEE.STD_LOGIC_1164.ALL;
 --use UNISIM.VComponents.all;
 
 entity DISP_BUSINT_Decode is
-    Port(Data_In			: in  STD_LOGIC_VECTOR(7 downto 0);
+    Port(Data_In			: in  STD_LOGIC_VECTOR(5 downto 0);
 			Enable_Disp		: in  STD_LOGIC;
 			RW					: in STD_LOGIC;
 			POS_Load			: out STD_LOGIC;
@@ -42,11 +42,11 @@ architecture Behavioral of DISP_BUSINT_Decode is
 	
 begin
 
-	POS_Load 	<= '1' WHEN Data_In	="00111010" and RW = '1' and Enable_Disp = '1' ELSE 
+	POS_Load 	<= '1' WHEN Data_In	="111010" and RW = '1' and Enable_Disp = '1' ELSE 
 						'0';
-	OK_Load 		<= '1' WHEN Data_In	="00111011" and RW = '1' and Enable_Disp = '1' ELSE
+	OK_Load 		<= '1' WHEN Data_In	="111011" and RW = '1' and Enable_Disp = '1' ELSE
 						'0';	
-	PLAYER_Load <= '1' WHEN Data_In	="00111001" and RW = '1' and Enable_Disp = '1' ELSE
+	PLAYER_Load <= '1' WHEN Data_In	="111001" and RW = '1' and Enable_Disp = '1' ELSE
 						'0';	
 	
 end Behavioral;

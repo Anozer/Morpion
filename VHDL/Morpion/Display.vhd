@@ -48,7 +48,7 @@ architecture Behavioral of Display is
 	component Disp_BusInt		Port (Clk				: in  STD_LOGIC;
 				CE						: in  STD_LOGIC;
 				Reset					: in  STD_LOGIC;
-				AddrBus				: in  STD_LOGIC_VECTOR (7 DOWNTO 0);
+				AddrBus				: in  STD_LOGIC_VECTOR (5 DOWNTO 0);
 				DataBus_fromCPU	: in  STD_LOGIC_VECTOR (7 DOWNTO 0);
 				Enable_Img			: in  STD_LOGIC;
 				RW						: in	STD_LOGIC;
@@ -59,15 +59,48 @@ architecture Behavioral of Display is
 				Pos_Load				: out STD_LOGIC);
 	end component;
 	
-	signal Player_val : STD_LOGIC;
-	signal OK_val 		: STD_LOGIC;
-	signal Pos_val		: STD_LOGIC;
-	signal OK_Load		: STD_LOGIC;
-	signal Pos_Load	: STD_LOGIC;
+	component Disp_VGAinterface
+		Port (Clk				: in  STD_LOGIC;
+				CE					: in  STD_LOGIC;
+				Reset				: in  STD_LOGIC;
+				VRAM_enableW	: in  STD_LOGIC;
+				VRAM_addrW		: in	STD_LOGIC_VECTOR(19 downto 0);
+				VRAM_dataIn		: in  STD_LOGIC_VECTOR(7 downto 0);
+				HS					: OUT STD_LOGIC;
+				VS					: OUT STD_LOGIC;
+				VRAM_dataOut	: OUT STD_LOGIC_VECTOR(7 downto 0));
+	end component;
+	
+	signal Player_val 	: STD_LOGIC_VECTOR(7 downto 0);
+	signal OK_val 			: STD_LOGIC_VECTOR(7 downto 0);
+	signal Pos_val			: STD_LOGIC_VECTOR(7 downto 0);
+	signal OK_Load			: STD_LOGIC;
+	signal Pos_Load		: STD_LOGIC;
+	signal VRAM_addrW		: STD_LOGIC_VECTOR(19 downto 0);
+	signal VRAM_dataIn	: STD_LOGIC_VECTOR(7 downto 0);
+	signal VRAM_pixel		: STD_LOGIC_VECTOR(7 downto 0);
+	signal VRAM_enableW	: STD_LOGIC;
 
 begin
+	-- pour test sur écran
+	VRAM_dataIn <= "00000111" WHEN Player_val(0) = '1' ELSE
+						"00111000" WHEN Player_val(0) = '0' ELSE
+						"00000000";
+	-- pour test sur écran
+	VRAM_addrW(1 downto 0)		<= "11";
+	VRAM_addrW(9 downto 2)		<= Pos_val;
+	VRAM_addrW(13 downto 10) 	<= "1111";
+	VRAM_addrW(19 downto 14)	<= (others => '0');
+	-- pour test sur écran
+	VRAM_enableW <= Pos_load;
 
-	Disp_BusInterface: DISP_BUSINT port map (
+
+	-- Décomposition du pixel en couleurs
+	VGA_Red		<= VRAM_pixel(2 downto 0);
+	VGA_Green	<= VRAM_pixel(5 downto 3);
+	VGA_Blue		<= VRAM_pixel(7 downto 6);
+	
+	Disp_Bus_Interface: DISP_BUSINT port map (
 		Clk					=> Clk,
 		CE						=> Ce,
 		Reset					=> Reset,
@@ -81,7 +114,16 @@ begin
 		OK_Load				=> OK_Load,
 		Pos_Load				=> Pos_Load);
 	
- 
+	Disp_VGA_Interface : Disp_VGAinterface port map (
+		Clk				=> Clk,
+		CE					=> Ce,
+		Reset				=> Reset,
+		VRAM_enableW	=> VRAM_enableW,
+		VRAM_addrW		=> VRAM_addrW,
+		VRAM_dataIn		=> VRAM_dataIn,
+		HS					=> VGA_HS,
+		VS					=> VGA_VS,
+		VRAM_dataOut	=> VRAM_pixel);
 
 end Behavioral;
 

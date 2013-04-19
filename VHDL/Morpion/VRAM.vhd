@@ -32,7 +32,7 @@ entity VRAM is
           Data_out   : out std_logic_vector	(7 downto 0));
 end VRAM;
 
-architecture syn of VRAM is
+architecture Behavioral of VRAM is
     type ram_type is array (19 downto 0) of std_logic_vector (7 downto 0);
     signal VRAM: ram_type := ((others=> (others=>'0')));
 begin
@@ -50,6 +50,6 @@ begin
 end process;
 
 
-end syn;
+end Behavioral;
 
 					

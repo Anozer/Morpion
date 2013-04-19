@@ -33,7 +33,7 @@ entity DISP_BUSINT is
 	Port (Clk				: in  STD_LOGIC;
 			CE						: in  STD_LOGIC;
 			Reset					: in  STD_LOGIC;
-			AddrBus				: in  STD_LOGIC_VECTOR (7 DOWNTO 0);
+			AddrBus				: in  STD_LOGIC_VECTOR (5 DOWNTO 0);
 			DataBus_fromCPU	: in  STD_LOGIC_VECTOR (7 DOWNTO 0);
 			Enable_Img			: in  STD_LOGIC;
 			RW						: in	STD_LOGIC;
@@ -47,7 +47,7 @@ end DISP_BUSINT;
 architecture Behavioral of DISP_BUSINT is
 
 	component DISP_BUSINT_Decode
-			Port(		Data_In			: in  STD_LOGIC_VECTOR(7 downto 0);
+			Port(		Data_In			: in  STD_LOGIC_VECTOR(5 downto 0);
 						Enable_Disp		: in  STD_LOGIC;
 						RW					: in STD_LOGIC;
 						POS_Load			: out STD_LOGIC;
@@ -98,7 +98,7 @@ begin
 		Pos_Out (7 downto 0));
 		
 	Decode: DISP_BUSINT_Decode port map (
-		AddrBus (7 downto 0),
+		AddrBus (5 downto 0),
 		Enable_Img,
 		RW,
 		s_Pos_Load,
