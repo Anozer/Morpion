@@ -40,17 +40,16 @@ ARCHITECTURE behavior OF BP_FSM_TestBench IS
     -- Component Declaration for the Unit Under Test (UUT)
  
     COMPONENT BP_FSM
-    PORT(
-         Clk : IN  std_logic;
-         Rst : IN  std_logic;
-         CE : IN  std_logic;
-         BP_NEXT : IN  std_logic;
-         BP_PREV : IN  std_logic;
-         BP_OK : IN  std_logic;
-			BP_ENABLE	: IN  STD_LOGIC;
-         Data_out : OUT  std_logic_vector(7 downto 0);
-         Load : OUT  std_logic
-        );
+    PORT ( Clk 			: IN  STD_LOGIC;
+           Rst 			: IN  STD_LOGIC;
+           CE 				: IN  STD_LOGIC;
+           BP_NEXT 		: IN  STD_LOGIC;
+			  BP_PREV 		: IN  STD_LOGIC;
+			  BP_OK	 		: IN  STD_LOGIC;
+			  BP_ENABLE		: IN  STD_LOGIC;
+			  RegClear		: OUT  STD_LOGIC;
+			  RegLoad 		: OUT  STD_LOGIC;
+           Data_toReg	: OUT  STD_LOGIC_VECTOR (7 DOWNTO 0));
     END COMPONENT;
     
 
@@ -64,8 +63,9 @@ ARCHITECTURE behavior OF BP_FSM_TestBench IS
    signal BP_OK : std_logic := '0';
 
  	--Outputs
-   signal Data_out : std_logic_vector(7 downto 0);
-   signal Load : std_logic;
+	signal RegClear : std_logic;
+	signal RegLoad : std_logic;
+   signal Data_toReg : std_logic_vector(7 downto 0);
 
    -- Clock period definitions
    constant Clk_period : time := 10 ns;
@@ -81,8 +81,9 @@ BEGIN
           BP_PREV => BP_PREV,
 			 BP_ENABLE => BP_ENABLE,
           BP_OK => BP_OK,
-          Data_out => Data_out,
-          Load => Load
+          RegClear => RegClear,
+          RegLoad => RegLoad,
+			 Data_toReg => Data_toReg
         );
 
    -- Clock process definitions

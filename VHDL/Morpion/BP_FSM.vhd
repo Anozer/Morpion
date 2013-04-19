@@ -30,16 +30,16 @@ use IEEE.STD_LOGIC_1164.ALL;
 --use UNISIM.VComponents.all;
 
 ENTITY BP_FSM IS
-    PORT ( Clk 		: IN  STD_LOGIC;
-           Rst 		: IN  STD_LOGIC;
-           CE 			: IN  STD_LOGIC;
-           BP_NEXT 	: IN  STD_LOGIC;
-			  BP_PREV 	: IN  STD_LOGIC;
-			  BP_OK	 	: IN  STD_LOGIC;
-			  BP_ENABLE	: IN  STD_LOGIC;
-			  CLR			: OUT  STD_LOGIC;
-           Data_out	: OUT  STD_LOGIC_VECTOR (7 DOWNTO 0);
-           Load 		: OUT  STD_LOGIC);
+    PORT ( Clk 			: IN  STD_LOGIC;
+           Rst 			: IN  STD_LOGIC;
+           CE 				: IN  STD_LOGIC;
+           BP_NEXT 		: IN  STD_LOGIC;
+			  BP_PREV 		: IN  STD_LOGIC;
+			  BP_OK	 		: IN  STD_LOGIC;
+			  BP_ENABLE		: IN  STD_LOGIC;
+			  RegClear		: OUT  STD_LOGIC;
+			  RegLoad 		: OUT  STD_LOGIC;
+           Data_toReg	: OUT  STD_LOGIC_VECTOR (7 DOWNTO 0));
 END BP_FSM;
 
 ARCHITECTURE Behavioral OF BP_FSM IS
@@ -88,7 +88,7 @@ BEGIN
 			WHEN BP_DETECT		=>
 				etat_futur <= WAIT_ENABLE;
 				
-			WHEN WAIT_ENABLE		=>
+			WHEN WAIT_ENABLE	=>
 				IF (BP_ENABLE ='1') THEN
 					etat_futur <= WAIT_RELEASE;
 				ELSE 
@@ -104,22 +104,22 @@ BEGIN
 	PROCESS (etat_present, BP_NEXT, BP_PREV, BP_OK) BEGIN	
 	
 		IF	(etat_present = WAIT_RELEASE) THEN --
-			Load 							<= '0';
-			CLR							<= '1';
+			RegLoad 						<= '0';
+			RegClear						<= '1';
 
 		ELSIF	(etat_present = WAIT_PRESS) THEN --
-			Load 							<= '0';
-			CLR							<= '0';
+			RegLoad 						<= '0';
+			RegClear						<= '0';
 
 		ELSIF (etat_present = BP_DETECT) THEN -- 
-			Load 							<= '1';
-			Data_out(0)					<= (BP_NEXT); 
-			Data_out(1)					<= (BP_PREV);
-			Data_out(2)					<= (BP_OK);
-			Data_out(7 DOWNTO 3)		<= "00000";
+			RegLoad 						<= '1';
+			Data_toReg(0)				<= (BP_NEXT); 
+			Data_toReg(1)				<= (BP_PREV);
+			Data_toReg(2)				<= (BP_OK);
+			Data_toReg(7 DOWNTO 3)	<= "00000";
 			
 		ELSIF	(etat_present = WAIT_ENABLE) THEN --
-			Load 							<= '0';
+			RegLoad 						<= '0';
 
 		END IF;
 	END PROCESS;

@@ -40,15 +40,15 @@ ARCHITECTURE behavior OF BP_TestBench IS
     -- Component Declaration for the Unit Under Test (UUT)
  
     COMPONENT BP
-    PORT(
-         Clk 			: IN  std_logic;
-         CE 			: IN  std_logic;
-         Reset 		: IN  std_logic;
-         BP_NEXT 		: IN  std_logic;
-         BP_PREV 		: IN  std_logic;
-         BP_OK 		: IN  std_logic;
-         BP_ENABLE 	: IN  std_logic;
-         BP_out 		: OUT  std_logic_vector(7 downto 0));
+    Port (Clk				: in  STD_LOGIC;
+			CE					: in  STD_LOGIC;
+			Reset				: in  STD_LOGIC;
+			BP_NEXT 			: IN  STD_LOGIC;
+			BP_PREV 			: IN  STD_LOGIC;
+			BP_OK	 			: IN  STD_LOGIC;
+			Enable			: IN  STD_LOGIC;
+			RW					: IN	STD_LOGIC;
+			DataBus_toCPU	: OUT STD_LOGIC_VECTOR (7 DOWNTO 0));
     END COMPONENT;
     
 
@@ -59,10 +59,11 @@ ARCHITECTURE behavior OF BP_TestBench IS
    signal BP_NEXT : std_logic := '0';
    signal BP_PREV : std_logic := '0';
    signal BP_OK : std_logic := '0';
-   signal BP_ENABLE : std_logic := '0';
+   signal Enable : std_logic := '0';
+	signal RW : std_logic := '0';
 
  	--Outputs
-   signal BP_out : std_logic_vector(7 downto 0);
+   signal DataBus_toCPU : std_logic_vector(7 downto 0);
 
    -- Clock period definitions
    constant Clk_period : time := 10 ns;
@@ -77,8 +78,9 @@ BEGIN
           BP_NEXT => BP_NEXT,
           BP_PREV => BP_PREV,
           BP_OK => BP_OK,
-          BP_ENABLE => BP_ENABLE,
-          BP_out => BP_out
+          Enable => Enable,
+          DataBus_toCPU => DataBus_toCPU,
+			 RW => RW
         );
 
    -- Clock process definitions
@@ -105,7 +107,7 @@ BEGIN
 			BP_NEXT <= '0';
 		
 		wait for 10 ns;
-			BP_ENABLE <= '1';
+			Enable <= '1';
 			
 		wait for 10 ns;
 			BP_NEXT <= '1';
@@ -114,7 +116,7 @@ BEGIN
 			BP_NEXT <= '0';
 			
 		wait for 10 ns;
-			BP_ENABLE <= '0';
+			Enable <= '0';
 			
       wait;
    end process;

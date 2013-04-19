@@ -6,7 +6,7 @@
 -- Design Name: 
 -- Module Name:    Morpion - Behavioral 
 -- Project Name: 
--- Target Devices: 
+-- Target DeviCEs: 
 -- Tool versions: 
 -- Description: 
 --
@@ -30,7 +30,7 @@ use IEEE.STD_LOGIC_1164.ALL;
 --use UNISIM.VComponents.all;
 
 entity Morpion is
-	port (CLK			: IN  STD_LOGIC;			BT				: IN  STD_LOGIC_VECTOR(4 downto 0);
+	port (Clk			: IN  STD_LOGIC;			BT				: IN  STD_LOGIC_VECTOR(4 downto 0);
 			VGA_RED		: OUT STD_LOGIC_VECTOR(2 downto 0);
 			VGA_GREEN	: OUT STD_LOGIC_VECTOR(2 downto 0);
 			VGA_BLUE		: OUT STD_LOGIC_VECTOR(1 downto 0);
@@ -41,107 +41,107 @@ end Morpion;
 architecture Behavioral of Morpion is
 
 	component CPU_8bits
-		Port (reset 			: in  STD_LOGIC;
-				clk		 		: in  STD_LOGIC;
-				ce					: in	STD_LOGIC;
+		Port (Reset 			: in  STD_LOGIC;
+				Clk		 		: in  STD_LOGIC;
+				CE					: in	STD_LOGIC;
 				data_in			: in  STD_LOGIC_VECTOR(7 downto 0);
 				data_out			: out STD_LOGIC_VECTOR(7 downto 0);
 				addr				: out STD_LOGIC_VECTOR(5 downto 0);
-				enable			: out STD_LOGIC;
-				rw					: out STD_LOGIC);
+				Enable			: out STD_LOGIC;
+				RW					: out STD_LOGIC);
 	end component;
 
 	component BP
-		Port (Clk				: in   STD_LOGIC;
-				CE					: in   STD_LOGIC;
-				Reset				: in   STD_LOGIC;
+		Port (Clk				: in  STD_LOGIC;
+				CE					: in  STD_LOGIC;
+				Reset				: in  STD_LOGIC;
 				BP_NEXT 			: IN  STD_LOGIC;
 				BP_PREV 			: IN  STD_LOGIC;
 				BP_OK	 			: IN  STD_LOGIC;
-				BP_ENABLE		: IN  STD_LOGIC;
+				Enable			: IN  STD_LOGIC;
 				RW					: IN	STD_LOGIC;
-				BP_out			: OUT  STD_LOGIC_VECTOR (7 DOWNTO 0));
+				DataBus_toCPU	: OUT STD_LOGIC_VECTOR (7 DOWNTO 0));
 	end component;
 
 	component busArbiter
-		Port (ENABLE		: in	STD_LOGIC;
-				ADDR			: in	STD_LOGIC_VECTOR(5 downto 0);
-				ENABLE_RAM	: out	STD_LOGIC;
-				ENABLE_BP	: out	STD_LOGIC;
-				ENABLE_DISP	: out	STD_LOGIC);
+		Port (Enable		: in	STD_LOGIC;
+				AddrBus		: in	STD_LOGIC_VECTOR(5 downto 0);
+				Enable_RAM	: out	STD_LOGIC;
+				Enable_BP	: out	STD_LOGIC;
+				Enable_DISP	: out	STD_LOGIC);
 	end component;
 
 	component RAM_56
-		Port (ADD		: in  STD_LOGIC_VECTOR (5 downto 0);
-				DATA_IN	: in  STD_LOGIC_VECTOR (7 downto 0);
-				R_W		: in  STD_LOGIC;
-				ENABLE	: in  STD_LOGIC;
-				clk		: in  STD_LOGIC;
-				Ce			: in  STD_LOGIC;
-				DATA_OUT	: out STD_LOGIC_VECTOR (7 downto 0));
+		Port (AddrBus				: in  STD_LOGIC_VECTOR (5 downto 0);
+				DataBus_fromCPU	: in  STD_LOGIC_VECTOR (7 downto 0);
+				RW						: in  STD_LOGIC;
+				ENABLE				: in  STD_LOGIC;
+				clk					: in  STD_LOGIC;
+				Ce						: in  STD_LOGIC;
+				DataBus_toCPU		: out STD_LOGIC_VECTOR (7 downto 0));
 	end component;
 
 
-	signal reset				: std_logic;
-	signal ce					: std_logic;
-	signal dataBus_cpu2p		: std_logic_vector(7 downto 0);
-	signal dataBus_p2cpu		: std_logic_vector(7 downto 0);
-	signal dataBus_bp2cpu	: std_logic_vector(7 downto 0); 
-	signal dataBus_ram2cpu	: std_logic_vector(7 downto 0);
-	signal addr_bus			: std_logic_vector(5 downto 0);
-	signal rw					: std_logic;
-	signal enable				: std_logic;
-	signal enable_ram 		: std_logic;
-	signal enable_bp			: std_logic;
-	signal enable_disp		: std_logic;
+	signal Reset				: std_logic;
+	signal CE					: std_logic;
+	signal DataBus_cpu2p		: std_logic_vector(7 downto 0);
+	signal DataBus_p2cpu		: std_logic_vector(7 downto 0);
+	signal DataBus_bp2cpu	: std_logic_vector(7 downto 0); 
+	signal DataBus_ram2cpu	: std_logic_vector(7 downto 0);
+	signal AddrBus			 	: std_logic_vector(5 downto 0);
+	signal RW					: std_logic;
+	signal Enable				: std_logic;
+	signal Enable_ram 		: std_logic;
+	signal Enable_bp			: std_logic;
+	signal Enable_disp		: std_logic;
 	
 begin
-	reset <= BT(2);
-	ce <= '1';
+	Reset <= BT(2);
+	CE <= '1';
 	
 	-- MUX du bus de données (periph vers cpu)
-	dataBus_p2cpu <=	dataBus_ram2cpu	WHEN enable_ram = '1' ELSE
-							dataBus_bp2cpu		WHEN enable_bp = '1';
+	DataBus_p2cpu <=	DataBus_ram2cpu	WHEN Enable_ram = '1' ELSE
+							DataBus_bp2cpu		WHEN Enable_bp = '1';
 	
 	The_CPU : CPU_8bits port map (
-		reset,
-		clk,
-		ce,
-		dataBus_p2cpu,
-		dataBus_cpu2p,
-		addr_bus,
-		enable,
-		rw
+		Reset,
+		Clk,
+		CE,
+		DataBus_p2cpu,
+		DataBus_cpu2p,
+		AddrBus,
+		Enable,
+		RW
 	);
 	
 	The_BP : BP port map (
-		clk,
-		ce,
-		reset,
-		bt(1),
-		bt(3),
-		bt(4),
-		enable_bp,
-		rw,
-		dataBus_bp2cpu
+		Clk,
+		CE,
+		Reset,
+		BT(1),
+		BT(3),
+		BT(4),
+		Enable_bp,
+		RW,
+		DataBus_bp2cpu
 	);
 	
 	The_busArbiter : busArbiter port map (
-		enable,
-		addr_bus,
-		enable_ram,
-		enable_bp,
-		enable_disp
+		Enable,
+		AddrBus,
+		Enable_ram,
+		Enable_bp,
+		Enable_disp
 	);
 	
 	The_RAM : RAM_56 port map (
-		addr_bus,
-		dataBus_cpu2p,
-		rw,
-		enable_ram,
-		clk,
-		ce,
-		dataBus_ram2cpu
+		AddrBus,
+		DataBus_cpu2p,
+		RW,
+		Enable_ram,
+		Clk,
+		CE,
+		DataBus_ram2cpu
 	);
 
 end Behavioral;
