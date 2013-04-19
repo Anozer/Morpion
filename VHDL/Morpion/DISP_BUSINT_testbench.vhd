@@ -40,20 +40,18 @@ ARCHITECTURE behavior OF DISP_BUSINT_testbench IS
     -- Component Declaration for the Unit Under Test (UUT)
  
     COMPONENT DISP_BUSINT
-    PORT(
-         Clk : IN  std_logic;
-         CE : IN  std_logic;
-         Reset : IN  std_logic;
-         Addr_Bus : IN  std_logic_vector(7 downto 0);
-         Data_Bus : IN  std_logic_vector(7 downto 0);
-         Enable_Img : IN  std_logic;
-         RW : IN  std_logic;
-         Player_Out : OUT  std_logic_vector(7 downto 0);
-         OK_Out : OUT  std_logic_vector(7 downto 0);
-         Pos_Out : OUT  std_logic_vector(7 downto 0);
-         OK_Load : OUT  std_logic;
-         Pos_Load : OUT  std_logic
-        );
+    Port (Clk				: in  STD_LOGIC;
+			CE						: in  STD_LOGIC;
+			Reset					: in  STD_LOGIC;
+			AddrBus				: in  STD_LOGIC_VECTOR (7 DOWNTO 0);
+			DataBus_fromCPU	: in  STD_LOGIC_VECTOR (7 DOWNTO 0);
+			Enable_Img			: in  STD_LOGIC;
+			RW						: in	STD_LOGIC;
+			Player_Out			: out	STD_LOGIC_VECTOR (7 DOWNTO 0);
+			OK_Out				: out STD_LOGIC_VECTOR (7 DOWNTO 0);
+			Pos_Out				: out STD_LOGIC_VECTOR (7 DOWNTO 0);
+			OK_Load				: out STD_LOGIC;
+			Pos_Load				: out STD_LOGIC);
     END COMPONENT;
     
 
@@ -61,8 +59,8 @@ ARCHITECTURE behavior OF DISP_BUSINT_testbench IS
    signal Clk : std_logic := '0';
    signal CE : std_logic := '1';
    signal Reset : std_logic := '1';
-   signal Addr_Bus : std_logic_vector(7 downto 0) := (others => '0');
-   signal Data_Bus : std_logic_vector(7 downto 0) := (others => '0');
+   signal AddrBus : std_logic_vector(7 downto 0) := (others => '0');
+   signal DataBus_fromCPU : std_logic_vector(7 downto 0) := (others => '0');
    signal Enable_Img : std_logic := '0';
    signal RW : std_logic := '0';
 
@@ -83,8 +81,8 @@ BEGIN
           Clk => Clk,
           CE => CE,
           Reset => Reset,
-          Addr_Bus => Addr_Bus,
-          Data_Bus => Data_Bus,
+          AddrBus => AddrBus,
+          DataBus_fromCPU => DataBus_fromCPU,
           Enable_Img => Enable_Img,
           RW => RW,
           Player_Out => Player_Out,
@@ -109,17 +107,17 @@ BEGIN
    begin		
 		wait for 10 ns;
 		Reset <= '0';
-		Data_Bus <= "10101010";
+		DataBus_fromCPU <= "10101010";
 		wait for 10 ns;
-		Addr_Bus <= "00111010";
+		AddrBus <= "00111010";
 		wait for 10 ns;
 		RW <= '1';
 		wait for 10 ns;
 		Enable_Img <='1';
 		wait for 10 ns;
-		Addr_Bus <= "00111011";
+		AddrBus <= "00111011";
 		wait for 10 ns;
-		Addr_Bus <= "00111001";
+		AddrBus <= "00111001";
       wait;
    end process;
 

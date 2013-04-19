@@ -80,6 +80,21 @@ architecture Behavioral of Morpion is
 				Ce						: in  STD_LOGIC;
 				DataBus_toCPU		: out STD_LOGIC_VECTOR (7 downto 0));
 	end component;
+	
+	component Display
+		Port (Clk					: in  STD_LOGIC;
+				CE						: in  STD_LOGIC;
+				Reset					: in  STD_LOGIC;
+				Enable				: IN  STD_LOGIC;
+				RW						: IN	STD_LOGIC;
+				AddrBus				: IN	STD_LOGIC_VECTOR (5 downto 0);
+				DataBus_fromCPU	: IN	STD_LOGIC_VECTOR (7 downto 0);
+				VGA_HS				: OUT	STD_LOGIC;
+				VGA_VS				: OUT STD_LOGIC;
+				VGA_Red				: OUT STD_LOGIC_VECTOR (2 downto 0);
+				VGA_Green			: OUT STD_LOGIC_VECTOR (2 downto 0);
+				VGA_Blue				: OUT STD_LOGIC_VECTOR (1 downto 0));
+	end component;
 
 
 	signal Reset				: std_logic;
@@ -142,6 +157,21 @@ begin
 		Clk,
 		CE,
 		DataBus_ram2cpu
+	);
+	
+	The_display : Display port map (
+		Clk,
+		CE,
+		Reset,
+		Enable_disp,
+		RW,
+		AddrBus,
+		DataBus_cpu2p,
+		VGA_HS,
+		VGA_VS,
+		VGA_Red,
+		VGA_Green,
+		VGA_Blue
 	);
 
 end Behavioral;
