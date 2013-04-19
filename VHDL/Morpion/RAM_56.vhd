@@ -30,13 +30,13 @@ use IEEE.NUMERIC_STD.ALL;
 --use UNISIM.VComponents.all;
 
 entity RAM_56 is
-	Port (ADD		: in  STD_LOGIC_VECTOR (5 downto 0);
-			DATA_IN	: in  STD_LOGIC_VECTOR (7 downto 0);
-			R_W		: in  STD_LOGIC;
-			ENABLE	: in  STD_LOGIC;
-			clk		: in  STD_LOGIC;
-			Ce			: in  STD_LOGIC;
-			DATA_OUT	: out STD_LOGIC_VECTOR (7 downto 0));
+	Port (AddrBus				: in  STD_LOGIC_VECTOR (5 downto 0);
+			DataBus_fromCPU	: in  STD_LOGIC_VECTOR (7 downto 0);
+			RW						: in  STD_LOGIC;
+			ENABLE				: in  STD_LOGIC;
+			clk					: in  STD_LOGIC;
+			Ce						: in  STD_LOGIC;
+			DataBus_toCPU		: out STD_LOGIC_VECTOR (7 downto 0));
 end RAM_56;
 
 architecture Behavioral of RAM_56 is
@@ -105,12 +105,12 @@ begin
 				if (Enable = '1') then
 				
 					-- lecture
-					if (R_W = '0') then
-						Data_Out <= memoire(to_integer(unsigned(ADD)));
+					if (RW = '0') then
+						DataBus_toCPU <= memoire(to_integer(unsigned(AddrBus)));
 					
 					-- écriture
-					elsif (R_W = '1') then
-						memoire(to_integer(unsigned(ADD))) <= Data_In;
+					elsif (RW = '1') then
+						memoire(to_integer(unsigned(AddrBus))) <= DataBus_fromCPU;
 						
 					end if;
 				end if;

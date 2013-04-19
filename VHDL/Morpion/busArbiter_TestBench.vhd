@@ -40,19 +40,17 @@ ARCHITECTURE behavior OF busArbiter_TestBench IS
     -- Component Declaration for the Unit Under Test (UUT)
  
     COMPONENT busArbiter
-    PORT(
-         ENABLE : IN  std_logic;
-         ADDR : IN  std_logic_vector(5 downto 0);
-         ENABLE_RAM : OUT  std_logic;
-         ENABLE_BP : OUT  std_logic;
-         ENABLE_DISP : OUT  std_logic
-        );
+    Port (Enable		: in	STD_LOGIC;
+			AddrBus		: in	STD_LOGIC_VECTOR(5 downto 0);
+			Enable_RAM	: out	STD_LOGIC;
+			Enable_BP	: out	STD_LOGIC;
+			Enable_DISP	: out	STD_LOGIC);
     END COMPONENT;
     
 
    --Inputs
    signal ENABLE : std_logic := '0';
-   signal ADDR : std_logic_vector(5 downto 0) := (others => '0');
+   signal AddrBus : std_logic_vector(5 downto 0) := (others => '0');
 
  	--Outputs
    signal ENABLE_RAM : std_logic;
@@ -68,7 +66,7 @@ BEGIN
 	-- Instantiate the Unit Under Test (UUT)
    uut: busArbiter PORT MAP (
           ENABLE => ENABLE,
-          ADDR => ADDR,
+          AddrBus => AddrBus,
           ENABLE_RAM => ENABLE_RAM,
           ENABLE_BP => ENABLE_BP,
           ENABLE_DISP => ENABLE_DISP
@@ -90,22 +88,22 @@ BEGIN
       -- hold reset state for 100 ns.
       wait for 20 ns;
 		ENABLE <= '1';
-      ADDR <= "001111"; -- memoire
+      AddrBus <= "001111"; -- memoire
 		
 		wait for 20 ns;
-		ADDR <= "101000"; -- memoire
+		AddrBus <= "101000"; -- memoire
 		
 		wait for 20 ns;
-		ADDR <= "110100"; -- memoire
+		AddrBus <= "110100"; -- memoire
 		
 		wait for 20 ns;
-		ADDR <= "111000"; -- BP
+		AddrBus <= "111000"; -- BP
 		
 		wait for 20 ns;
-		ADDR <= "111001"; -- AFF J
+		AddrBus <= "111001"; -- AFF J
 		
 		wait for 20 ns;
-		ADDR <= "111100"; -- rien
+		AddrBus <= "111100"; -- rien
 
 
       wait;

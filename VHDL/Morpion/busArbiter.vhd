@@ -30,18 +30,18 @@ use IEEE.STD_LOGIC_1164.ALL;
 --use UNISIM.VComponents.all;
 
 entity busArbiter is
-	Port (ENABLE		: in	STD_LOGIC;
-			ADDR			: in	STD_LOGIC_VECTOR(5 downto 0);
-			ENABLE_RAM	: out	STD_LOGIC;
-			ENABLE_BP	: out	STD_LOGIC;
-			ENABLE_DISP	: out	STD_LOGIC);
+	Port (Enable		: in	STD_LOGIC;
+			AddrBus		: in	STD_LOGIC_VECTOR(5 downto 0);
+			Enable_RAM	: out	STD_LOGIC;
+			Enable_BP	: out	STD_LOGIC;
+			Enable_DISP	: out	STD_LOGIC);
 end busArbiter;
 
 architecture Behavioral of busArbiter is
 
 begin
-	ENABLE_RAM	<= ENABLE AND (NOT(ADDR(5)) OR (ADDR(5) AND NOT(ADDR(4))) OR (ADDR(5) AND ADDR(4) AND NOT(ADDR(3))));
-	ENABLE_BP	<= ENABLE AND (ADDR(5) AND ADDR(4) AND ADDR(3) AND NOT(ADDR(2)) AND NOT(ADDR(1)) AND NOT(ADDR(0)));
-	ENABLE_DISP	<= ENABLE AND ((ADDR(5) AND ADDR(4) AND ADDR(3) AND NOT(ADDR(2)) AND NOT(ADDR(1)) AND(ADDR(0))) OR (ADDR(5) AND ADDR(4) AND ADDR(3) AND NOT(ADDR(2)) AND ADDR(1)));
+	Enable_RAM	<= Enable AND (NOT(AddrBus(5)) OR (AddrBus(5) AND NOT(AddrBus(4))) OR (AddrBus(5) AND AddrBus(4) AND NOT(AddrBus(3))));
+	Enable_BP	<= Enable AND (AddrBus(5) AND AddrBus(4) AND AddrBus(3) AND NOT(AddrBus(2)) AND NOT(AddrBus(1)) AND NOT(AddrBus(0)));
+	Enable_DISP	<= Enable AND ((AddrBus(5) AND AddrBus(4) AND AddrBus(3) AND NOT(AddrBus(2)) AND NOT(AddrBus(1)) AND(AddrBus(0))) OR (AddrBus(5) AND AddrBus(4) AND AddrBus(3) AND NOT(AddrBus(2)) AND AddrBus(1)));
 end Behavioral;
 

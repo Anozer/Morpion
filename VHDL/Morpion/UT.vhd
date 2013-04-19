@@ -89,7 +89,7 @@ begin
 
 	Data_out <= RegAccu_out;
 
-	RegData : Reg8bits port map (
+	UT_RegData : Reg8bits port map (
 		clk,
 		reset,
 		CE,
@@ -98,7 +98,7 @@ begin
 		RegData_out);
 	
 	
-	RegAccu : Reg8bits port map (
+	UT_RegAccu : Reg8bits port map (
 		clk,
 		reset,
 		CE,
@@ -107,7 +107,7 @@ begin
 		RegAccu_out);
 		
 		
-	FFcarry : FF1bit port map (
+	UT_RegCarry : FF1bit port map (
 		clk,
 		reset,
 		CE,
