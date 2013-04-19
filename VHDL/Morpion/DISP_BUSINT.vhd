@@ -69,7 +69,11 @@ architecture Behavioral of DISP_BUSINT is
 		signal s_J_Load		: STD_LOGIC;
 
 begin
-	REG_J: BP_REG8bits port map (
+
+	Pos_Load <= s_Pos_Load;
+	OK_Load	<= s_OK_Load;
+	
+	REG_J: REG8bits port map (
 		Clk,
 		Reset,
 		CE,
@@ -77,7 +81,7 @@ begin
 		Data_Bus (7 downto 0),
 		Player_Out (7 downto 0));
 		
-	REG_OK: BP_REG8bits port map (
+	REG_OK: REG8bits port map (
 		Clk,
 		Reset,
 		CE,
@@ -85,7 +89,7 @@ begin
 		Data_Bus (7 downto 0),
 		OK_Out (7 downto 0));
 		
-	REG_Pos: BP_REG8bits port map (
+	REG_Pos: REG8bits port map (
 		Clk,
 		Reset,
 		CE,
@@ -94,7 +98,7 @@ begin
 		Pos_Out (7 downto 0));
 		
 	Decode: DISP_BUSINT_Decode port map (
-		Data_Bus (7 downto 0),
+		Addr_Bus (7 downto 0),
 		Enable_Img,
 		RW,
 		s_Pos_Load,

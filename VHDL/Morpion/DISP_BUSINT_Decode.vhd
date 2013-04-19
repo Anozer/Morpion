@@ -43,11 +43,11 @@ architecture Behavioral of DISP_BUSINT_Decode is
 begin
 
 	POS_Load 	<= '1' WHEN Data_In	="00111010" and RW = '1' and Enable_Disp = '1' ELSE 
-	'0';
+						'0';
 	OK_Load 		<= '1' WHEN Data_In	="00111011" and RW = '1' and Enable_Disp = '1' ELSE
-	'0';	
+						'0';	
 	PLAYER_Load <= '1' WHEN Data_In	="00111001" and RW = '1' and Enable_Disp = '1' ELSE
-	'0';	
+						'0';	
 	
 end Behavioral;
 
