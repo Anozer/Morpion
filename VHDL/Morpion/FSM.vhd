@@ -69,6 +69,8 @@ begin
 			
 			if(CE = '1') then
 				etat_present <= etat_futur; -- Actualisation des états
+			else
+				etat_present <= etat_present;
 			end if;
 			
 		end if;
@@ -91,7 +93,7 @@ begin
 					etat_futur <= STORE;
 				elsif (Code_Op = "11") then
 					etat_futur <= JUMP;
-				elsif (Code_Op(1)= '0') then
+				else
 					etat_futur <= FETCH_OP ;
 				end if;
 

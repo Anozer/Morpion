@@ -82,18 +82,11 @@ architecture Behavioral of Display is
 	signal VRAM_enableW	: STD_LOGIC;
 
 begin
-	-- pour test sur écran
-	VRAM_dataIn <= "00000111" WHEN Player_val(0) = '1' ELSE
-						"00111000" WHEN Player_val(0) = '0' ELSE
-						"00000000";
-	-- pour test sur écran
-	VRAM_addrW(1 downto 0)		<= "11";
-	VRAM_addrW(9 downto 2)		<= Pos_val;
-	VRAM_addrW(13 downto 10) 	<= "1111";
-	VRAM_addrW(19 downto 14)	<= (others => '0');
-	-- pour test sur écran
-	VRAM_enableW <= Pos_load;
-
+--	VRAM_dataIn <= "00000111" WHEN Player_val(0) = '0' ELSE
+--						"00111000";
+--	VRAM_addrW(1 downto 0) <= "11";				
+--	VRAM_addrW(19 downto 2) <= (others => '0');	
+--	VRAM_enableW <= OK_load;
 
 	-- Décomposition du pixel en couleurs
 	VGA_Red		<= VRAM_pixel(2 downto 0);

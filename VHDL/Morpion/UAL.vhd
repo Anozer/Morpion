@@ -53,8 +53,8 @@ begin
 			Carry_Out <= '0';
 			
 		-- ADD	
-		elsif (Sel_UAL = '1') then
-		
+		--elsif (Sel_UAL = '1') then
+		else
 			A				:= unsigned(Data_In_ACCU);
 			B				:= unsigned(Data_In_MEM);
 			S				:= resize(A,9) + resize(B,9);

@@ -40,21 +40,25 @@ ARCHITECTURE behavior OF Morpion_TestBench IS
     -- Component Declaration for the Unit Under Test (UUT)
  
     COMPONENT Morpion
-    PORT(
-         CLK : IN  std_logic;
-         BT : IN  std_logic_vector(4 downto 0);
-         VGA_RED : OUT  std_logic_vector(2 downto 0);
-         VGA_GREEN : OUT  std_logic_vector(2 downto 0);
-         VGA_BLUE : OUT  std_logic_vector(1 downto 0);
-         VGA_HS : OUT  std_logic;
-         VGA_VS : OUT  std_logic
-        );
+		port (Clk			: IN  STD_LOGIC;
+				BTNR			: IN  STD_LOGIC;
+				BTNL			: IN  STD_LOGIC;
+				BTND			: IN  STD_LOGIC;
+				BTNS			: IN  STD_LOGIC;
+				VGA_RED		: OUT STD_LOGIC_VECTOR(2 downto 0);
+				VGA_GREEN	: OUT STD_LOGIC_VECTOR(2 downto 0);
+				VGA_BLUE		: OUT STD_LOGIC_VECTOR(1 downto 0);
+				VGA_HS		: OUT STD_LOGIC;
+				VGA_VS		: OUT STD_LOGIC);
     END COMPONENT;
     
 
    --Inputs
    signal CLK : std_logic := '0';
-   signal BT : std_logic_vector(4 downto 0) := (others => '0');
+   signal BTNR			:  STD_LOGIC := '0';
+	signal BTNL			:  STD_LOGIC := '0';
+	signal BTND			:  STD_LOGIC := '0';
+	signal BTNS			:  STD_LOGIC := '0';
 
  	--Outputs
    signal VGA_RED : std_logic_vector(2 downto 0);
@@ -71,7 +75,10 @@ BEGIN
 	-- Instantiate the Unit Under Test (UUT)
    uut: Morpion PORT MAP (
           CLK => CLK,
-          BT => BT,
+          BTNR => BTNR,
+			 BTNL => BTNL,
+			 BTND => BTND,
+			 BTNS => BTNS,
           VGA_RED => VGA_RED,
           VGA_GREEN => VGA_GREEN,
           VGA_BLUE => VGA_BLUE,
@@ -93,15 +100,15 @@ BEGIN
    stim_proc: process
    begin
 		wait for 4 ns;
-		BT <= "00100"; -- reset
+		BTND <= '1'; -- reset
 		wait for 100 ns;
 		
-		BT <= "00000"; -- rien
+		BTND <= '0'; -- rien
 		wait for 200 ns;
 		
-		BT <= "00010";	-- next
+		BTNR <= '1';	-- next
 		wait for 100 ns;
-		BT <= "00000";
+		BTNR <= '1';
 		
       -- insert stimulus here 
 

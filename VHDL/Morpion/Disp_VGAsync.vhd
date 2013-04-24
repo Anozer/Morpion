@@ -40,8 +40,9 @@ end Disp_VGAsync;
 
 architecture Behavioral of Disp_VGAsync is
 
-signal comptX : integer := 0;
-signal comptY : integer := 0;
+subtype coord is integer range 0 to 800;
+signal comptX : coord := 0;
+signal comptY : coord := 0;
 signal X : std_logic_vector(9 downto 0);
 signal Y : std_logic_vector(9 downto 0);
 
@@ -50,25 +51,24 @@ begin
 	
 	VRAM_addr <= Y & X;
 
-	process (Clk)
+	process (Clk, Reset)
 	begin 
-		if (Clk'event and Clk='1') then
-			if (Reset = '1') then
-				comptX <= 0;
-				comptY <= 0;
-			else
-				if(CE = '1') then
-					if comptX < 800 then 
-						comptX <= comptX+1;
+		if (Reset = '1') then
+			comptX <= 0;
+			comptY <= 0;
+		elsif (Clk'event and Clk='1') then
+			if(CE = '1') then
+				if comptX < 799 then 
+					comptX <= comptX+1;
+				else 
+					comptX<= 0;
+				end if;
+
+				if comptX=0 then 
+					if comptY<520 then 
+						comptY <= comptY+1;
 					else 
-						comptX<= 0;
-					end if;
-					if comptX=0 then 
-						if comptY<521 then 
-							comptY <= comptY+1;
-						else 
-							comptY <= 0;
-						end if;
+						comptY <= 0;
 					end if;
 				end if;
 			end if;
@@ -114,7 +114,7 @@ begin
 			-- Front Porsh
 			if(comptY < (480 + 10)) then
 				VS <= '1';
-				Y <= (others => '0');
+			Y <= (others => '0');
 			else
 				-- Pulse
 				if(comptY < (480 + 10 + 2)) then

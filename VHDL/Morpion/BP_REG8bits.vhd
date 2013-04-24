@@ -25,14 +25,16 @@ begin
 			Tmp <= "00000000";
 			
 		elsif (Clk'event AND Clk = '1') then
-			if (CE = '1') then	
-				if (CLR = '1') then
+			if (CLR = '1') then
 					Tmp <= "00000000";
-				elsif (Load = '1') then
+			elsif (CE = '1') then	
+				if (Load = '1') then
 					Tmp <= Data_In;
-					
+				else
+					Tmp <= Tmp;
 				end if;
-				
+			else
+				Tmp <= Tmp;
 			end if;
 			
 		end if;

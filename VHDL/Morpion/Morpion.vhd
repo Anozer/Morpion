@@ -19,6 +19,7 @@
 ----------------------------------------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
 -- Uncomment the following library declaration if using
 -- arithmetic functions with Signed or Unsigned values
@@ -30,7 +31,11 @@ use IEEE.STD_LOGIC_1164.ALL;
 --use UNISIM.VComponents.all;
 
 entity Morpion is
-	port (Clk			: IN  STD_LOGIC;			BT				: IN  STD_LOGIC_VECTOR(4 downto 0);
+	port (Clk			: IN  STD_LOGIC;
+			BTNR			: IN  STD_LOGIC;
+			BTNL			: IN  STD_LOGIC;
+			BTND			: IN  STD_LOGIC;
+			BTNS			: IN  STD_LOGIC;
 			VGA_RED		: OUT STD_LOGIC_VECTOR(2 downto 0);
 			VGA_GREEN	: OUT STD_LOGIC_VECTOR(2 downto 0);
 			VGA_BLUE		: OUT STD_LOGIC_VECTOR(1 downto 0);
@@ -109,14 +114,30 @@ architecture Behavioral of Morpion is
 	signal Enable_ram 		: std_logic;
 	signal Enable_bp			: std_logic;
 	signal Enable_disp		: std_logic;
+	signal Cpt_ce				: std_logic_vector(1 downto 0);
 	
 begin
-	Reset <= BT(2);
-	CE <= '1';
+	Reset <= BTND;	
+	
+	process (Clk,Reset) begin
+		if (Reset = '1') then
+			CE <= '0';
+			Cpt_ce <= "00";
+		elsif (Clk'event and Clk = '1') then
+			if (Cpt_ce = "11") then
+				Cpt_ce <= "00";
+				CE <= '1';
+			else
+				Cpt_ce <= Cpt_ce + 1;
+				CE <= '0';
+			end if;
+		end if;
+	end process;
 	
 	-- MUX du bus de données (periph vers cpu)
 	DataBus_p2cpu <=	DataBus_ram2cpu	WHEN Enable_ram = '1' ELSE
-							DataBus_bp2cpu		WHEN Enable_bp = '1';
+							DataBus_bp2cpu		WHEN Enable_bp = '1' ELSE
+							(others => '0');
 	
 	The_CPU : CPU_8bits port map (
 		Reset,
@@ -133,9 +154,9 @@ begin
 		Clk,
 		CE,
 		Reset,
-		BT(1),
-		BT(3),
-		BT(4),
+		BTNR,
+		BTNL,
+		BTNS,
 		Enable_bp,
 		RW,
 		DataBus_bp2cpu

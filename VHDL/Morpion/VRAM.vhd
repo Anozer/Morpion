@@ -33,21 +33,32 @@ entity VRAM is
 end VRAM;
 
 architecture Behavioral of VRAM is
-    type ram_type is array (19 downto 0) of std_logic_vector (7 downto 0);
-    signal VRAM: ram_type := ((others=> (others=>'0')));
+	type ram_type is array (19 downto 0) of std_logic_vector (7 downto 0);
+	signal VRAM: ram_type := (
+		0 => "00000111",
+		1 => "00000111",
+		2 => "00000111",
+		3 => "00000111",
+		5 => "00000111",
+		6 => "00000111",
+		7 => "00000111",
+		8 => "00000111",
+		others=> "11111111");
 begin
 
-process (Clk)
-begin
-   if (Clk'event and Clk = '1') then
-		if (CE = '1') then
-			if (Enable_w = '1') then
-				VRAM (to_integer(unsigned(Addr_w))) <= Data_in;
+	process (Clk)
+	begin
+		if (Clk'event and Clk = '1') then
+			if (CE = '1') then
+				if (Enable_w = '1') then
+					VRAM (to_integer(unsigned(Addr_w))) <= Data_in;
+				end if;
+				Data_out <= VRAM(to_integer(unsigned(Addr_r)));
+			else
+				NULL;
 			end if;
-			Data_out <= VRAM(to_integer(unsigned(Addr_r)));
 		end if;
-	end if;
-end process;
+	end process;
 
 
 end Behavioral;

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="Z:/Dev/VHDL/Morpion/VHDL/Morpion/Disp_VGAsync_testbench_isim_beh.wdb" id="1" type="auto">
+         <top_modules>
+            <top_module name="disp_vgasync_testbench" />
+            <top_module name="numeric_std" />
+            <top_module name="std_logic_1164" />
+            <top_module name="std_logic_arith" />
+            <top_module name="std_logic_unsigned" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <WVObjectSize size="10" />
+   <wvobject fp_name="/disp_vgasync_testbench/clk" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/disp_vgasync_testbench/ce" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">ce</obj_property>
+      <obj_property name="ObjectShortName">ce</obj_property>
+   </wvobject>
+   <wvobject fp_name="/disp_vgasync_testbench/reset" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">reset</obj_property>
+      <obj_property name="ObjectShortName">reset</obj_property>
+   </wvobject>
+   <wvobject fp_name="/disp_vgasync_testbench/hs" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">hs</obj_property>
+      <obj_property name="ObjectShortName">hs</obj_property>
+   </wvobject>
+   <wvobject fp_name="/disp_vgasync_testbench/vs" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">vs</obj_property>
+      <obj_property name="ObjectShortName">vs</obj_property>
+   </wvobject>
+   <wvobject fp_name="/disp_vgasync_testbench/vram_addr" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">vram_addr[19:0]</obj_property>
+      <obj_property name="ObjectShortName">vram_addr[19:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/disp_vgasync_testbench/uut/x" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">x[9:0]</obj_property>
+      <obj_property name="ObjectShortName">x[9:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/disp_vgasync_testbench/uut/y" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">y[9:0]</obj_property>
+      <obj_property name="ObjectShortName">y[9:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/disp_vgasync_testbench/uut/comptx" type="other" db_ref_id="1">
+      <obj_property name="ElementShortName">comptx</obj_property>
+      <obj_property name="ObjectShortName">comptx</obj_property>
+   </wvobject>
+   <wvobject fp_name="/disp_vgasync_testbench/uut/compty" type="other" db_ref_id="1">
+      <obj_property name="ElementShortName">compty</obj_property>
+      <obj_property name="ObjectShortName">compty</obj_property>
+   </wvobject>
+</wave_config>
