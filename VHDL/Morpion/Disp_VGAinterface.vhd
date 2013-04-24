@@ -47,6 +47,7 @@ architecture Behavioral of Disp_VGAinterface is
 		Port (Clk			: in  STD_LOGIC;
 				CE				: in  STD_LOGIC;
 				Reset			: in  STD_LOGIC;
+				IMG			: OUT STD_LOGIC;
 				HS				: OUT STD_LOGIC;
 				VS				: OUT STD_LOGIC;
 				VRAM_addr	: out STD_LOGIC_VECTOR(19 downto 0));
@@ -63,13 +64,16 @@ architecture Behavioral of Disp_VGAinterface is
 	end component;
 	
 	signal VRAM_addrR : std_logic_vector(19 downto 0);
-	
+	signal pixel : std_logic_vector(7 downto 0);
+	signal img : std_logic;
 begin
+	VRAM_dataOut <= pixel WHEN img='1' ELSE "00000000";
 
 	VGA_sync : Disp_VGAsync port map (
 		Clk			=> Clk,
 		CE				=> Ce,
 		Reset			=> Reset,
+		IMG			=> img,
 		HS				=> HS,
 		VS				=> VS,
 		VRAM_addr	=> VRAM_addrR);
@@ -81,7 +85,7 @@ begin
 		Addr_w		=> VRAM_addrW,
 		Addr_r		=> VRAM_addrR,
 		Data_in		=> VRAM_dataIn,
-		Data_out		=> VRAM_dataOut);
+		Data_out		=> pixel);
 
 end Behavioral;
 

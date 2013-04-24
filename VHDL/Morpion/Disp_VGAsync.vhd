@@ -33,6 +33,7 @@ entity Disp_VGAsync is
 	Port (Clk			: in  STD_LOGIC;
 			CE				: in  STD_LOGIC;
 			Reset			: in  STD_LOGIC;
+			IMG			: OUT STD_LOGIC;
 			HS				: OUT STD_LOGIC;
 			VS				: OUT STD_LOGIC;
 			VRAM_addr	: out STD_LOGIC_VECTOR(19 downto 0));
@@ -45,11 +46,14 @@ signal comptX : coord := 0;
 signal comptY : coord := 0;
 signal X : std_logic_vector(9 downto 0);
 signal Y : std_logic_vector(9 downto 0);
+signal img_x : std_logic;
+signal img_y : std_logic;
 
 
 begin
 	
 	VRAM_addr <= Y & X;
+	img <= img_x AND img_y;
 
 	process (Clk, Reset)
 	begin 
@@ -83,7 +87,10 @@ begin
 		if(comptX < 640) then
 			HS <= '1';
 			X <= std_logic_vector(to_unsigned(comptX, 10));
+			img_x <= '1';
 		else
+			img_x <= '0';
+			
 			-- Front Porsh
 			if(comptX < (640 + 16)) then
 				HS <= '1';
@@ -110,7 +117,10 @@ begin
 		if(comptY < 480) then
 			VS <= '1';
 			Y <= std_logic_vector(to_unsigned(comptY, 10));
+			img_y <= '1';
 		else
+			img_y <= '0';
+		
 			-- Front Porsh
 			if(comptY < (480 + 10)) then
 				VS <= '1';

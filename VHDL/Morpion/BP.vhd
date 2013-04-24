@@ -70,9 +70,11 @@ architecture Behavioral of BP is
 	signal RegLoad			: STD_LOGIC;
 	signal Data_fsm2reg	: STD_LOGIC_VECTOR(7 downto 0);
 	signal Data_reg2bus	: STD_LOGIC_VECTOR(7 downto 0);
+	signal Enable_FSM		: STD_LOGIC;
 
 begin
 	DataBus_toCPU <= not(Data_reg2bus);
+	Enable_FSM <= Enable WHEN RW = '0' ELSE '0';
 	
 	BP_FSM_in : BP_FSM port map (
 		Clk,
@@ -81,7 +83,7 @@ begin
 		BP_NEXT,
 		BP_PREV,
 		BP_OK,
-		Enable,
+		Enable_FSM,
 		RegClear,
 		RegLoad,
 		Data_fsm2reg (7 downto 0));

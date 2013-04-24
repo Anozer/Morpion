@@ -82,17 +82,18 @@ architecture Behavioral of Display is
 	signal VRAM_enableW	: STD_LOGIC;
 
 begin
---	VRAM_dataIn <= "00000111" WHEN Player_val(0) = '0' ELSE
---						"00111000";
---	VRAM_addrW(1 downto 0) <= "11";				
---	VRAM_addrW(19 downto 2) <= (others => '0');	
---	VRAM_enableW <= OK_load;
+	VRAM_dataIn <= "00000111" WHEN Player_val(0) = '0' ELSE
+						"00111000";
+	VRAM_addrW <= "00000000000000000000";
+	VRAM_enableW <= OK_load;
 
-	-- Décomposition du pixel en couleurs
+--	 Décomposition du pixel en couleurs
 	VGA_Red		<= VRAM_pixel(2 downto 0);
 	VGA_Green	<= VRAM_pixel(5 downto 3);
 	VGA_Blue		<= VRAM_pixel(7 downto 6);
+
 	
+
 	Disp_Bus_Interface: DISP_BUSINT port map (
 		Clk					=> Clk,
 		CE						=> Ce,

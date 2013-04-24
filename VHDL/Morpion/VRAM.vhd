@@ -33,17 +33,8 @@ entity VRAM is
 end VRAM;
 
 architecture Behavioral of VRAM is
-	type ram_type is array (19 downto 0) of std_logic_vector (7 downto 0);
-	signal VRAM: ram_type := (
-		0 => "00000111",
-		1 => "00000111",
-		2 => "00000111",
-		3 => "00000111",
-		5 => "00000111",
-		6 => "00000111",
-		7 => "00000111",
-		8 => "00000111",
-		others=> "11111111");
+	type ram_type is array ((2**20)-1 downto 0) of std_logic_vector (7 downto 0);
+	signal VRAM: ram_type := (others=> "00000000");
 begin
 
 	process (Clk)
@@ -59,7 +50,6 @@ begin
 			end if;
 		end if;
 	end process;
-
 
 end Behavioral;
 

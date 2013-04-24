@@ -45,6 +45,7 @@ ARCHITECTURE behavior OF Disp_VGAsync_testbench IS
          Clk : IN  std_logic;
          CE : IN  std_logic;
          Reset : IN  std_logic;
+			IMG : OUT  std_logic;
          HS : OUT  std_logic;
          VS : OUT  std_logic;
          VRAM_addr : OUT  std_logic_vector(19 downto 0)
@@ -58,6 +59,7 @@ ARCHITECTURE behavior OF Disp_VGAsync_testbench IS
    signal Reset : std_logic := '0';
 
  	--Outputs
+	signal IMG : std_logic;
    signal HS : std_logic;
    signal VS : std_logic;
    signal VRAM_addr : std_logic_vector(19 downto 0);
@@ -87,6 +89,7 @@ BEGIN
           Clk => Clk,
           CE => CE,
           Reset => Reset,
+			 IMG => IMG,
           HS => HS,
           VS => VS,
           VRAM_addr => VRAM_addr
