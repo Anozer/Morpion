@@ -1,40 +1,3 @@
-----------------------------------------------------------------------------------
--- Company: 
--- Engineer: 
--- 
--- Create Date:    15:16:29 04/19/2013 
--- Design Name: 
--- Module Name:    VRAM - Behavioral 
--- Project Name: 
--- Target Devices: 
--- Tool versions: 
--- Description: 
---
--- Dependencies: 
---
--- Revision: 
--- Revision 0.01 - File Created
--- Additional Comments: 
---
-----------------------------------------------------------------------------------
-library ieee;
-use ieee.std_logic_1164.all;
-use ieee.std_logic_unsigned.all;
-use IEEE.NUMERIC_STD.ALL;
-
-entity VRAM is
-	port (Clk		: in 	std_logic;
-			CE			: in 	std_logic;
-			Enable_w	: in 	std_logic;
-			Addr_w	: in 	std_logic_vector	(18 downto 0);
-			Addr_r	: in 	std_logic_vector	(18 downto 0);
-			Data_in	: in 	std_logic_vector	(7 downto 0);
-			Data_out	: out std_logic_vector	(7 downto 0));
-end VRAM;
-
-architecture Behavioral of VRAM is
-	type ram_type is array ((2**19)-1 downto 0) of std_logic_vector (7 downto 0);
-	signal VRAM: ram_type := (
 		19555 to 19994 => "11111111",
 		20579 to 21018 => "11111111",
 		21603 to 22042 => "11111111",
@@ -1735,23 +1698,3 @@ architecture Behavioral of VRAM is
 		467043 to 467482 => "11111111",
 		468067 to 468506 => "11111111",
 		469091 to 469530 => "11111111",
-		others=> "00111000");
-begin
-
-	process (Clk)
-	begin
-		if (Clk'event and Clk = '1') then
-			if (CE = '1') then
-				if (Enable_w = '1') then
-					VRAM (to_integer(unsigned(Addr_w))) <= Data_in;
-				end if;
-				Data_out <= VRAM(to_integer(unsigned(Addr_r)));
-			else
-				NULL;
-			end if;
-		end if;
-	end process;
-
-end Behavioral;
-
-					

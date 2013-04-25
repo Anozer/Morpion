@@ -60,9 +60,9 @@ addr = sort(addr);
 
 
 % inscriptions dans un fichier
-file = fopen('VRAM_init.vhd','w+');
+file = fopen('vhdl','w+');
 for i=1:j
-    line = sprintf('\t\t%d => x"%X",\n',addr(i),255);
+    line = sprintf('\t%d => x"%X",\n',addr(i),255);
     fwrite(file,line);
 end;
 fclose(file);
@@ -87,24 +87,15 @@ for i=1:j
 end;
 
 
-file = fopen('VRAM_init2.vhd','w+');
 for i=1:a
     line = lines(i,:);
-    
     maxi = max(line);
-    if(maxi == 0)
-        continue;
-    end;
-    
     [mini mini_pos] = min(line);
     if(mini == 0)
-       mini = min(line(1:mini_pos-1));
+       mini = min(line(1:mini_pos-1)
     end;
     
-    data = (sprintf('\t\t%d to %d => "11111111",\n',mini, maxi));
-    fwrite(file,data);
 end;
-fclose(file);
 
 
 % affichage
