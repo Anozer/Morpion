@@ -108,5 +108,5 @@ fclose(file);
 
 
 % affichage
-%figure();
-%imshow(VRAM);
+figure();
+imshow(VRAM);

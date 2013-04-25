@@ -56,8 +56,29 @@ component Disp_ImgGen_GridManager
 			Grid_Player	: OUT STD_LOGIC_VECTOR(8 downto 0));
 end component;
 
+component Disp_ImgGen_ShapeDetermination
+	Port(	Clk			: IN  STD_LOGIC;
+			Rst 			: IN  STD_LOGIC;
+			CE 			: IN  STD_LOGIC;
+			Busy			: IN  STD_LOGIC;
+			Pos_Load		: IN  STD_LOGIC;
+			Ok_Load		: IN  STD_LOGIC;
+			Player		: IN  STD_LOGIC;
+			Ok				: IN  STD_LOGIC_VECTOR(7 downto 0);
+			Pos			: IN  STD_LOGIC_VECTOR(7 downto 0);
+			Grid_State	: IN STD_LOGIC_VECTOR(8 downto 0);
+			Grid_Player	: IN STD_LOGIC_VECTOR(8 downto 0);
+			Shape_Load	: IN STD_LOGIC;
+			Shape_Numb	: IN STD_LOGIC_VECTOR(2 downto 0);
+			Shape_Coord	: IN STD_LOGIC_VECTOR(18 downto 0));
+end component;
+
 signal Grid_state : std_logic_vector(8 downto 0);
 signal Grid_Player : std_logic_vector(8 downto 0);
+signal busy : std_logic;
+signal Shape_Load : std_logic;
+signal Shape_Numb : std_logic_vector(2 downto 0); 
+signal Shape_Coord : std_logic(19 downto 0);
 
 begin
 	VRAM_DataW <= "00000111" WHEN Player_val = '0' ELSE
@@ -66,7 +87,7 @@ begin
 	VRAM_enableW <= OK_load;
 	
 	
-	GridManager : Disp_ImgGen_GridManager 
+	Grid_Manager : Disp_ImgGen_GridManager 
 	port map(
 		Clk			=> Clk,
 		Rst 			=> Reset,
@@ -76,6 +97,23 @@ begin
 		OK				=> OK_val,
 		Grid_State	=> Grid_state,
 		Grid_Player	=> Grid_Player);
+		
+	Shape_Determination : Disp_ImgGen_ShapeDetermination	
+	port map(
+		Clk			=> Clk,
+		Rst			=> Reset,
+		CE				=> CE,
+		Busy			=> busy,
+		Pos_Load		=> Pos_load,
+		Ok_Load		=> OK_load,
+		Player		=> Player_val,
+		Ok				=> Ok_val,
+		Pos			=> Pos_val,
+		Grid_State	=> Grid_state,
+		Grid_Player	=> Grid_player,
+		Shape_Load	=> Shape_Load,
+		Shape_Numb	=> Shape_Numb,
+		Shape_Coord	=> Shape_Coord);
 	
 
 end Behavioral;
