@@ -36,16 +36,17 @@ entity Disp_VGAsync is
 			IMG			: OUT STD_LOGIC;
 			HS				: OUT STD_LOGIC;
 			VS				: OUT STD_LOGIC;
-			VRAM_addr	: out STD_LOGIC_VECTOR(19 downto 0));
+			VRAM_addr	: out STD_LOGIC_VECTOR(18 downto 0));
 end Disp_VGAsync;
 
 architecture Behavioral of Disp_VGAsync is
 
-subtype coord is integer range 0 to 800;
-signal comptX : coord := 0;
-signal comptY : coord := 0;
+subtype coordX is integer range 0 to 800;
+subtype coordY is integer range 0 to 521;
+signal comptX : coordX := 0;
+signal comptY : coordY := 0;
 signal X : std_logic_vector(9 downto 0);
-signal Y : std_logic_vector(9 downto 0);
+signal Y : std_logic_vector(8 downto 0);
 signal img_x : std_logic;
 signal img_y : std_logic;
 
@@ -116,7 +117,7 @@ begin
 		-- Display
 		if(comptY < 480) then
 			VS <= '1';
-			Y <= std_logic_vector(to_unsigned(comptY, 10));
+			Y <= std_logic_vector(to_unsigned(comptY, 9));
 			img_y <= '1';
 		else
 			img_y <= '0';

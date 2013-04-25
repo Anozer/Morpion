@@ -34,7 +34,7 @@ entity Disp_VGAinterface is
 			CE					: in  STD_LOGIC;
 			Reset				: in  STD_LOGIC;
 			VRAM_enableW	: in  STD_LOGIC;
-			VRAM_addrW		: in	STD_LOGIC_VECTOR(19 downto 0);
+			VRAM_addrW		: in	STD_LOGIC_VECTOR(18 downto 0);
 			VRAM_dataIn		: in  STD_LOGIC_VECTOR(7 downto 0);
 			HS					: OUT STD_LOGIC;
 			VS					: OUT STD_LOGIC;
@@ -50,26 +50,27 @@ architecture Behavioral of Disp_VGAinterface is
 				IMG			: OUT STD_LOGIC;
 				HS				: OUT STD_LOGIC;
 				VS				: OUT STD_LOGIC;
-				VRAM_addr	: out STD_LOGIC_VECTOR(19 downto 0));
+				VRAM_addr	: out STD_LOGIC_VECTOR(18 downto 0));
 	end component;
 	
 	component VRAM
-		port (Clk			: in 	std_logic;
-				CE				: in 	std_logic;
-				Enable_w		: in 	std_logic;
-				Addr_w		: in 	std_logic_vector	(19 downto 0);
-				Addr_r		: in 	std_logic_vector	(19 downto 0);
-				Data_in		: in 	std_logic_vector	(7 downto 0);
-				Data_out		: out std_logic_vector	(7 downto 0));
+		port (Clk  		: in 	std_logic;
+			CE  			: in 	std_logic;
+			Enable_w   : in 	std_logic;
+			Addr_w 		: in 	std_logic_vector	(18 downto 0);
+			Addr_r 		: in 	std_logic_vector	(18 downto 0);
+			Data_in   	: in 	std_logic_vector	(7 downto 0);
+			Data_out   : out std_logic_vector	(7 downto 0));
 	end component;
 	
-	signal VRAM_addrR : std_logic_vector(19 downto 0);
+	signal VRAM_addrR : std_logic_vector(18 downto 0);
 	signal pixel : std_logic_vector(7 downto 0);
 	signal img : std_logic;
 begin
 	VRAM_dataOut <= pixel WHEN img='1' ELSE "00000000";
 
-	VGA_sync : Disp_VGAsync port map (
+	VGA_sync : Disp_VGAsync 
+	port map (
 		Clk			=> Clk,
 		CE				=> Ce,
 		Reset			=> Reset,
@@ -77,8 +78,10 @@ begin
 		HS				=> HS,
 		VS				=> VS,
 		VRAM_addr	=> VRAM_addrR);
-		
-	VGA_VRAM : VRAM port map (
+	
+
+	VGA_VRAM : VRAM 
+	port map (
 		Clk			=> Clk,
 		CE				=> Ce,
 		Enable_w		=> VRAM_enableW,

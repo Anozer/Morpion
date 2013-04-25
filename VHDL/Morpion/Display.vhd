@@ -64,7 +64,7 @@ architecture Behavioral of Display is
 				CE					: in  STD_LOGIC;
 				Reset				: in  STD_LOGIC;
 				VRAM_enableW	: in  STD_LOGIC;
-				VRAM_addrW		: in	STD_LOGIC_VECTOR(19 downto 0);
+				VRAM_addrW		: in	STD_LOGIC_VECTOR(18 downto 0);
 				VRAM_dataIn		: in  STD_LOGIC_VECTOR(7 downto 0);
 				HS					: OUT STD_LOGIC;
 				VS					: OUT STD_LOGIC;
@@ -76,7 +76,7 @@ architecture Behavioral of Display is
 	signal Pos_val			: STD_LOGIC_VECTOR(7 downto 0);
 	signal OK_Load			: STD_LOGIC;
 	signal Pos_Load		: STD_LOGIC;
-	signal VRAM_addrW		: STD_LOGIC_VECTOR(19 downto 0);
+	signal VRAM_addrW		: STD_LOGIC_VECTOR(18 downto 0);
 	signal VRAM_dataIn	: STD_LOGIC_VECTOR(7 downto 0);
 	signal VRAM_pixel		: STD_LOGIC_VECTOR(7 downto 0);
 	signal VRAM_enableW	: STD_LOGIC;
@@ -84,7 +84,7 @@ architecture Behavioral of Display is
 begin
 	VRAM_dataIn <= "00000111" WHEN Player_val(0) = '0' ELSE
 						"00111000";
-	VRAM_addrW <= "00000000000000000000";
+	VRAM_addrW <= "0000000000000000000";
 	VRAM_enableW <= OK_load;
 
 --	 Décomposition du pixel en couleurs
