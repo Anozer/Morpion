@@ -45,11 +45,38 @@ end Disp_ImgGen;
 
 architecture Behavioral of Disp_ImgGen is
 
+component Disp_ImgGen_GridManager
+	Port(	Clk			: IN  STD_LOGIC;
+			Rst 			: IN  STD_LOGIC;
+         CE 			: IN  STD_LOGIC;
+			Ok_Load		: IN  STD_LOGIC;
+			Player		: IN  STD_LOGIC;
+			OK				: IN  STD_LOGIC_VECTOR(7 downto 0);
+			Grid_State	: OUT STD_LOGIC_VECTOR(8 downto 0);
+			Grid_Player	: OUT STD_LOGIC_VECTOR(8 downto 0));
+end component;
+
+signal Grid_state : std_logic_vector(8 downto 0);
+signal Grid_Player : std_logic_vector(8 downto 0);
+
 begin
 	VRAM_DataW <= "00000111" WHEN Player_val = '0' ELSE
 						"00111000";
 	VRAM_addrW <= "0000000100000000010";
 	VRAM_enableW <= OK_load;
+	
+	
+	GridManager : Disp_ImgGen_GridManager 
+	port map(
+		Clk			=> Clk,
+		Rst 			=> Reset,
+		CE 			=> Ce,
+		Ok_Load		=> Ok_load,
+		Player		=> Player_val,
+		OK				=> OK_val,
+		Grid_State	=> Grid_state,
+		Grid_Player	=> Grid_Player);
+	
 
 end Behavioral;
 
