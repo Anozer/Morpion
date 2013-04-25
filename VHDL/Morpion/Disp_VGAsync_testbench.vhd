@@ -48,7 +48,7 @@ ARCHITECTURE behavior OF Disp_VGAsync_testbench IS
 			IMG : OUT  std_logic;
          HS : OUT  std_logic;
          VS : OUT  std_logic;
-         VRAM_addr : OUT  std_logic_vector(19 downto 0)
+         VRAM_addr : OUT  std_logic_vector(18 downto 0)
         );
     END COMPONENT;
     
@@ -62,7 +62,7 @@ ARCHITECTURE behavior OF Disp_VGAsync_testbench IS
 	signal IMG : std_logic;
    signal HS : std_logic;
    signal VS : std_logic;
-   signal VRAM_addr : std_logic_vector(19 downto 0);
+   signal VRAM_addr : std_logic_vector(18 downto 0);
 
    -- Clock period definitions
    constant Clk_period : time := 10 ns;
