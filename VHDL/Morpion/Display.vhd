@@ -59,6 +59,21 @@ architecture Behavioral of Display is
 				Pos_Load				: out STD_LOGIC);
 	end component;
 	
+	
+	component Disp_ImgGen
+	port (Clk				: IN  STD_LOGIC;
+			Ce					: IN  STD_LOGIC;
+			Reset				: IN  STD_LOGIC;
+			Pos_load			: IN  STD_LOGIC;
+			Ok_load			: IN  STD_LOGIC;
+			Pos_val			: IN  STD_LOGIC_VECTOR(7 downto 0);
+			Ok_val			: IN  STD_LOGIC_VECTOR(7 downto 0);
+			Player_val		: IN  STD_LOGIC;
+			VRAM_AddrW		: OUT STD_LOGIC_VECTOR(18 downto 0);
+			VRAM_DataW		: OUT STD_LOGIC_VECTOR(7 downto 0);
+			VRAM_EnableW	: OUT STD_LOGIC);
+	end component;
+	
 	component Disp_VGAinterface
 		Port (Clk				: in  STD_LOGIC;
 				CE					: in  STD_LOGIC;
@@ -71,6 +86,7 @@ architecture Behavioral of Display is
 				VRAM_dataOut	: OUT STD_LOGIC_VECTOR(7 downto 0));
 	end component;
 	
+	
 	signal Player_val 	: STD_LOGIC_VECTOR(7 downto 0);
 	signal OK_val 			: STD_LOGIC_VECTOR(7 downto 0);
 	signal Pos_val			: STD_LOGIC_VECTOR(7 downto 0);
@@ -82,12 +98,8 @@ architecture Behavioral of Display is
 	signal VRAM_enableW	: STD_LOGIC;
 
 begin
-	VRAM_dataIn <= "00000111" WHEN Player_val(0) = '0' ELSE
-						"00111000";
-	VRAM_addrW <= "0000000000000000000";
-	VRAM_enableW <= OK_load;
 
---	 Décomposition du pixel en couleurs
+	--	 Décomposition du pixel en couleurs
 	VGA_Red		<= VRAM_pixel(2 downto 0);
 	VGA_Green	<= VRAM_pixel(5 downto 3);
 	VGA_Blue		<= VRAM_pixel(7 downto 6);
@@ -107,6 +119,20 @@ begin
 		Pos_Out				=> Pos_val,
 		OK_Load				=> OK_Load,
 		Pos_Load				=> Pos_Load);
+		
+		
+	Disp_Img_Generation: Disp_ImgGen port map(
+		Clk				=> CLK,
+		Ce					=> Ce,
+		Reset				=> Reset,
+		Pos_load			=>	Pos_load,
+		Ok_load			=>	OK_load,
+		Pos_val			=> Pos_val,
+		Ok_val			=> OK_val,
+		Player_val		=> Player_val(0),
+		VRAM_AddrW		=> VRAM_addrW,
+		VRAM_DataW		=> VRAM_dataIn,
+		VRAM_EnableW	=> VRAM_enableW);
 	
 	Disp_VGA_Interface : Disp_VGAinterface port map (
 		Clk				=> Clk,

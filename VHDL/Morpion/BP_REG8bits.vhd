@@ -14,34 +14,26 @@ end BP_REG8bits;
 
 architecture Behavioral of BP_REG8bits is
 
-signal Tmp : std_logic_vector (7 downto 0);
-
 begin
 
 	process (Clk,Rst)
 	begin
 		
 		if (Rst = '1') then
-			Tmp <= "00000000";
+			Data_out <= "00000000";
 			
 		elsif (Clk'event AND Clk = '1') then
 			if (CLR = '1') then
-					Tmp <= "00000000";
+					Data_out <= "00000000";
 			elsif (CE = '1') then	
 				if (Load = '1') then
-					Tmp <= Data_In;
-				else
-					Tmp <= Tmp;
+					Data_out <= Data_In;
 				end if;
-			else
-				Tmp <= Tmp;
 			end if;
 			
 		end if;
 		
 	end process;
-	
-	Data_out <= Tmp;
 
 end Behavioral;
 

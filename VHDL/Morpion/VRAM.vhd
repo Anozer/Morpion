@@ -23,13 +23,13 @@ use ieee.std_logic_unsigned.all;
 use IEEE.NUMERIC_STD.ALL;
 
 entity VRAM is
-	port (Clk  		: in 	std_logic;
-		CE  			: in 	std_logic;
-		Enable_w   : in 	std_logic;
-		Addr_w 		: in 	std_logic_vector	(18 downto 0);
-		Addr_r 		: in 	std_logic_vector	(18 downto 0);
-		Data_in   	: in 	std_logic_vector	(7 downto 0);
-		Data_out   : out std_logic_vector	(7 downto 0));
+	port (Clk		: in 	std_logic;
+			CE			: in 	std_logic;
+			Enable_w	: in 	std_logic;
+			Addr_w	: in 	std_logic_vector	(18 downto 0);
+			Addr_r	: in 	std_logic_vector	(18 downto 0);
+			Data_in	: in 	std_logic_vector	(7 downto 0);
+			Data_out	: out std_logic_vector	(7 downto 0));
 end VRAM;
 
 architecture Behavioral of VRAM is
