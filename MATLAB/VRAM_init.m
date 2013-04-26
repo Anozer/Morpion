@@ -6,9 +6,10 @@ clc
 
 
 % configs
-nb_X = 640;
-nb_Y = 480;
-cell_width = 140;
+echelle = 2;
+nb_X = 640/echelle;
+nb_Y = 480/echelle;
+cell_width = 140/echelle;
 border_width = 5;
 
 
