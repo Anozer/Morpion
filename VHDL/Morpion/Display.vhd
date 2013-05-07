@@ -103,7 +103,6 @@ begin
 	VGA_Red		<= VRAM_pixel(2 downto 0);
 	VGA_Green	<= VRAM_pixel(5 downto 3);
 	VGA_Blue		<= VRAM_pixel(7 downto 6);
-
 	
 
 	Disp_Bus_Interface: DISP_BUSINT port map (

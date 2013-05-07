@@ -41,13 +41,13 @@ y4 = y3+cell_width+border_width;
 
 disp(sprintf('1:%s',coord2addr(x1+border_width,y1+border_width,'bin')));
 disp(sprintf('2:%s',coord2addr(x1+border_width,y2+border_width,'bin')));
-disp(sprintf('3:%s',coord2addr(x1+border_width,y3+border_width,'bin')));
-disp(sprintf('4:%s',coord2addr(x2+border_width,y1+border_width,'bin')));
-disp(sprintf('5:%s',coord2addr(x2+border_width,y2+border_width,'bin')));
-disp(sprintf('6:%s',coord2addr(x2+border_width,y3+border_width,'bin')));
-disp(sprintf('7:%s',coord2addr(x3+border_width,y1+border_width,'bin')));
-disp(sprintf('8:%s',coord2addr(x3+border_width,y2+border_width,'bin')));
-disp(sprintf('9:%s',coord2addr(x3+border_width,y3+border_width,'bin')));
+disp(sprintf('3:%d',coord2addr(x1+border_width,y3+border_width,'bin')));
+disp(sprintf('4:%d',coord2addr(x2+border_width,y1+border_width,'bin')));
+disp(sprintf('5:%d',coord2addr(x2+border_width,y2+border_width,'bin')));
+disp(sprintf('6:%d',coord2addr(x2+border_width,y3+border_width,'bin')));
+disp(sprintf('7:%d',coord2addr(x3+border_width,y1+border_width,'bin')));
+disp(sprintf('8:%d',coord2addr(x3+border_width,y2+border_width,'bin')));
+disp(sprintf('9:%d',coord2addr(x3+border_width,y3+border_width,'bin')));
 
 % init
 VRAM = zeros(nb_Y,nb_X);

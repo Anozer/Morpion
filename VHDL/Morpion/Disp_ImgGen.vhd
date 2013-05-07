@@ -66,11 +66,11 @@ component Disp_ImgGen_ShapeDetermination
 			Player		: IN  STD_LOGIC;
 			Ok				: IN  STD_LOGIC_VECTOR(7 downto 0);
 			Pos			: IN  STD_LOGIC_VECTOR(7 downto 0);
-			Grid_State	: IN STD_LOGIC_VECTOR(8 downto 0);
-			Grid_Player	: IN STD_LOGIC_VECTOR(8 downto 0);
-			Shape_Load	: IN STD_LOGIC;
-			Shape_Numb	: IN STD_LOGIC_VECTOR(2 downto 0);
-			Shape_Coord	: IN STD_LOGIC_VECTOR(18 downto 0));
+			Grid_State	: IN  STD_LOGIC_VECTOR(8 downto 0);
+			Grid_Player	: IN  STD_LOGIC_VECTOR(8 downto 0);
+			Shape_Load	: OUT STD_LOGIC;
+			Shape_Numb	: OUT STD_LOGIC_VECTOR(2 downto 0);
+			Shape_Coord	: OUT STD_LOGIC_VECTOR(18 downto 0));
 end component;
 
 signal Grid_state : std_logic_vector(8 downto 0);
@@ -81,11 +81,12 @@ signal Shape_Numb : std_logic_vector(2 downto 0);
 signal Shape_Coord : std_logic_vector(18 downto 0);
 
 begin
-	VRAM_DataW <= "00000111" WHEN Player_val = '0' ELSE
-						"00111000";
-	VRAM_addrW <= "0000000100000000010";
-	VRAM_enableW <= OK_load;
+	VRAM_DataW <= "11000111" WHEN Player_val = '0' ELSE
+						"11111000";
+	VRAM_addrW <= Shape_Coord;
+	VRAM_enableW <= pos_load;
 	
+	busy <= '0';
 	
 	Grid_Manager : Disp_ImgGen_GridManager 
 	port map(

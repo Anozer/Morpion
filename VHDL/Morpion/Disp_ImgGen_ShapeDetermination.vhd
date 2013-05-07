@@ -77,7 +77,7 @@ begin
 	begin
 	
 		if (Rst = '1') then 
-				etat_present <= START;	-- En cas de reset, initialisation état A
+				etat_present <= START;	-- En cas de reset, initialisation état START
 
 		elsif (Clk'event and Clk = '1') then
 			
@@ -137,55 +137,61 @@ begin
 				Shape_load			<= '0';
 				Shape_Numb			<= "000";
 				Shape_Coord			<= (others => '0');
-				sig_oldPos			<= "00000";
-				sig_newPos			<= "00000";
-				sig_geneNewPos		<= '0';
+--				sig_oldPos			<= "00000";
+--				sig_newPos			<= "00000";
+--				sig_geneNewPos		<= '0';
+				
 			WHEN WAIT_CHANGE 		=>
 				Shape_load			<= '0';
 				Shape_Numb			<= "000";
 				Shape_Coord			<= (others => '0');
-				sig_oldPos			<= sig_oldPos;
-				sig_newPos			<= sig_newPos;
-				sig_geneNewPos		<= sig_geneNewPos;
+--				sig_oldPos			<= sig_oldPos;
+--				sig_newPos			<= sig_newPos;
+--				sig_geneNewPos		<= sig_geneNewPos;
+				
 			WHEN NEW_OK				=>
 				Shape_load			<= '1';
 				Shape_Numb			<= "10" & Player;
 				Shape_Coord			<= coord(to_integer(unsigned(OK)));
-				sig_oldPos			<= sig_oldPos;
-				sig_newPos			<= sig_newPos;
-				sig_geneNewPos		<= sig_geneNewPos;
+--				sig_oldPos			<= sig_oldPos;
+--				sig_newPos			<= sig_newPos;
+--				sig_geneNewPos		<= sig_geneNewPos;
+				
 			WHEN NEW_POS			=>
 				Shape_load			<= '1';
 				Shape_Numb			<=	Grid_state(to_integer(unsigned(sig_newPos))) 
 											& NOT(Grid_state(to_integer(unsigned(sig_newPos)))) 
 											& (NOT(Grid_state(to_integer(unsigned(sig_newPos)))) OR Grid_Player(to_integer(unsigned(sig_newPos))));
 				Shape_Coord			<= coord(to_integer(unsigned(sig_newPos)));
-				sig_oldPos			<= sig_newPos;
-				sig_newPos			<= sig_newPos;
-				sig_geneNewPos		<= '0';
+--				sig_oldPos			<= sig_newPos;
+--				sig_newPos			<= sig_newPos;
+--				sig_geneNewPos		<= '0';
+				
 			WHEN OLD_POS			=>
 				Shape_load			<= '1';
 				Shape_Numb			<=	'0' 
 											& Grid_state(to_integer(unsigned(sig_oldPos))) 
 											& (Grid_state(to_integer(unsigned(sig_oldPos))) AND Grid_player(to_integer(unsigned(sig_oldPos))));
 				Shape_Coord			<= coord(to_integer(unsigned(sig_oldPos)));
-				sig_oldPos			<= sig_OldPos;
-				sig_newPos			<= Pos(4 downto 0);
-				sig_geneNewPos		<= '1';
+--				sig_oldPos			<= sig_OldPos;
+--				sig_newPos			<= Pos(4 downto 0);
+--				sig_geneNewPos		<= '1';
+				
 			WHEN WAIT_BUSY			=>
 				Shape_load			<= '0';
 				Shape_Numb			<= "000";
 				Shape_Coord			<= (others => '0');
-				sig_oldPos			<= sig_oldPos;
-				sig_newPos			<= sig_newPos;
-				sig_geneNewPos		<= sig_geneNewPos;
+--				sig_oldPos			<= sig_oldPos;
+--				sig_newPos			<= sig_newPos;
+--				sig_geneNewPos		<= sig_geneNewPos;
+				
 			WhEN OTHERS				=>
 				Shape_load			<= '0';
 				Shape_Numb			<= "000";
 				Shape_Coord			<= (others => '0');
-				sig_oldPos			<= "00000";
-				sig_newPos			<= "00000";
-				sig_geneNewPos		<= '0';
+--				sig_oldPos			<= "00000";
+--				sig_newPos			<= "00000";
+--				sig_geneNewPos		<= '0';
 		END CASE;
 	end process;
 	

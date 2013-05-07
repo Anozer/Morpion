@@ -103,7 +103,6 @@ architecture Behavioral of Morpion is
 
 
 	signal Reset				: std_logic;
-	signal CE					: std_logic;
 	signal DataBus_cpu2p		: std_logic_vector(7 downto 0);
 	signal DataBus_p2cpu		: std_logic_vector(7 downto 0);
 	signal DataBus_bp2cpu	: std_logic_vector(7 downto 0); 
@@ -114,25 +113,42 @@ architecture Behavioral of Morpion is
 	signal Enable_ram 		: std_logic;
 	signal Enable_bp			: std_logic;
 	signal Enable_disp		: std_logic;
-	signal Cpt_ce				: std_logic_vector(1 downto 0);
+	
+	signal Cpt_ce				: std_logic_vector(14 downto 0);
+	signal CE_25M				: std_logic;
+	signal CE_3K				: std_logic;
 	
 begin
 	Reset <= BTND;	
 	
+	-- Compteur pour tous les CE
 	process (Clk,Reset) begin
 		if (Reset = '1') then
-			CE <= '0';
-			Cpt_ce <= "00";
+			Cpt_ce <= (others => '0');
 		elsif (Clk'event and Clk = '1') then
-			if (Cpt_ce = "11") then
-				Cpt_ce <= "00";
-				CE <= '1';
-			else
-				Cpt_ce <= Cpt_ce + 1;
-				CE <= '0';
-			end if;
+			Cpt_ce <= Cpt_ce + 1;
 		end if;
 	end process;
+	
+	-- Division par 4 : 100 MHz -> 25 MHz
+	process (Cpt_ce) begin
+		if (Cpt_ce(1 downto 0) = "11") then
+			CE_25M <= '1';
+		else
+			CE_25M <= '0';
+		end if;
+	end process;
+	
+	-- Division par 2^15 : 100 MHz -> 3.052 KHz
+	process (Cpt_ce) begin
+		if (Cpt_ce(14 downto 0) = (2**15)-1) then
+			CE_3K <= '1';
+		else
+			CE_3K <= '0';
+		end if;
+	end process;
+	
+	
 	
 	-- MUX du bus de données (periph vers cpu)
 	DataBus_p2cpu <=	DataBus_ram2cpu	WHEN Enable_ram = '1' ELSE
@@ -142,7 +158,7 @@ begin
 	The_CPU : CPU_8bits port map (
 		Reset,
 		Clk,
-		CE,
+		CE_3K,
 		DataBus_p2cpu,
 		DataBus_cpu2p,
 		AddrBus,
@@ -152,7 +168,7 @@ begin
 	
 	The_BP : BP port map (
 		Clk,
-		CE,
+		CE_3K,
 		Reset,
 		BTNR,
 		BTNL,
@@ -176,13 +192,13 @@ begin
 		RW,
 		Enable_ram,
 		Clk,
-		CE,
+		CE_3K,
 		DataBus_ram2cpu
 	);
 	
 	The_display : Display port map (
 		Clk,
-		CE,
+		CE_25M,
 		Reset,
 		Enable_disp,
 		RW,
