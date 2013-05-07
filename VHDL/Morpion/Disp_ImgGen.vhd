@@ -78,7 +78,7 @@ signal Grid_Player : std_logic_vector(8 downto 0);
 signal busy : std_logic;
 signal Shape_Load : std_logic;
 signal Shape_Numb : std_logic_vector(2 downto 0); 
-signal Shape_Coord : std_logic(19 downto 0);
+signal Shape_Coord : std_logic_vector(18 downto 0);
 
 begin
 	VRAM_DataW <= "00000111" WHEN Player_val = '0' ELSE
