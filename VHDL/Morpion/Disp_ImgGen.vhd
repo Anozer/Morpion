@@ -73,6 +73,20 @@ component Disp_ImgGen_ShapeDetermination
 			Shape_Coord	: OUT STD_LOGIC_VECTOR(18 downto 0));
 end component;
 
+
+component Disp_ImgGen_ShapeGenerator
+	port (
+		Clk			: IN  STD_LOGIC;
+		Reset			: IN  STD_LOGIC;
+		Ce				: IN  STD_LOGIC;
+		Shape_Load	: IN  STD_LOGIC;
+		Shape_Numb	: IN  STD_LOGIC_VECTOR(2  downto 0);
+		Shape_Coord	: IN  STD_LOGIC_VECTOR(18 downto 0);
+		VRAM_data	: OUT	STD_LOGIC_VECTOR(7  downto 0);
+		VRAM_addr	: OUT STD_LOGIC_VECTOR(18 downto 0);
+		VRAM_enable	: OUT STD_LOGIC);
+end component;
+
 signal Grid_state : std_logic_vector(8 downto 0);
 signal Grid_Player : std_logic_vector(8 downto 0);
 signal busy : std_logic;
@@ -81,12 +95,9 @@ signal Shape_Numb : std_logic_vector(2 downto 0);
 signal Shape_Coord : std_logic_vector(18 downto 0);
 
 begin
-	VRAM_DataW <=	"11000111" WHEN Player_val = '0' ELSE
-						"11111000";
-	VRAM_addrW <= Shape_Coord;
-	VRAM_enableW <= pos_load OR ok_load;
+
 	
-	busy <= '0';
+	VRAM_EnableW <= Busy;
 	
 	Grid_Manager : Disp_ImgGen_GridManager 
 	port map(
@@ -115,6 +126,19 @@ begin
 		Shape_Load	=> Shape_Load,
 		Shape_Numb	=> Shape_Numb,
 		Shape_Coord	=> Shape_Coord);
+		
+		
+	Shape_Generator : Disp_ImgGen_ShapeGenerator
+	port map(
+		Clk			=> Clk,
+		Reset			=> Reset,
+		Ce				=> Ce,
+		Shape_Load	=> Shape_Load,
+		Shape_Numb	=> Shape_Numb,
+		Shape_Coord	=> Shape_Coord,
+		VRAM_data	=> VRAM_DataW,
+		VRAM_addr	=> VRAM_AddrW,
+		VRAM_enable	=> Busy);
 	
 
 end Behavioral;
