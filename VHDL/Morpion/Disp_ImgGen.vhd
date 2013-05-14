@@ -81,10 +81,10 @@ signal Shape_Numb : std_logic_vector(2 downto 0);
 signal Shape_Coord : std_logic_vector(18 downto 0);
 
 begin
-	VRAM_DataW <= "11000111" WHEN Player_val = '0' ELSE
+	VRAM_DataW <=	"11000111" WHEN Player_val = '0' ELSE
 						"11111000";
 	VRAM_addrW <= Shape_Coord;
-	VRAM_enableW <= pos_load;
+	VRAM_enableW <= pos_load OR ok_load;
 	
 	busy <= '0';
 	

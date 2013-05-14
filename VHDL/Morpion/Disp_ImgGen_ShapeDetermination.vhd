@@ -51,24 +51,23 @@ end Disp_ImgGen_ShapeDetermination;
 architecture Behavioral of Disp_ImgGen_ShapeDetermination is
 
 -- Types et signaux correspondant aux états de la FSM
-type etats is (START, WAIT_CHANGE, NEW_OK, NEW_POS, OLD_POS, WAIT_BUSY);
+type etats is (START, WAIT_CHANGE, NEW_OK, NEW_POS, OLD_POS, WAIT_BUSY_OLD, WAIT_BUSY);
 signal etat_present		:etats := START;
 signal etat_futur			:etats := START;
-signal sig_NewPos			: std_logic_vector(4 downto 0) := "00000";
-signal sig_OldPos			: std_logic_vector(4 downto 0) := "00000";
-signal sig_geneNewPos	: std_logic := '0';
+signal sig_OldPos			: std_logic_vector(7 downto 0) := "00000000";
 
 type cells_coord is array (0 to 8) of std_logic_vector(18 downto 0);
 constant coord : cells_coord := (
-	0 => "0000110000001101000",	-- x105 y25
-	1 => "0000110000011111001",	-- x250 y25
-	2 => "0000110000110001010",	-- x395 y25
-	3 => "0101010010001101000",	-- x105 y170
-	4 => "0101010010011111001",	-- x250 y170
-	5 => "0101010010110001010",	-- x395 y170
-	6 => "1001110100001101000",	-- x105 y315
-	7 => "1001110100011111001",	-- x250 y315
-	8 => "1001110100110001010");	-- x395 y315
+	0 => "0000010100000001010",	-- x11 y11
+	1 => "0000010100000101001",	-- x42 y11
+	2 => "0000010100001001000",	-- x73 y11
+	3 => "0001010010000001010",	-- x11 y42
+	4 => "0001010010000101001",	-- x42 y42
+	5 => "0001010010001001000",	-- x73 y42
+	6 => "0010010000000001010",	-- x11 y73
+	7 => "0010010000000101001",	-- x42 y73
+	8 => "0010010000001001000"		-- x73 y73
+);
 
 begin
 
@@ -92,7 +91,7 @@ begin
 	end process;
 	
 	-- Definition des etats futurs en fonction de la FSM	
-	process (etat_present, Pos_Load, Ok_Load, sig_geneNewPos, Busy )
+	process (etat_present, Pos_Load, Ok_Load, Busy )
 	begin
 		CASE etat_present IS
 			WHEN START 			=>	
@@ -103,20 +102,25 @@ begin
 					etat_futur <= NEW_OK;
 				elsif (Pos_Load = '1') then
 					etat_futur <= OLD_POS;
-				elsif (sig_geneNewPos = '1') then
-					etat_futur <= NEW_POS;
 				else
 					etat_futur <= WAIT_CHANGE;
 				end if;
 				
 			WHEN NEW_OK			=>
 				etat_futur <= WAIT_BUSY;
+				
+			WHEN OLD_POS		=>
+				etat_futur <= WAIT_BUSY_OLD;
 			
 			WHEN NEW_POS		=>
 				etat_futur <= WAIT_BUSY;
-				
-			WHEN OLD_POS		=>
-				etat_futur <= WAIT_BUSY;
+			
+			WHEN WAIT_BUSY_OLD =>
+				if (busy = '0') then
+					etat_futur <= NEW_POS;
+				else
+					etat_futur <= WAIT_BUSY_OLD;
+				end if;
 				
 			WHEN WAIT_BUSY		=>
 				if (busy = '0') then
@@ -130,68 +134,60 @@ begin
 		END CASE;
 	end process;
 	
-	process (etat_present, sig_oldPos, sig_newPos, sig_geneNewPos, grid_state, grid_player, pos, OK, player)
+	process (etat_present, sig_oldPos, grid_state, grid_player, pos, OK, player)
 	begin
 		CASE etat_present IS
 			WHEN START 				=>	
 				Shape_load			<= '0';
 				Shape_Numb			<= "000";
 				Shape_Coord			<= (others => '0');
---				sig_oldPos			<= "00000";
---				sig_newPos			<= "00000";
---				sig_geneNewPos		<= '0';
+				sig_oldPos			<= "00000000";
 				
 			WHEN WAIT_CHANGE 		=>
 				Shape_load			<= '0';
 				Shape_Numb			<= "000";
 				Shape_Coord			<= (others => '0');
---				sig_oldPos			<= sig_oldPos;
---				sig_newPos			<= sig_newPos;
---				sig_geneNewPos		<= sig_geneNewPos;
+				sig_oldPos			<= sig_oldPos;
 				
 			WHEN NEW_OK				=>
 				Shape_load			<= '1';
 				Shape_Numb			<= "10" & Player;
 				Shape_Coord			<= coord(to_integer(unsigned(OK)));
---				sig_oldPos			<= sig_oldPos;
---				sig_newPos			<= sig_newPos;
---				sig_geneNewPos		<= sig_geneNewPos;
+				sig_oldPos			<= sig_oldPos;
 				
 			WHEN NEW_POS			=>
 				Shape_load			<= '1';
-				Shape_Numb			<=	Grid_state(to_integer(unsigned(sig_newPos))) 
-											& NOT(Grid_state(to_integer(unsigned(sig_newPos)))) 
-											& (NOT(Grid_state(to_integer(unsigned(sig_newPos)))) OR Grid_Player(to_integer(unsigned(sig_newPos))));
-				Shape_Coord			<= coord(to_integer(unsigned(sig_newPos)));
---				sig_oldPos			<= sig_newPos;
---				sig_newPos			<= sig_newPos;
---				sig_geneNewPos		<= '0';
+				Shape_Numb			<=	Grid_state(to_integer(unsigned(Pos))) 
+											& NOT(Grid_state(to_integer(unsigned(Pos)))) 
+											& (NOT(Grid_state(to_integer(unsigned(Pos)))) OR Grid_Player(to_integer(unsigned(Pos))));
+				Shape_Coord			<= coord(to_integer(unsigned(Pos)));
+				sig_oldPos			<= Pos;
 				
 			WHEN OLD_POS			=>
 				Shape_load			<= '1';
 				Shape_Numb			<=	'0' 
-											& Grid_state(to_integer(unsigned(sig_oldPos))) 
-											& (Grid_state(to_integer(unsigned(sig_oldPos))) AND Grid_player(to_integer(unsigned(sig_oldPos))));
+											& NOT(Grid_state(to_integer(unsigned(sig_oldPos))))
+											& (NOT(Grid_state(to_integer(unsigned(sig_oldPos)))) AND Grid_player(to_integer(unsigned(sig_oldPos))));
 				Shape_Coord			<= coord(to_integer(unsigned(sig_oldPos)));
---				sig_oldPos			<= sig_OldPos;
---				sig_newPos			<= Pos(4 downto 0);
---				sig_geneNewPos		<= '1';
+				sig_oldPos			<= sig_OldPos;
+				
+			WHEN WAIT_BUSY_OLD	=>
+				Shape_load			<= '0';
+				Shape_Numb			<= "000";
+				Shape_Coord			<= (others => '0');
+				sig_oldPos			<= sig_oldPos;
 				
 			WHEN WAIT_BUSY			=>
 				Shape_load			<= '0';
 				Shape_Numb			<= "000";
 				Shape_Coord			<= (others => '0');
---				sig_oldPos			<= sig_oldPos;
---				sig_newPos			<= sig_newPos;
---				sig_geneNewPos		<= sig_geneNewPos;
+				sig_oldPos			<= sig_oldPos;
 				
 			WhEN OTHERS				=>
 				Shape_load			<= '0';
 				Shape_Numb			<= "000";
 				Shape_Coord			<= (others => '0');
---				sig_oldPos			<= "00000";
---				sig_newPos			<= "00000";
---				sig_geneNewPos		<= '0';
+				sig_oldPos			<= "00000000";
 		END CASE;
 	end process;
 	
