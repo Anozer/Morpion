@@ -78,13 +78,13 @@ component ROM_Vide
 		DATA	: OUT STD_LOGIC_VECTOR(7 downto 0));
 end component;
 
---component ROM_Vide_sel
---	port (
---		Clk	: IN  STD_LOGIC;
---		En		: IN  STD_LOGIC;
---		ADDR	: IN  STD_LOGIC_VECTOR(13 downto 0);
---		DATA	: OUT STD_LOGIC_VECTOR(7 downto 0));
---end component;
+component ROM_Vide_sel
+	port (
+		Clk	: IN  STD_LOGIC;
+		En		: IN  STD_LOGIC;
+		ADDR	: IN  STD_LOGIC_VECTOR(13 downto 0);
+		DATA	: OUT STD_LOGIC_VECTOR(7 downto 0));
+end component;
 
 component ROM_O
 	port (
@@ -95,12 +95,12 @@ component ROM_O
 end component;
 
 
---component ROM_O_sel
---port (CLK : in std_logic;
---      EN : in std_logic;
---      ADDR : in std_logic_vector(13 downto 0);
---      DATA : out std_logic_vector(7 downto 0));
---end component;
+component ROM_O_sel
+port (CLK : in std_logic;
+      EN : in std_logic;
+      ADDR : in std_logic_vector(13 downto 0);
+      DATA : out std_logic_vector(7 downto 0));
+end component;
 
 
 component ROM_X
@@ -111,13 +111,13 @@ component ROM_X
 		DATA	: OUT STD_LOGIC_VECTOR(7 downto 0));
 end component;
 
---component ROM_X_sel
---	port (
---		Clk	: IN  STD_LOGIC;
---		En		: IN  STD_LOGIC;
---		ADDR	: IN STD_LOGIC_VECTOR(13 downto 0);
---		DATA	: OUT STD_LOGIC_VECTOR(7 downto 0));
---end component;
+component ROM_X_sel
+	port (
+		Clk	: IN  STD_LOGIC;
+		En		: IN  STD_LOGIC;
+		ADDR	: IN STD_LOGIC_VECTOR(13 downto 0);
+		DATA	: OUT STD_LOGIC_VECTOR(7 downto 0));
+end component;
 
 signal Enable_rom	: STD_LOGIC;
 signal ROM_addr	: STD_LOGIC_VECTOR(13 downto 0);
@@ -152,9 +152,6 @@ begin
 	VRAM_addr <= Y_vram & X_vram;
 	
 	
-	MUX_IN3 <= NOT(MUX_IN2);
-	MUX_IN4 <= NOT(MUX_IN0);
-	MUX_IN5 <= NOT(MUX_IN1);
 	MUX_IN6 <= MUX_IN2;
 	MUX_IN7 <= MUX_IN2;
 	
@@ -208,29 +205,29 @@ begin
 		DATA	=> MUX_IN2
 	);
 	
---	ROM3 : ROM_Vide_Sel
---	port map (
---		Clk	=> Clk,
---		En		=> Enable_rom,
---		ADDR	=> ROM_addr,
---		DATA	=> MUX_IN3
---	);
---	
---	ROM4 : ROM_O_sel 
---	port map (
---		CLK => Clk,
---      EN => Enable_rom,
---      ADDR => Rom_addr,
---      DATA => MUX_IN4
---	);
---	
---	ROM5 : ROM_X_Sel
---	port map (
---		Clk	=> Clk,
---		En		=> Enable_rom,
---		ADDR	=> ROM_addr,
---		DATA	=> MUX_IN5
---	);
+	ROM3 : ROM_Vide_Sel
+	port map (
+		Clk	=> Clk,
+		En		=> Enable_rom,
+		ADDR	=> ROM_addr,
+		DATA	=> MUX_IN3
+	);
+	
+	ROM4 : ROM_O_sel 
+	port map (
+		CLK => Clk,
+      EN => Enable_rom,
+      ADDR => Rom_addr,
+      DATA => MUX_IN4
+	);
+	
+	ROM5 : ROM_X_Sel
+	port map (
+		Clk	=> Clk,
+		En		=> Enable_rom,
+		ADDR	=> ROM_addr,
+		DATA	=> MUX_IN5
+	);
 
 
 end Behavioral;

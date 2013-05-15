@@ -10,21 +10,11 @@ clc
 
 % répertoires source et destination
 path_img = 'IMG_60px';
-path_vhdl = 'VHDL';
-default_ROM = 'VHDL/ROM_default.vhd';
+path_vhdl = 'COE';
 
 % init
 nb_bitsX = 6;
 nb_bitsY = 6;
-
-% tailles des elements VHDL
-rom_addr_tab = ['(2**' num2str(nb_bitsX+nb_bitsY) ')-1 downto 0'];
-rom_addr_size = [num2str(nb_bitsX+nb_bitsY-1) ' downto 0'];
-
-% Récup du VHDL de la rom à compléter
-default_ROM_file = fopen(default_ROM, 'r+');
-default_ROM = fread(default_ROM_file,'*char');
-fclose(default_ROM_file);
 
 % types de fichier à convertir
 types = {'jpg', 'jpeg', 'png', 'bmp', 'gif', 'tiff'};
@@ -41,7 +31,7 @@ for i=1:length(dir_img)
     name = regexprep(img,'(.*)\..+$','$1');
     img_path = [path_img '/' img];
     rom_name = ['ROM_' name];
-    rom_file = [rom_name '.vhd'];
+    rom_file = [rom_name '.coe'];
     rom_path = [path_vhdl '/' rom_file];
     
     % check si l'extension est présente dans la liste
@@ -51,19 +41,11 @@ for i=1:length(dir_img)
      
     % Récup du VHDL
     fprintf('Image:\t%s\nROM:\t%s\n...\n\n',img_path,rom_path);
-    rom_data = img2vhdl(img_path, nb_bitsX, nb_bitsY);
-    
-    % Remplacement de la rom par défaut
-    rom_vhdl = default_ROM';
-    rom_vhdl = regexprep(rom_vhdl,'%ROM_NAME%', rom_name);
-    rom_vhdl = regexprep(rom_vhdl,'%DATAS%', rom_data);
-    rom_vhdl = regexprep(rom_vhdl,'%ROM_ADDR_TAB%', rom_addr_tab);
-    rom_vhdl = regexprep(rom_vhdl,'%ROM_ADDR_SIZE%', rom_addr_size);
-    rom_vhdl = regexprep(rom_vhdl,'%ROM_DATA_SIZE%', '7 downto 0');
+    rom_data = img2coe(img_path, nb_bitsX, nb_bitsY);
     
     % Création du fichier VHDL pour la nouvelle ROM
     rom_file_des = fopen(rom_path, 'w+');
-    fwrite(rom_file_des, rom_vhdl);
+    fwrite(rom_file_des, rom_data);
     fclose(rom_file_des);
 end;
 

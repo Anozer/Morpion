@@ -12,14 +12,15 @@ clc
 % border_width = 1;
 % position = 10; % 'center' ou un nombre
 
-nb_X = 250;
-nb_Y = 250;
-cell_width = 60;
-border_width = 3;
+nb_X = 620;
+nb_Y = 480;
+cell_width = 120;
+border_width = 5;
 position = 'center'; % 'center' ou un nombre
 
-file = 'VHDL/VRAM.vhd';
-file_condensed='VHDL/VRAM.min.vhd';
+file = 'COE/VRAM.coe';
+
+format = '%02X,\n';
 
 
 
@@ -54,6 +55,7 @@ disp(sprintf('8 => "%s"\t\t-- x%d y%d' ,coord2addr(x3+border_width,y3+border_wid
 VRAM = zeros(nb_Y,nb_X);
 j = 0;
 
+all_addr = zeros(1,2^19);
 
 % passage de toutes les cord
 for x=1:nb_X
@@ -75,69 +77,33 @@ for x=1:nb_X
         % détermination des adresses
         if(VRAM(y,x) == 255)
             j = j+1;
-            %addr(j) = bin2dec([dec2bin(y-1,y_ram_sz) dec2bin(x-1,x_ram_sz)]);
-            %disp(sprintf('%d:%s\t%d:%s',y-1, dec2bin(y-1,y_ram_sz), x-1, dec2bin(x-1,x_ram_sz)));
-            addr(j) = coord2addr(x-1,y-1,'dec',8,8);
+            addr = coord2addr(x-1,y-1,'dec',10,9);
+            all_addr(addr) = 255;
         end;
         
     end;
 end;
 
 
-% tri des adresses
-addr = sort(addr);
-
 
 % inscriptions dans un fichier
 file = fopen(file,'w+');
-for i=1:j
-    line = sprintf('\t\t%d => x"%X",\n',addr(i),255);
+
+line = sprintf('memory_initialization_radix=16;\nmemory_initialization_vector=\n');
+fwrite(file,line);
+
+for i=1:(2^19)-1
+    line = sprintf(format,all_addr(i));
     fwrite(file,line);
+    disp(i);
 end;
+
+line = sprintf('%02X;',all_addr(2^19));
+fwrite(file,line);
+disp(i);
+
 fclose(file);
 
-
-% condensé
-a=1;
-old_addr = 0;
-new_addr = 0;
-lines = [];
-for i=1:j
-    new_addr = addr(i);
-    
-    if(new_addr == old_addr+1)
-        b = b+1;
-    else
-        a = a+1;
-        b = 1;
-    end;
-    
-    lines(a,b) = new_addr;
-    
-    old_addr = new_addr;
-end;
-
-disp(sprintf('Taille min de la RAM : %d (2^%d)\n', old_addr, ceil(log2(old_addr))));
-
-% écriture du condensé
-file = fopen(file_condensed,'w+');
-for i=1:a
-    line = lines(i,:);
-    
-    maxi = max(line);
-    if(maxi == 0)
-        continue;
-    end;
-    
-    [mini mini_pos] = min(line);
-    if(mini == 0)
-       mini = min(line(1:mini_pos-1));
-    end;
-    
-    data = (sprintf('\t\t%d to %d => "11111111",\n',mini, maxi));
-    fwrite(file,data);
-end;
-fclose(file);
 
 
 % affichage
