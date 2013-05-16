@@ -9,13 +9,13 @@ clc
 
 
 % répertoires source et destination
-path_img = 'IMG_60px';
+path_img = 'IMG';
 path_vhdl = 'VHDL';
 default_ROM = 'VHDL/ROM_default.vhd';
 
 % init
-nb_bitsX = 6;
-nb_bitsY = 6;
+nb_bitsX = 7;
+nb_bitsY = 7;
 
 % tailles des elements VHDL
 rom_addr_tab = ['(2**' num2str(nb_bitsX+nb_bitsY) ')-1 downto 0'];
@@ -59,7 +59,8 @@ for i=1:length(dir_img)
     rom_vhdl = regexprep(rom_vhdl,'%DATAS%', rom_data);
     rom_vhdl = regexprep(rom_vhdl,'%ROM_ADDR_TAB%', rom_addr_tab);
     rom_vhdl = regexprep(rom_vhdl,'%ROM_ADDR_SIZE%', rom_addr_size);
-    rom_vhdl = regexprep(rom_vhdl,'%ROM_DATA_SIZE%', '7 downto 0');
+    %rom_vhdl = regexprep(rom_vhdl,'%ROM_DATA_TYPE%', 'std_logic_vector(7 downto 0)');
+    rom_vhdl = regexprep(rom_vhdl,'%ROM_DATA_TYPE%', 'std_logic');
     
     % Création du fichier VHDL pour la nouvelle ROM
     rom_file_des = fopen(rom_path, 'w+');

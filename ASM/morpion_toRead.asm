@@ -16,11 +16,11 @@ BPDETECT:
 ;						Position 3 joueur 0
 BT_OK:		
 	LDA POS			;2	accu		= MEM[pos]
-	STA AFF_OK	;1	AFF[val]	= accu
+	STA AFF_OK		;1	AFF[val]	= accu
 	LDA JOUEUR		;2	accu		= MEM[joueur]
-	STA AFF_J		;1	AFF[joueur]	= accu
 	NOT				;1	accu		= !accu
 	STA JOUEUR		;1	MEM[joueur]	= accu
+	STA AFF_J		;1	AFF[joueur]	= accu
 	JCC START		;1	retour
 
 ;						Position 2		Position 8

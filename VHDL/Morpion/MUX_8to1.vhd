@@ -55,8 +55,8 @@ begin
 						Data_In_4 when "100",
 						Data_In_5 when "101",
 						Data_In_6 when "110",
-						Data_In_7 when "111";
-						 
+						Data_In_7 when "111",
+						"00000000" when others;
 						
 end Behavioral;
 

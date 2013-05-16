@@ -59,15 +59,17 @@ architecture Behavioral of Disp_VGAinterface is
 			Enable_w   : in 	std_logic;
 			Addr_w 		: in 	std_logic_vector	(18 downto 0);
 			Addr_r 		: in 	std_logic_vector	(18 downto 0);
-			Data_in   	: in 	std_logic_vector	(7 downto 0);
-			Data_out   : out std_logic_vector	(7 downto 0));
+			Data_in   	: in 	std_logic;
+			Data_out   : out std_logic);
 	end component;
 	
 	signal VRAM_addrR : std_logic_vector(18 downto 0);
-	signal pixel : std_logic_vector(7 downto 0);
+	signal pixel_out : std_logic;
+	signal pixel_in : std_logic;
 	signal img : std_logic;
 begin
-	VRAM_dataOut <= pixel WHEN img='1' ELSE "00000000";
+	VRAM_dataOut <= (others => pixel_out) WHEN img='1' ELSE "00000000";
+	pixel_in <= VRAM_dataIn(0);
 
 	VGA_sync : Disp_VGAsync 
 	port map (
@@ -87,8 +89,8 @@ begin
 		Enable_w		=> VRAM_enableW,
 		Addr_w		=> VRAM_addrW,
 		Addr_r		=> VRAM_addrR,
-		Data_in		=> VRAM_dataIn,
-		Data_out		=> pixel);
+		Data_in		=> pixel_in,
+		Data_out		=> pixel_out);
 
 end Behavioral;
 

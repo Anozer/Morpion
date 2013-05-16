@@ -23,7 +23,7 @@ use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
 -- Uncomment the following library declaration if using
 -- arithmetic functions with Signed or Unsigned values
---use IEEE.NUMERIC_STD.ALL;
+use IEEE.NUMERIC_STD.ALL;
 
 -- Uncomment the following library declaration if instantiating
 -- any Xilinx primitives in this code.
@@ -37,7 +37,7 @@ entity Disp_ImgGen_ShapeGenerator is
 		Ce				: IN  STD_LOGIC;
 		Shape_Load	: IN  STD_LOGIC;
 		Shape_Numb	: IN  STD_LOGIC_VECTOR(2  downto 0);
-		Shape_Coord	: IN  STD_LOGIC_VECTOR(18 downto 0);
+		Area_Numb	: IN  STD_LOGIC_VECTOR(7 downto 0);
 		VRAM_data	: OUT	STD_LOGIC_VECTOR(7  downto 0);
 		VRAM_addr	: OUT STD_LOGIC_VECTOR(18 downto 0);
 		VRAM_enable	: OUT STD_LOGIC);
@@ -75,7 +75,7 @@ component ROM_Vide
 		Clk	: IN  STD_LOGIC;
 		En		: IN  STD_LOGIC;
 		ADDR	: IN  STD_LOGIC_VECTOR(13 downto 0);
-		DATA	: OUT STD_LOGIC_VECTOR(7 downto 0));
+		DATA	: OUT STD_LOGIC);
 end component;
 
 component ROM_Vide_sel
@@ -83,7 +83,7 @@ component ROM_Vide_sel
 		Clk	: IN  STD_LOGIC;
 		En		: IN  STD_LOGIC;
 		ADDR	: IN  STD_LOGIC_VECTOR(13 downto 0);
-		DATA	: OUT STD_LOGIC_VECTOR(7 downto 0));
+		DATA	: OUT STD_LOGIC);
 end component;
 
 component ROM_O
@@ -91,7 +91,7 @@ component ROM_O
 		Clk	: IN  STD_LOGIC;
 		En		: IN  STD_LOGIC;
 		ADDR	: IN  STD_LOGIC_VECTOR(13 downto 0);
-		DATA	: OUT STD_LOGIC_VECTOR(7 downto 0));
+		DATA	: OUT STD_LOGIC);
 end component;
 
 
@@ -99,7 +99,7 @@ component ROM_O_sel
 port (CLK : in std_logic;
       EN : in std_logic;
       ADDR : in std_logic_vector(13 downto 0);
-      DATA : out std_logic_vector(7 downto 0));
+      DATA : out std_logic);
 end component;
 
 
@@ -108,7 +108,7 @@ component ROM_X
 		Clk	: IN  STD_LOGIC;
 		En		: IN  STD_LOGIC;
 		ADDR	: IN  STD_LOGIC_VECTOR(13 downto 0);
-		DATA	: OUT STD_LOGIC_VECTOR(7 downto 0));
+		DATA	: OUT STD_LOGIC);
 end component;
 
 component ROM_X_sel
@@ -116,46 +116,78 @@ component ROM_X_sel
 		Clk	: IN  STD_LOGIC;
 		En		: IN  STD_LOGIC;
 		ADDR	: IN STD_LOGIC_VECTOR(13 downto 0);
-		DATA	: OUT STD_LOGIC_VECTOR(7 downto 0));
+		DATA	: OUT STD_LOGIC);
 end component;
+
+signal sig_ShapeNumb : STD_LOGIC_VECTOR(2 downto 0);
 
 signal Enable_rom	: STD_LOGIC;
 signal ROM_addr	: STD_LOGIC_VECTOR(13 downto 0);
-signal X_rom		: STD_LOGIC_VECTOR(6 downto 0);
-signal Y_rom 		: STD_LOGIC_VECTOR(6 downto 0);
-signal X_vram		: STD_LOGIC_VECTOR(9 downto 0);
-signal Y_vram		: STD_LOGIC_VECTOR(8 downto 0);
+
+signal coord_init	: STD_LOGIC_VECTOR(18 downto 0);
 signal X_init		: STD_LOGIC_VECTOR(9 downto 0);
 signal Y_init		: STD_LOGIC_VECTOR(8 downto 0);
-signal MUX_IN0		: STD_LOGIC_VECTOR(7 downto 0);
-signal MUX_IN1		: STD_LOGIC_VECTOR(7 downto 0);
-signal MUX_IN2		: STD_LOGIC_VECTOR(7 downto 0);
-signal MUX_IN3		: STD_LOGIC_VECTOR(7 downto 0);
-signal MUX_IN4		: STD_LOGIC_VECTOR(7 downto 0);
-signal MUX_IN5		: STD_LOGIC_VECTOR(7 downto 0);
-signal MUX_IN6		: STD_LOGIC_VECTOR(7 downto 0);
-signal MUX_IN7		: STD_LOGIC_VECTOR(7 downto 0);
+signal X_rom		: STD_LOGIC_VECTOR(6 downto 0);
+signal Y_rom		: STD_LOGIC_VECTOR(6 downto 0);
+signal X_vram		: STD_LOGIC_VECTOR(9 downto 0);
+signal Y_vram		: STD_LOGIC_VECTOR(8 downto 0);
 
-begin	
+signal MUX_IN0		: STD_LOGIC;
+signal MUX_IN1		: STD_LOGIC;
+signal MUX_IN2		: STD_LOGIC;
+signal MUX_IN3		: STD_LOGIC;
+signal MUX_IN4		: STD_LOGIC;
+signal MUX_IN5		: STD_LOGIC;
+signal MUX_IN6		: STD_LOGIC;
+signal MUX_IN7		: STD_LOGIC;
+
+type coord_tab is array (8 downto 0) of std_logic_vector(18 downto 0);
+constant Shape_Coord : coord_tab := (
+	0 => "0001101010010000101",	-- x135 y55
+	1 => "0001101010100000010",	-- x260 y55
+	2 => "0001101010101111111",	-- x385 y55
+	3 => "0101100100010000101",	-- x135 y180
+	4 => "0101100100100000010",	-- x260 y180
+	5 => "0101100100101111111",	-- x385 y180
+	6 => "1001011110010000101",	-- x135 y305
+	7 => "1001011110100000010",	-- x260 y305
+	8 => "1001011110101111111"		-- x385 y305
+);
+
+begin		
+
 	VRAM_enable <= Enable_rom;
-
-	-- Coord de la case
-	X_init <= Shape_Coord(9 downto 0);
-	Y_init <= Shape_Coord(18 downto 10);
 	
+	process (Clk, Reset)
+	begin 
+		if (Reset = '1') then
+			Coord_init <= Shape_Coord(0);	
+			sig_ShapeNumb <= "000";
+		elsif (Clk'event and Clk='1') then
+			if(Shape_Load = '1') then
+				Coord_init <= Shape_Coord(to_integer(unsigned(Area_numb)));
+				sig_ShapeNumb <= Shape_Numb;
+			end if;
+		end if;
+	end process;
+	
+	
+	-- Coord de la case
+	X_init <= Coord_init( 9 downto  0);
+	Y_init <= Coord_init(18 downto 10);
+
 	-- Coord de la VRAM = case+rom
-	X_vram <= X_init + X_rom;
-	Y_vram <= Y_init + Y_rom;
+	X_vram <= X_init + ("000" & X_rom);
+	Y_vram <= Y_init +  ("00" & Y_rom);
 	
 	-- Adresses des mémoires
 	ROM_addr  <= Y_rom & X_rom;
 	VRAM_addr <= Y_vram & X_vram;
 	
-	
-	MUX_IN6 <= MUX_IN2;
-	MUX_IN7 <= MUX_IN2;
-	
-	
+
+	MUX_IN1 <= MUX_IN0;
+	MUX_IN5 <= MUX_IN4;
+
 	Compteur : Disp_ImgGen_ShapeGenerator_Cpt
 	port map (
 		Clk		=> Clk,
@@ -169,15 +201,15 @@ begin
 	
 	MUX_ROM2OUT : MUX_8to1
 	Port map ( 
-		Data_In_0	=> MUX_IN0,
-		Data_In_1	=> MUX_IN1, 
-		Data_In_2	=> MUX_IN2,
-		Data_In_3	=> MUX_IN3,
-		Data_In_4	=> MUX_IN4,
-		Data_In_5	=> MUX_IN5,
-		Data_In_6	=> MUX_IN6,
-		Data_In_7	=> MUX_IN7,
-		Channel		=> Shape_Numb,
+		Data_In_0	=> (others => MUX_IN0),
+		Data_In_1	=> (others => MUX_IN1), 
+		Data_In_2	=> (others => MUX_IN2),
+		Data_In_3	=> (others => MUX_IN3),
+		Data_In_4	=> (others => MUX_IN4),
+		Data_In_5	=> (others => MUX_IN5),
+		Data_In_6	=> (others => MUX_IN6),
+		Data_In_7	=> (others => MUX_IN7),
+		Channel		=> sig_ShapeNumb,
 		Data_Out		=> VRAM_data
 	);
 	
@@ -186,7 +218,7 @@ begin
 		Clk	=> Clk,
 		En		=> Enable_rom,
 		ADDR	=> ROM_addr,
-		DATA	=> MUX_IN0
+		DATA	=> MUX_IN2
 	);
 	
 	ROM1 : ROM_X
@@ -194,7 +226,7 @@ begin
 		Clk	=> Clk,
 		En		=> Enable_rom,
 		ADDR	=> ROM_addr,
-		DATA	=> MUX_IN1
+		DATA	=> MUX_IN3
 	);
 	
 	ROM2 : ROM_Vide
@@ -202,7 +234,7 @@ begin
 		Clk	=> Clk,
 		En		=> Enable_rom,
 		ADDR	=> ROM_addr,
-		DATA	=> MUX_IN2
+		DATA	=> MUX_IN0
 	);
 	
 	ROM3 : ROM_Vide_Sel
@@ -210,7 +242,7 @@ begin
 		Clk	=> Clk,
 		En		=> Enable_rom,
 		ADDR	=> ROM_addr,
-		DATA	=> MUX_IN3
+		DATA	=> MUX_IN4
 	);
 	
 	ROM4 : ROM_O_sel 
@@ -218,7 +250,7 @@ begin
 		CLK => Clk,
       EN => Enable_rom,
       ADDR => Rom_addr,
-      DATA => MUX_IN4
+      DATA => MUX_IN6
 	);
 	
 	ROM5 : ROM_X_Sel
@@ -226,7 +258,7 @@ begin
 		Clk	=> Clk,
 		En		=> Enable_rom,
 		ADDR	=> ROM_addr,
-		DATA	=> MUX_IN5
+		DATA	=> MUX_IN7
 	);
 
 

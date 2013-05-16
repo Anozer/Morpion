@@ -7,15 +7,15 @@ entity %ROM_NAME% is
 	port (CLK : in std_logic;
 		  EN : in std_logic;
 		  ADDR : in std_logic_vector(%ROM_ADDR_SIZE%);
-		  DATA : out std_logic_vector(%ROM_DATA_SIZE%));
+		  DATA : out %ROM_DATA_TYPE%);
 end %ROM_NAME%;
 
 architecture Behavioral of %ROM_NAME% is
 
-type zone_memoire is array (%ROM_ADDR_TAB%) of std_logic_vector (%ROM_DATA_SIZE%);
+type zone_memoire is array (%ROM_ADDR_TAB%) of %ROM_DATA_TYPE%;
 constant ROM: zone_memoire := (
 %DATAS%
-	others => (others => '0')
+	others => '0'
 );
 
 begin

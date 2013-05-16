@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="Z:/Dev/VHDL/Morpion/VHDL/Morpion/Morpion_TestBench_isim_beh.wdb" id="1" type="auto">
+         <top_modules>
+            <top_module name="morpion_testbench" />
+            <top_module name="numeric_std" />
+            <top_module name="std_logic_1164" />
+            <top_module name="std_logic_arith" />
+            <top_module name="std_logic_unsigned" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <WVObjectSize size="20" />
+   <wvobject fp_name="/morpion_testbench/clk" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/morpion_testbench/btnr" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">btnr</obj_property>
+      <obj_property name="ObjectShortName">btnr</obj_property>
+   </wvobject>
+   <wvobject fp_name="/morpion_testbench/btnl" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">btnl</obj_property>
+      <obj_property name="ObjectShortName">btnl</obj_property>
+   </wvobject>
+   <wvobject fp_name="/morpion_testbench/btnd" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">btnd</obj_property>
+      <obj_property name="ObjectShortName">btnd</obj_property>
+   </wvobject>
+   <wvobject fp_name="/morpion_testbench/btns" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">btns</obj_property>
+      <obj_property name="ObjectShortName">btns</obj_property>
+   </wvobject>
+   <wvobject fp_name="/morpion_testbench/vga_red" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">vga_red[2:0]</obj_property>
+      <obj_property name="ObjectShortName">vga_red[2:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/morpion_testbench/vga_green" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">vga_green[2:0]</obj_property>
+      <obj_property name="ObjectShortName">vga_green[2:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/morpion_testbench/vga_blue" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">vga_blue[1:0]</obj_property>
+      <obj_property name="ObjectShortName">vga_blue[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/morpion_testbench/vga_hs" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">vga_hs</obj_property>
+      <obj_property name="ObjectShortName">vga_hs</obj_property>
+   </wvobject>
+   <wvobject fp_name="/morpion_testbench/vga_vs" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">vga_vs</obj_property>
+      <obj_property name="ObjectShortName">vga_vs</obj_property>
+   </wvobject>
+   <wvobject fp_name="/morpion_testbench/clk_period" type="other" db_ref_id="1">
+      <obj_property name="ElementShortName">clk_period</obj_property>
+      <obj_property name="ObjectShortName">clk_period</obj_property>
+   </wvobject>
+   <wvobject fp_name="/morpion_testbench/uut/The_display/Disp_Img_Generation/grid_state" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">grid_state[8:0]</obj_property>
+      <obj_property name="ObjectShortName">grid_state[8:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/morpion_testbench/uut/The_display/Disp_Img_Generation/grid_player" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">grid_player[8:0]</obj_property>
+      <obj_property name="ObjectShortName">grid_player[8:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/morpion_testbench/uut/databus_cpu2p" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">databus_cpu2p[7:0]</obj_property>
+      <obj_property name="ObjectShortName">databus_cpu2p[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/morpion_testbench/uut/databus_p2cpu" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">databus_p2cpu[7:0]</obj_property>
+      <obj_property name="ObjectShortName">databus_p2cpu[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/morpion_testbench/uut/databus_bp2cpu" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">databus_bp2cpu[7:0]</obj_property>
+      <obj_property name="ObjectShortName">databus_bp2cpu[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/morpion_testbench/uut/databus_ram2cpu" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">databus_ram2cpu[7:0]</obj_property>
+      <obj_property name="ObjectShortName">databus_ram2cpu[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/morpion_testbench/uut/enable_ram" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">enable_ram</obj_property>
+      <obj_property name="ObjectShortName">enable_ram</obj_property>
+   </wvobject>
+   <wvobject fp_name="/morpion_testbench/uut/enable_bp" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">enable_bp</obj_property>
+      <obj_property name="ObjectShortName">enable_bp</obj_property>
+   </wvobject>
+   <wvobject fp_name="/morpion_testbench/uut/enable_disp" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">enable_disp</obj_property>
+      <obj_property name="ObjectShortName">enable_disp</obj_property>
+   </wvobject>
+</wave_config>

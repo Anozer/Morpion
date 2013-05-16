@@ -38,14 +38,14 @@ entity Disp_ImgGen_ShapeDetermination is
 			Busy			: IN  STD_LOGIC;
 			Pos_Load		: IN  STD_LOGIC;
 			Ok_Load		: IN  STD_LOGIC;
-			Player		: IN  STD_LOGIC;
 			Ok				: IN  STD_LOGIC_VECTOR(7 downto 0);
 			Pos			: IN  STD_LOGIC_VECTOR(7 downto 0);
+			OldPos		: IN  STD_LOGIC_VECTOR(7 downto 0);
 			Grid_State	: IN  STD_LOGIC_VECTOR(8 downto 0);
 			Grid_Player	: IN  STD_LOGIC_VECTOR(8 downto 0);
 			Shape_Load	: OUT STD_LOGIC;
 			Shape_Numb	: OUT STD_LOGIC_VECTOR(2 downto 0);
-			Shape_Coord	: OUT STD_LOGIC_VECTOR(18 downto 0));
+			Area_Numb	: OUT STD_LOGIC_VECTOR(7 downto 0));
 end Disp_ImgGen_ShapeDetermination;
 
 architecture Behavioral of Disp_ImgGen_ShapeDetermination is
@@ -54,27 +54,12 @@ architecture Behavioral of Disp_ImgGen_ShapeDetermination is
 type etats is (START, WAIT_CHANGE, NEW_OK, NEW_POS, OLD_POS, WAIT_BUSY_OLD, WAIT_BUSY);
 signal etat_present		:etats := START;
 signal etat_futur			:etats := START;
-signal sig_OldPos			: std_logic_vector(7 downto 0) := "00000000";
-
-type cells_coord is array (0 to 8) of std_logic_vector(18 downto 0);
-constant coord : cells_coord := (
-	0 => "0001101100001111100",	-- x125 y55
-	1 => "0001101100011111001",	-- x250 y55
-	2 => "0001101100101110110",	-- x375 y55
-	3 => "0101100110001111100",	-- x125 y180
-	4 => "0101100110011111001",	-- x250 y180
-	5 => "0101100110101110110",	-- x375 y180
-	6 => "1001100000001111100",	-- x125 y305
-	7 => "1001100000011111001",	-- x250 y305
-	8 => "1001100000101110110"		-- x375 y305
-);
 
 begin
 
 -- Actualisation des etats presents à chaque coup d'horloge et gestion du reset
 	process (Clk, Rst) 
 	begin
-	
 		if (Rst = '1') then 
 				etat_present <= START;	-- En cas de reset, initialisation état START
 
@@ -134,61 +119,50 @@ begin
 		END CASE;
 	end process;
 	
-	process (etat_present, sig_oldPos, grid_state, grid_player, pos, OK, player)
+	process (etat_present, grid_state, grid_player, oldPos, pos, OK)
 	begin
 		CASE etat_present IS
 			WHEN START 				=>	
-				Shape_load			<= '0';
-				Shape_Numb			<= "000";
-				Shape_Coord			<= (others => '0');
-				sig_oldPos			<= "00000000";
+				Shape_load	<= '0';
+				Shape_numb	<= "000";
+				Area_numb	<= (others => '0');
 				
 			WHEN WAIT_CHANGE 		=>
-				Shape_load			<= '0';
-				Shape_Numb			<= "000";
-				Shape_Coord			<= (others => '0');
-				sig_oldPos			<= sig_oldPos;
+				Shape_load	<= '0';
+				Shape_numb	<= "000";
+				Area_numb	<= (others => '0');
 				
 			WHEN NEW_OK				=>
-				Shape_load			<= '1';
-				Shape_Numb			<= "10" & Player;
-				Shape_Coord			<= coord(to_integer(unsigned(OK)));
-				sig_oldPos			<= sig_oldPos;
+				Shape_load	<= '1';
+				Shape_numb	<= "11" & grid_player(to_integer(unsigned(OK)));
+				Area_numb	<= OK;
 				
 			WHEN NEW_POS			=>
-				Shape_load			<= '1';
-				Shape_Numb			<=	Grid_state(to_integer(unsigned(Pos))) 
-											& NOT(Grid_state(to_integer(unsigned(Pos)))) 
-											& (NOT(Grid_state(to_integer(unsigned(Pos)))) OR Grid_Player(to_integer(unsigned(Pos))));
-				Shape_Coord			<= coord(to_integer(unsigned(Pos)));
-				sig_oldPos			<= Pos;
+				Shape_load	<= '1';
+				Shape_numb	<= '1' & grid_state(to_integer(unsigned(Pos))) & grid_player(to_integer(unsigned(Pos)));
+				Area_numb	<= Pos;
 				
 			WHEN OLD_POS			=>
-				Shape_load			<= '1';
-				Shape_Numb			<=	'0' 
-											& NOT(Grid_state(to_integer(unsigned(sig_oldPos))))
-											& (NOT(Grid_state(to_integer(unsigned(sig_oldPos)))) AND Grid_player(to_integer(unsigned(sig_oldPos))));
-				Shape_Coord			<= coord(to_integer(unsigned(sig_oldPos)));
-				sig_oldPos			<= sig_OldPos;
+				Shape_load	<= '1';
+				Shape_numb	<= '0' & grid_state(to_integer(unsigned(oldPos))) & grid_player(to_integer(unsigned(oldPos)));
+				Area_numb	<= oldPos;
 				
 			WHEN WAIT_BUSY_OLD	=>
-				Shape_load			<= '0';
-				Shape_Numb			<= "000";
-				Shape_Coord			<= (others => '0');
-				sig_oldPos			<= sig_oldPos;
+				Shape_load	<= '0';
+				Shape_numb	<= "000";
+				Area_numb	<= (others => '0');
 				
 			WHEN WAIT_BUSY			=>
-				Shape_load			<= '0';
-				Shape_Numb			<= "000";
-				Shape_Coord			<= (others => '0');
-				sig_oldPos			<= sig_oldPos;
+				Shape_load	<= '0';
+				Shape_numb	<= "000";
+				Area_numb	<= (others => '0');
 				
-			WhEN OTHERS				=>
-				Shape_load			<= '0';
-				Shape_Numb			<= "000";
-				Shape_Coord			<= (others => '0');
-				sig_oldPos			<= "00000000";
+			WHEN OTHERS				=>
+				Shape_load	<= '0';
+				Shape_numb	<= "000";
+				Area_numb	<= (others => '0');
 		END CASE;
+		
 	end process;
 	
 	

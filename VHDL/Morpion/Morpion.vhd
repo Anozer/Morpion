@@ -115,11 +115,14 @@ architecture Behavioral of Morpion is
 	signal Enable_disp		: std_logic;
 	
 	signal Cpt_ce				: std_logic_vector(14 downto 0);
+	signal CE_100M				: std_logic;
 	signal CE_25M				: std_logic;
 	signal CE_3K				: std_logic;
 	
 begin
 	Reset <= BTND;	
+	
+	CE_100M <= '1';
 	
 	-- Compteur pour tous les CE
 	process (Clk,Reset) begin

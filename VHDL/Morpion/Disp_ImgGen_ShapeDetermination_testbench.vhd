@@ -2,7 +2,7 @@
 -- Company: 
 -- Engineer:
 --
--- Create Date:   16:05:26 05/13/2013
+-- Create Date:   16:23:36 05/16/2013
 -- Design Name:   
 -- Module Name:   Z:/Dev/VHDL/Morpion/VHDL/Morpion/Disp_ImgGen_ShapeDetermination_testbench.vhd
 -- Project Name:  Morpion
@@ -47,14 +47,14 @@ ARCHITECTURE behavior OF Disp_ImgGen_ShapeDetermination_testbench IS
          Busy : IN  std_logic;
          Pos_Load : IN  std_logic;
          Ok_Load : IN  std_logic;
-         Player : IN  std_logic;
          Ok : IN  std_logic_vector(7 downto 0);
          Pos : IN  std_logic_vector(7 downto 0);
+         OldPos : IN  std_logic_vector(7 downto 0);
          Grid_State : IN  std_logic_vector(8 downto 0);
          Grid_Player : IN  std_logic_vector(8 downto 0);
          Shape_Load : OUT  std_logic;
          Shape_Numb : OUT  std_logic_vector(2 downto 0);
-         Shape_Coord : OUT  std_logic_vector(18 downto 0)
+         Area_Numb : OUT  std_logic_vector(7 downto 0)
         );
     END COMPONENT;
     
@@ -66,16 +66,16 @@ ARCHITECTURE behavior OF Disp_ImgGen_ShapeDetermination_testbench IS
    signal Busy : std_logic := '0';
    signal Pos_Load : std_logic := '0';
    signal Ok_Load : std_logic := '0';
-   signal Player : std_logic := '0';
    signal Ok : std_logic_vector(7 downto 0) := (others => '0');
    signal Pos : std_logic_vector(7 downto 0) := (others => '0');
+   signal OldPos : std_logic_vector(7 downto 0) := (others => '0');
    signal Grid_State : std_logic_vector(8 downto 0) := (others => '0');
    signal Grid_Player : std_logic_vector(8 downto 0) := (others => '0');
 
  	--Outputs
    signal Shape_Load : std_logic;
    signal Shape_Numb : std_logic_vector(2 downto 0);
-   signal Shape_Coord : std_logic_vector(18 downto 0);
+   signal Area_Numb : std_logic_vector(7 downto 0);
 
    -- Clock period definitions
    constant Clk_period : time := 10 ns;
@@ -90,14 +90,14 @@ BEGIN
           Busy => Busy,
           Pos_Load => Pos_Load,
           Ok_Load => Ok_Load,
-          Player => Player,
           Ok => Ok,
           Pos => Pos,
+          OldPos => OldPos,
           Grid_State => Grid_State,
           Grid_Player => Grid_Player,
           Shape_Load => Shape_Load,
           Shape_Numb => Shape_Numb,
-          Shape_Coord => Shape_Coord
+          Area_Numb => Area_Numb
         );
 
    -- Clock process definitions
@@ -113,7 +113,7 @@ BEGIN
    -- Stimulus process
    stim_proc: process
    begin		
-      -- hold reset state for 100 ns.
+       -- hold reset state for 100 ns.
       wait for 13 ns;
 		Rst <= '1';
 		Ce <= '1';

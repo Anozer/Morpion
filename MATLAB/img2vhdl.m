@@ -12,9 +12,9 @@ function [ result ] = img2vhdl(img_path, nb_bits_x, nb_bits_y)
     img = double(img);
 
     % passage de 8 bits à 3 ou 2
-    img_R = round(img(:,:,1)*7/255);
-    img_G = round(img(:,:,2)*7/255);
-    img_B = round(img(:,:,3)*3/255);
+    img_R = round(img(:,:,1)/255);
+    img_G = round(img(:,:,2)/255);
+    img_B = round(img(:,:,3)/255);
     
     % Pour chaque x/y
     data = [];
@@ -24,10 +24,11 @@ function [ result ] = img2vhdl(img_path, nb_bits_x, nb_bits_y)
             addr = bin2dec([dec2bin(y-1,nb_bits_y) dec2bin(x-1,nb_bits_x)]);
                 
             % calcul de la valeur du pixel
-            pixel = [dec2bin(img_B(y,x),2) dec2bin(img_G(y,x),3) dec2bin(img_R(y,x),3)];
-
+            %pixel = [dec2bin(img_B(y,x),2) dec2bin(img_G(y,x),3) dec2bin(img_R(y,x),3)];
+            pixel = img_R(y,x)*img_G(y,x)*img_B(y,x);
+            
             % création du VHDL du pixel
-            line = sprintf('\t%d => "%s",\n',addr,pixel);          
+            line = sprintf('\t%d => ''%d'',\n',addr,pixel);          
             data = [data line];
         end;
     end;

@@ -29,14 +29,15 @@ use IEEE.NUMERIC_STD.ALL;
 --use UNISIM.VComponents.all;
 
 entity Disp_ImgGen_GridManager is
-	Port(	Clk			: IN  STD_LOGIC;
-			Rst 			: IN  STD_LOGIC;
-         CE 			: IN  STD_LOGIC;
-			Ok_Load		: IN  STD_LOGIC;
-			Player		: IN  STD_LOGIC;
-			OK				: IN  STD_LOGIC_VECTOR(7 downto 0);
-			Grid_State	: OUT STD_LOGIC_VECTOR(8 downto 0);
-			Grid_Player	: OUT STD_LOGIC_VECTOR(8 downto 0));
+	Port(	Clk				: IN  STD_LOGIC;
+			Rst 				: IN  STD_LOGIC;
+         CE 				: IN  STD_LOGIC;
+			Ok_Load			: IN  STD_LOGIC;
+			Player			: IN  STD_LOGIC;
+			OK					: IN  STD_LOGIC_VECTOR(7 downto 0);
+			Ok_Load_sync	: OUT STD_LOGIC;
+			Grid_State		: OUT STD_LOGIC_VECTOR(8 downto 0);
+			Grid_Player		: OUT STD_LOGIC_VECTOR(8 downto 0));
 end Disp_ImgGen_GridManager;
 
 architecture Behavioral of Disp_ImgGen_GridManager is
@@ -63,6 +64,9 @@ begin
 					if (Tmp_State(to_integer(unsigned(OK))) = '0') then
 						Tmp_State(to_integer(unsigned(OK)))	<= '1';
 						Tmp_Player(to_integer(unsigned(OK)))<= Player;
+						Ok_Load_sync <= '1';
+					else
+						Ok_Load_sync <= '0';
 					end if;
 					
 				end if;

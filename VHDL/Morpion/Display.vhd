@@ -55,6 +55,7 @@ architecture Behavioral of Display is
 				Player_Out			: out	STD_LOGIC_VECTOR (7 DOWNTO 0);
 				OK_Out				: out STD_LOGIC_VECTOR (7 DOWNTO 0);
 				Pos_Out				: out STD_LOGIC_VECTOR (7 DOWNTO 0);
+				OldPos_Out			: out STD_LOGIC_VECTOR (7 DOWNTO 0);
 				OK_Load				: out STD_LOGIC;
 				Pos_Load				: out STD_LOGIC);
 	end component;
@@ -66,6 +67,7 @@ architecture Behavioral of Display is
 			Reset				: IN  STD_LOGIC;
 			Pos_load			: IN  STD_LOGIC;
 			Ok_load			: IN  STD_LOGIC;
+			OldPos_val		: IN  STD_LOGIC_VECTOR(7 downto 0);
 			Pos_val			: IN  STD_LOGIC_VECTOR(7 downto 0);
 			Ok_val			: IN  STD_LOGIC_VECTOR(7 downto 0);
 			Player_val		: IN  STD_LOGIC;
@@ -90,6 +92,7 @@ architecture Behavioral of Display is
 	signal Player_val 	: STD_LOGIC_VECTOR(7 downto 0);
 	signal OK_val 			: STD_LOGIC_VECTOR(7 downto 0);
 	signal Pos_val			: STD_LOGIC_VECTOR(7 downto 0);
+	signal OldPos_val		: STD_LOGIC_VECTOR(7 downto 0);
 	signal OK_Load			: STD_LOGIC;
 	signal Pos_Load		: STD_LOGIC;
 	signal VRAM_addrW		: STD_LOGIC_VECTOR(18 downto 0);
@@ -116,6 +119,7 @@ begin
 		Player_Out			=> Player_val,
 		OK_Out				=> OK_val, 
 		Pos_Out				=> Pos_val,
+		OldPos_Out			=> OldPos_val,
 		OK_Load				=> OK_Load,
 		Pos_Load				=> Pos_Load);
 		
@@ -126,6 +130,7 @@ begin
 		Reset				=> Reset,
 		Pos_load			=>	Pos_load,
 		Ok_load			=>	OK_load,
+		OldPos_val		=> OldPos_val,
 		Pos_val			=> Pos_val,
 		Ok_val			=> OK_val,
 		Player_val		=> Player_val(0),
