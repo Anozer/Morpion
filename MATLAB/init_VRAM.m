@@ -25,7 +25,7 @@ bitsX = 10;
 bitsY = 9;
 
 posJx = 4;
-posJy = 179;
+posJy = 120;
 
 % constantes utiles
 if strcmp('center',position)
