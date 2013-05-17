@@ -42,7 +42,8 @@ entity DISP_BUSINT is
 			Pos_Out				: out STD_LOGIC_VECTOR (7 DOWNTO 0);
 			OldPos_Out			: out STD_LOGIC_VECTOR (7 DOWNTO 0);
 			OK_Load				: out STD_LOGIC;
-			Pos_Load				: out STD_LOGIC);
+			Pos_Load				: out STD_LOGIC;
+			Player_Load			: out STD_LOGIC);
 end DISP_BUSINT;
 
 architecture Behavioral of DISP_BUSINT is
@@ -68,13 +69,14 @@ architecture Behavioral of DISP_BUSINT is
 		signal s_Pos_Load		: STD_LOGIC;
 		signal s_OK_Load		: STD_LOGIC;
 		signal s_J_Load		: STD_LOGIC;
-		signal s_Pos_val	: STD_LOGIC_VECTOR(7 downto 0);
+		signal s_Pos_val		: STD_LOGIC_VECTOR(7 downto 0);
 
 begin
 
-	Pos_Load <= s_Pos_Load;
-	OK_Load	<= s_OK_Load;
-	Pos_Out <= s_Pos_val;
+	Player_Load	<= s_J_Load;
+	Pos_Load		<= s_Pos_Load;
+	OK_Load		<= s_OK_Load;
+	Pos_Out		<= s_Pos_val;
 	
 	REG_J: REG8bits port map (
 		Clk,

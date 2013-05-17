@@ -13,7 +13,7 @@
          </top_modules>
       </db_ref>
    </db_ref_list>
-   <WVObjectSize size="20" />
+   <WVObjectSize size="27" />
    <wvobject fp_name="/morpion_testbench/clk" type="logic" db_ref_id="1">
       <obj_property name="ElementShortName">clk</obj_property>
       <obj_property name="ObjectShortName">clk</obj_property>
@@ -93,5 +93,36 @@
    <wvobject fp_name="/morpion_testbench/uut/enable_disp" type="logic" db_ref_id="1">
       <obj_property name="ElementShortName">enable_disp</obj_property>
       <obj_property name="ObjectShortName">enable_disp</obj_property>
+   </wvobject>
+   <wvobject fp_name="/morpion_testbench/uut/The_display/ok_val" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">ok_val[7:0]</obj_property>
+      <obj_property name="ObjectShortName">ok_val[7:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/morpion_testbench/uut/The_display/pos_val" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">pos_val[7:0]</obj_property>
+      <obj_property name="ObjectShortName">pos_val[7:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/morpion_testbench/uut/The_display/oldpos_val" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">oldpos_val[7:0]</obj_property>
+      <obj_property name="ObjectShortName">oldpos_val[7:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/morpion_testbench/uut/The_display/player_val" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">player_val[7:0]</obj_property>
+      <obj_property name="ObjectShortName">player_val[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/morpion_testbench/uut/The_display/Disp_Img_Generation/shape_load" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">shape_load</obj_property>
+      <obj_property name="ObjectShortName">shape_load</obj_property>
+   </wvobject>
+   <wvobject fp_name="/morpion_testbench/uut/The_display/Disp_Img_Generation/shape_numb" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">shape_numb[2:0]</obj_property>
+      <obj_property name="ObjectShortName">shape_numb[2:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/morpion_testbench/uut/The_display/Disp_Img_Generation/area_numb" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">area_numb[7:0]</obj_property>
+      <obj_property name="ObjectShortName">area_numb[7:0]</obj_property>
    </wvobject>
 </wave_config>

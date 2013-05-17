@@ -35,6 +35,7 @@ entity Disp_ImgGen is
 			Reset				: IN  STD_LOGIC;
 			Pos_load			: IN  STD_LOGIC;
 			Ok_load			: IN  STD_LOGIC;
+			Player_load		: IN  STD_LOGIC;
 			OldPos_val		: IN	std_logic_vector(7 downto 0);
 			Pos_val			: IN  STD_LOGIC_VECTOR(7 downto 0);
 			Ok_val			: IN  STD_LOGIC_VECTOR(7 downto 0);
@@ -65,8 +66,10 @@ component Disp_ImgGen_ShapeDetermination
 			Busy			: IN  STD_LOGIC;
 			Pos_Load		: IN  STD_LOGIC;
 			Ok_Load		: IN  STD_LOGIC;
+			Player_Load	: IN  STD_LOGIC;
 			Ok				: IN  STD_LOGIC_VECTOR(7 downto 0);
 			Pos			: IN  STD_LOGIC_VECTOR(7 downto 0);
+			Player		: IN  STD_LOGIC;
 			OldPos		: IN  STD_LOGIC_VECTOR(7 downto 0);
 			Grid_State	: IN  STD_LOGIC_VECTOR(8 downto 0);
 			Grid_Player	: IN  STD_LOGIC_VECTOR(8 downto 0);
@@ -111,7 +114,7 @@ begin
 		CE 			=> Ce,
 		Ok_Load		=> Ok_load,
 		Player		=> Player_val,
-		OK				=> OK_val,
+		OK				=> Pos_val,      -- MODIFIER NOM ENTREE
 		Ok_Load_sync=> OK_Load_sync,
 		Grid_State	=> Grid_state,
 		Grid_Player	=> Grid_Player);
@@ -124,8 +127,10 @@ begin
 		Busy			=> busy,
 		Pos_Load		=> Pos_load,
 		Ok_Load		=> OK_Load_sync,
+		Player_Load	=> Player_Load,
 		Ok				=> Ok_val,
 		Pos			=> Pos_val,
+		Player		=> Player_val,
 		OldPos		=> OldPos_val,
 		Grid_State	=> Grid_state,
 		Grid_Player	=> Grid_player,

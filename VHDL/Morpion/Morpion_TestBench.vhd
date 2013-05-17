@@ -102,29 +102,8 @@ BEGIN
 		wait for 4 ns;
 		BTND <= '1'; -- reset
 		wait for 100 ns;
-		
-		BTND <= '0'; -- rien
+		BTND <= '0';
 		wait for 200 ns;
-		
-		BTNR <= '1';	-- next
-		wait for 100 ns;
-		BTNR <= '0';
-		wait for 1000 ns;
-		
-		BTNR <= '1';	-- next
-		wait for 100 ns;
-		BTNR <= '0';
-		wait for 1000 ns;
-		
-		BTNR <= '1';	-- next
-		wait for 100 ns;
-		BTNR <= '0';
-		wait for 1000 ns;
-		
-		BTNR <= '1';	-- next
-		wait for 100 ns;
-		BTNR <= '0';
-		wait for 1000 ns;
 		
 		BTNR <= '1';	-- next
 		wait for 100 ns;
@@ -136,25 +115,18 @@ BEGIN
 		BTNS <= '0';
 		wait for 1000 ns;
 		
+
 		BTNR <= '1';	-- next
 		wait for 100 ns;
 		BTNR <= '0';
 		wait for 1000 ns;
 		
-		BTNR <= '1';	-- next
+		BTNS <= '1';	-- OK
 		wait for 100 ns;
-		BTNR <= '0';
+		BTNS <= '0';
 		wait for 1000 ns;
 		
-		BTNR <= '1';	-- next
-		wait for 100 ns;
-		BTNR <= '0';
-		wait for 1000 ns;
 		
-		BTNR <= '1';	-- next
-		wait for 100 ns;
-		BTNR <= '0';
-		wait for 1000 ns;
 
 		
       -- insert stimulus here 

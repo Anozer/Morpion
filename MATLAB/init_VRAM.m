@@ -24,6 +24,9 @@ file_condensed='VHDL/VRAM.min.vhd';
 bitsX = 10;
 bitsY = 9;
 
+posJx = 4;
+posJy = 179;
+
 % constantes utiles
 if strcmp('center',position)
     x1 = (nb_X - (cell_width*3+4*border_width))/2;
@@ -49,8 +52,8 @@ disp(sprintf('4 => "%s",\t-- x%d y%d' ,coord2addr(x2+border_width-1,y2+border_wi
 disp(sprintf('5 => "%s",\t-- x%d y%d' ,coord2addr(x3+border_width-1,y2+border_width-1,'bin',bitsX,bitsY),(x3+border_width),y2+border_width));
 disp(sprintf('6 => "%s",\t-- x%d y%d' ,coord2addr(x1+border_width-1,y3+border_width-1,'bin',bitsX,bitsY),(x1+border_width),y3+border_width));
 disp(sprintf('7 => "%s",\t-- x%d y%d' ,coord2addr(x2+border_width-1,y3+border_width-1,'bin',bitsX,bitsY),(x2+border_width),y3+border_width));
-disp(sprintf('8 => "%s"\t\t-- x%d y%d',coord2addr(x3+border_width-1,y3+border_width-1,'bin',bitsX,bitsY),(x3+border_width),y3+border_width));
-
+disp(sprintf('8 => "%s",\t-- x%d y%d',coord2addr(x3+border_width-1,y3+border_width-1,'bin',bitsX,bitsY),(x3+border_width),y3+border_width));
+disp(sprintf('9 => "%s"\t\t-- x%d y%d : info joueur' ,coord2addr(posJx, posJy,'bin',bitsX,bitsY),posJx,posJy));
 % init
 VRAM = zeros(nb_Y,nb_X);
 j = 0;
@@ -70,6 +73,14 @@ for x=1:nb_X
         if ((y==y1 || y==y2 || y==y3 || y==y4) && (x>=x1 && x<(x4+border_width)))
             for(i=0:border_width-1)
                 VRAM(y+i,x) = 255;
+            end;
+        end;
+        
+        if(x==(x1+border_width) && y==y1+border_width)
+            for(xi=0:cell_width)
+                for(yi=0:cell_width)
+                    VRAM(y+yi,x+xi) = 255;
+                end;
             end;
         end;
         

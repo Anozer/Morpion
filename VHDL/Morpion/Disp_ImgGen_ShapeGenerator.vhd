@@ -141,7 +141,7 @@ signal MUX_IN5		: STD_LOGIC;
 signal MUX_IN6		: STD_LOGIC;
 signal MUX_IN7		: STD_LOGIC;
 
-type coord_tab is array (8 downto 0) of std_logic_vector(18 downto 0);
+type coord_tab is array (9 downto 0) of std_logic_vector(18 downto 0);
 constant Shape_Coord : coord_tab := (
 	0 => "0001101010010000101",	-- x135 y55
 	1 => "0001101010100000010",	-- x260 y55
@@ -151,7 +151,8 @@ constant Shape_Coord : coord_tab := (
 	5 => "0101100100101111111",	-- x385 y180
 	6 => "1001011110010000101",	-- x135 y305
 	7 => "1001011110100000010",	-- x260 y305
-	8 => "1001011110101111111"		-- x385 y305
+	8 => "1001011110101111111",	-- x385 y305
+	9 => "0101100100000000011"		-- x4 y179 : info joueur
 );
 
 begin		

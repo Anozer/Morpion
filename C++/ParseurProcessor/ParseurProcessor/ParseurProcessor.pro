@@ -4,7 +4,9 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui \
+			widgets \
+			printsupport
 
 TARGET = ParseurProcessor
 TEMPLATE = app

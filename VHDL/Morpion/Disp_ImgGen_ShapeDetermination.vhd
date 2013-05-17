@@ -38,8 +38,10 @@ entity Disp_ImgGen_ShapeDetermination is
 			Busy			: IN  STD_LOGIC;
 			Pos_Load		: IN  STD_LOGIC;
 			Ok_Load		: IN  STD_LOGIC;
+			Player_Load	: IN  STD_LOGIC;
 			Ok				: IN  STD_LOGIC_VECTOR(7 downto 0);
 			Pos			: IN  STD_LOGIC_VECTOR(7 downto 0);
+			Player		: IN  STD_LOGIC;
 			OldPos		: IN  STD_LOGIC_VECTOR(7 downto 0);
 			Grid_State	: IN  STD_LOGIC_VECTOR(8 downto 0);
 			Grid_Player	: IN  STD_LOGIC_VECTOR(8 downto 0);
@@ -51,7 +53,7 @@ end Disp_ImgGen_ShapeDetermination;
 architecture Behavioral of Disp_ImgGen_ShapeDetermination is
 
 -- Types et signaux correspondant aux états de la FSM
-type etats is (START, WAIT_CHANGE, NEW_OK, NEW_POS, OLD_POS, WAIT_BUSY_OLD, WAIT_BUSY);
+type etats is (START, WAIT_CHANGE, NEW_OK, NEW_POS, OLD_POS, WAIT_BUSY_OLD, WAIT_BUSY, NEW_PLAYER);
 signal etat_present		:etats := START;
 signal etat_futur			:etats := START;
 
@@ -76,7 +78,7 @@ begin
 	end process;
 	
 	-- Definition des etats futurs en fonction de la FSM	
-	process (etat_present, Pos_Load, Ok_Load, Busy )
+	process (etat_present, Pos_Load, Ok_Load, Busy, player_load )
 	begin
 		CASE etat_present IS
 			WHEN START 			=>	
@@ -85,6 +87,8 @@ begin
 			WHEN WAIT_CHANGE 	=>
 				if (Ok_Load = '1') then
 					etat_futur <= NEW_OK;
+				elsif (Player_Load = '1') then
+					etat_futur <= NEW_PLAYER;
 				elsif (Pos_Load = '1') then
 					etat_futur <= OLD_POS;
 				else
@@ -92,6 +96,9 @@ begin
 				end if;
 				
 			WHEN NEW_OK			=>
+				etat_futur <= WAIT_BUSY;
+				
+			WHEN NEW_PLAYER			=>
 				etat_futur <= WAIT_BUSY;
 				
 			WHEN OLD_POS		=>
@@ -119,7 +126,7 @@ begin
 		END CASE;
 	end process;
 	
-	process (etat_present, grid_state, grid_player, oldPos, pos, OK)
+	process (etat_present, grid_state, grid_player, oldPos, pos, OK, player)
 	begin
 		CASE etat_present IS
 			WHEN START 				=>	
@@ -134,8 +141,13 @@ begin
 				
 			WHEN NEW_OK				=>
 				Shape_load	<= '1';
-				Shape_numb	<= "11" & grid_player(to_integer(unsigned(OK)));
-				Area_numb	<= OK;
+				Shape_numb	<= "11" & grid_player(to_integer(unsigned(Pos)));
+				Area_numb	<= Pos;
+				
+			WHEN NEW_PLAYER				=>
+				Shape_load	<= '1';
+				Shape_numb	<= "01" & Player;
+				Area_numb	<= "00001001";
 				
 			WHEN NEW_POS			=>
 				Shape_load	<= '1';
