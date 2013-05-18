@@ -119,6 +119,15 @@ component ROM_X_sel
 		DATA	: OUT STD_LOGIC);
 end component;
 
+component ROM_victoire
+	port (
+		Clk	: IN  STD_LOGIC;
+		En		: IN  STD_LOGIC;
+		ADDR	: IN STD_LOGIC_VECTOR(13 downto 0);
+		DATA	: OUT STD_LOGIC);
+end component;
+
+
 signal sig_ShapeNumb : STD_LOGIC_VECTOR(2 downto 0);
 
 signal Enable_rom	: STD_LOGIC;
@@ -141,18 +150,19 @@ signal MUX_IN5		: STD_LOGIC;
 signal MUX_IN6		: STD_LOGIC;
 signal MUX_IN7		: STD_LOGIC;
 
-type coord_tab is array (9 downto 0) of std_logic_vector(18 downto 0);
+type coord_tab is array (10 downto 0) of std_logic_vector(18 downto 0);
 constant Shape_Coord : coord_tab := (
-	0 => "0001101010010000101",	-- x135 y55
-	1 => "0001101010100000010",	-- x260 y55
-	2 => "0001101010101111111",	-- x385 y55
-	3 => "0101100100010000101",	-- x135 y180
-	4 => "0101100100100000010",	-- x260 y180
-	5 => "0101100100101111111",	-- x385 y180
-	6 => "1001011110010000101",	-- x135 y305
-	7 => "1001011110100000010",	-- x260 y305
-	8 => "1001011110101111111",	-- x385 y305
-	9 => "0011101110000000011"		-- x4 y120 : info joueur
+	0 => "0001101010010000101",	-- x134 y54
+	1 => "0001101010100000010",	-- x259 y54
+	2 => "0001101010101111111",	-- x384 y54
+	3 => "0101100100010000101",	-- x134 y179
+	4 => "0101100100100000010",	-- x259 y179
+	5 => "0101100100101111111",	-- x384 y179
+	6 => "1001011110010000101",	-- x134 y304
+	7 => "1001011110100000010",	-- x259 y304
+	8 => "1001011110101111111",	-- x384 y304
+	9 => "0011101110000000011",	-- x4 y120 : info joueur
+	10 => "0011101111000000011"	-- x516 y120 : victoire
 );
 
 begin		
@@ -187,7 +197,6 @@ begin
 	
 
 	MUX_IN1 <= MUX_IN0;
-	MUX_IN5 <= MUX_IN4;
 
 	Compteur : Disp_ImgGen_ShapeGenerator_Cpt
 	port map (
@@ -260,6 +269,14 @@ begin
 		En		=> Enable_rom,
 		ADDR	=> ROM_addr,
 		DATA	=> MUX_IN7
+	);
+	
+	ROM6 : ROM_victoire
+	port map (
+		Clk	=> Clk,
+		En		=> Enable_rom,
+		ADDR	=> ROM_addr,
+		DATA	=> MUX_IN5
 	);
 
 

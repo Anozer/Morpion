@@ -25,10 +25,10 @@ function [ result ] = img2vhdl(img_path, nb_bits_x, nb_bits_y)
                 
             % calcul de la valeur du pixel
             %pixel = [dec2bin(img_B(y,x),2) dec2bin(img_G(y,x),3) dec2bin(img_R(y,x),3)];
-            pixel = img_R(y,x)*img_G(y,x)*img_B(y,x);
+            pixel = img_R(y,x) | img_G(y,x)| img_B(y,x);
             
             % création du VHDL du pixel
-            line = sprintf('\t%d => ''%d'',\n',addr,pixel);          
+            line = sprintf('\t\t%d => ''%d'',\n',addr,pixel);          
             data = [data line];
         end;
     end;

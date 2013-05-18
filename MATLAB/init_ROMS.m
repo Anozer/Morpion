@@ -11,11 +11,15 @@ clc
 % répertoires source et destination
 path_img = 'IMG';
 path_vhdl = 'VHDL';
-default_ROM = 'VHDL/ROM_default.vhd';
+default_ROM = 'VHDL/default_ROM.vhd';
 
 % init
 nb_bitsX = 7;
 nb_bitsY = 7;
+
+% types de fichier à convertir
+types = {'jpg', 'jpeg', 'png', 'bmp', 'gif', 'tiff'};
+exclude = {'VRAM.png'};
 
 % tailles des elements VHDL
 rom_addr_tab = ['(2**' num2str(nb_bitsX+nb_bitsY) ')-1 downto 0'];
@@ -26,8 +30,7 @@ default_ROM_file = fopen(default_ROM, 'r+');
 default_ROM = fread(default_ROM_file,'*char');
 fclose(default_ROM_file);
 
-% types de fichier à convertir
-types = {'jpg', 'jpeg', 'png', 'bmp', 'gif', 'tiff'};
+
 
 % récup de tous les fichiers du dossier
 dir_img = dir(path_img);
@@ -48,7 +51,12 @@ for i=1:length(dir_img)
     if (~sum(strcmp(type,types)))
         continue
     end;
-     
+    
+    if (sum(strcmp(img,exclude)))
+        fprintf('/!\\ %s will be excluded.\n\n',img);
+        continue
+    end;
+    
     % Récup du VHDL
     fprintf('Image:\t%s\nROM:\t%s\n...\n\n',img_path,rom_path);
     rom_data = img2vhdl(img_path, nb_bitsX, nb_bitsY);
@@ -59,8 +67,8 @@ for i=1:length(dir_img)
     rom_vhdl = regexprep(rom_vhdl,'%DATAS%', rom_data);
     rom_vhdl = regexprep(rom_vhdl,'%ROM_ADDR_TAB%', rom_addr_tab);
     rom_vhdl = regexprep(rom_vhdl,'%ROM_ADDR_SIZE%', rom_addr_size);
-    %rom_vhdl = regexprep(rom_vhdl,'%ROM_DATA_TYPE%', 'std_logic_vector(7 downto 0)');
     rom_vhdl = regexprep(rom_vhdl,'%ROM_DATA_TYPE%', 'std_logic');
+    %rom_vhdl = regexprep(rom_vhdl,'%ROM_DATA_TYPE%', 'std_logic_vector(7 downto 0)');
     
     % Création du fichier VHDL pour la nouvelle ROM
     rom_file_des = fopen(rom_path, 'w+');
