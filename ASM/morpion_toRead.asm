@@ -1,4 +1,9 @@
 ;						BT next		BT prev		BT val		Autres
+INIT:
+	NOR ALLONE		;1	0000 0000
+	STA POS			;1	MEM[pos]
+	STA JOUEUR		;1	MEM[joueur]
+	STA AFF_J		;1	AFF[joueur]
 START:
 	LDA BP			;2	1111 1110	1111 1101	1111 1011	1101 1111	1111 1111
 	ADD ONE			;1	1111 1111	1111 1110	1111 1100	1110 0000	0000 0000C
@@ -45,11 +50,27 @@ BT_PREV:			;	1111 1111		1111 1111
 	ADD VAL_8		;1					0000 1000
 	STA POS			;1					MEM[pos]=accu
 	JCC SENDPOS		;1					JUMP
+	
+	
+;						Position 3		Position 0
+BT_PREV:			;	1111 1111		1111 1111
+	NOR ALLONE		;1	0000 0000		0000 0000
+	ADD POS			;1	0000 0011		0000 0000
+	ADD ALLONE		;1	0000 0010C		1111 1111
+	ADD ZERO		;1	0000 0010		1111 1111
+	STA POS			;1	MEM[pos]=accu	MEM[pos]=accu
+	ADD ONE			;1	0000 0011		0000 0000C
+	JCC SENDPOS		;1	JUMP			0000 0000
+	ADD VAL_8		;1					0000 1000
+	STA POS			;1					MEM[pos]=accu
+	JCC SENDPOS		;1					JUMP
 
 SENDPOS:	
-	LDA POS			;1	accu	= MEM[pos]
+	LDA POS			;2	accu = MEM[pos]
 	STA AFF_POSMOD	;1	AFF[pos]=accu
 	JCC START		;1	retour
+
+
 
 ; données mémoire
 
@@ -61,7 +82,7 @@ SENDPOS:
 ; POS		= 0000 0000
 ; JOUEUR	= 0000 0000
 
-; 44 instructions + 7 données = 51 octets
+; 46 instructions + 7 données = 53 octets
 ; BP 		= 111000 = 0x38
 ; AFF_J 	= 111001 = 0x39
 ; AFF_POS 	= 111010 = 0x3A

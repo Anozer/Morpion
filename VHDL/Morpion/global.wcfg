@@ -13,7 +13,7 @@
          </top_modules>
       </db_ref>
    </db_ref_list>
-   <WVObjectSize size="27" />
+   <WVObjectSize size="30" />
    <wvobject fp_name="/morpion_testbench/clk" type="logic" db_ref_id="1">
       <obj_property name="ElementShortName">clk</obj_property>
       <obj_property name="ObjectShortName">clk</obj_property>
@@ -73,6 +73,7 @@
    <wvobject fp_name="/morpion_testbench/uut/databus_p2cpu" type="array" db_ref_id="1">
       <obj_property name="ElementShortName">databus_p2cpu[7:0]</obj_property>
       <obj_property name="ObjectShortName">databus_p2cpu[7:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
    </wvobject>
    <wvobject fp_name="/morpion_testbench/uut/databus_bp2cpu" type="array" db_ref_id="1">
       <obj_property name="ElementShortName">databus_bp2cpu[7:0]</obj_property>
@@ -81,6 +82,11 @@
    <wvobject fp_name="/morpion_testbench/uut/databus_ram2cpu" type="array" db_ref_id="1">
       <obj_property name="ElementShortName">databus_ram2cpu[7:0]</obj_property>
       <obj_property name="ObjectShortName">databus_ram2cpu[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/morpion_testbench/uut/addrbus" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">addrbus[5:0]</obj_property>
+      <obj_property name="ObjectShortName">addrbus[5:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
    </wvobject>
    <wvobject fp_name="/morpion_testbench/uut/enable_ram" type="logic" db_ref_id="1">
       <obj_property name="ElementShortName">enable_ram</obj_property>
@@ -124,5 +130,14 @@
    <wvobject fp_name="/morpion_testbench/uut/The_display/Disp_Img_Generation/area_numb" type="array" db_ref_id="1">
       <obj_property name="ElementShortName">area_numb[7:0]</obj_property>
       <obj_property name="ObjectShortName">area_numb[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/morpion_testbench/uut/The_CPU/UC/instruction" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">instruction[7:0]</obj_property>
+      <obj_property name="ObjectShortName">instruction[7:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/morpion_testbench/uut/The_CPU/carry" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">carry</obj_property>
+      <obj_property name="ObjectShortName">carry</obj_property>
    </wvobject>
 </wave_config>
