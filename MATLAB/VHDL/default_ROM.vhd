@@ -1,7 +1,7 @@
 library IEEE;
-use IEEE.STD_LOGIC_1164.ALL;
-use IEEE.STD_LOGIC_ARITH.ALL;
-use IEEE.STD_LOGIC_UNSIGNED.ALL;
+use ieee.std_logic_1164.all;
+use ieee.std_logic_unsigned.all;
+use IEEE.NUMERIC_STD.ALL;
 
 entity %ROM_NAME% is
 	port (CLK : in std_logic;
@@ -25,7 +25,7 @@ begin
 	begin
 		if (CLK'event and CLK = '1') then
 			if (EN = '1') then
-				DATA <= ROM(conv_integer(ADDR));
+				DATA <= ROM(to_integer(unsigned(ADDR)));
 			end if;
 		end if;
 	end process;

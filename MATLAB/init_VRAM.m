@@ -2,156 +2,76 @@ clear all
 close all
 clc
 
-%********** Generation de la grille **********
+% répertoires source et destination
+path_img = 'IMG/VRAM.png';
+path_vhdl = 'VHDL/VRAM.vhd';
+default_VRAM = 'VHDL/default_VRAM.vhd';
+data_type = 'std_logic';
 
+% init
+bitsX = 10;
+bitsY = 9;
 
-% configs
-% nb_X = 620;
-% nb_Y = 480;
-% cell_width = 30;
-% border_width = 1;
-% position = 10; % 'center' ou un nombre
-
+% config image
 nb_X = 640;
 nb_Y = 480;
 cell_width = 120;
 border_width = 5;
-position = 'center'; % 'center' ou un nombre
-
-file = 'VHDL/VRAM.vhd';
-file_condensed='VHDL/VRAM.min.vhd';
-
-bitsX = 10;
-bitsY = 9;
-
 posJx = 4;
 posJy = 120;
+victJx = 516;
+victJy = 120;
 
-% constantes utiles
-if strcmp('center',position)
-    x1 = (nb_X - (cell_width*3+4*border_width))/2;
-    y1 = (nb_Y - (cell_width*3+4*border_width))/2;
-else
-    x1 = position;
-    y1 = position;
-end;
-
+% init coord zones pour shape generator
+x1 = ((nb_X - (cell_width*3+4*border_width))/2) +border_width-1;
 x2 = x1+cell_width+border_width;
 x3 = x2+cell_width+border_width;
 x4 = x3+cell_width+border_width;
-
+y1 = ((nb_Y - (cell_width*3+4*border_width))/2) +border_width-1;
 y2 = y1+cell_width+border_width;
 y3 = y2+cell_width+border_width;
 y4 = y3+cell_width+border_width;
 
-disp(sprintf('0 => "%s",\t-- x%d y%d' ,coord2addr(x1+border_width-1,y1+border_width-1,'bin',bitsX,bitsY),(x1+border_width),y1+border_width));
-disp(sprintf('1 => "%s",\t-- x%d y%d' ,coord2addr(x2+border_width-1,y1+border_width-1,'bin',bitsX,bitsY),(x2+border_width),y1+border_width));
-disp(sprintf('2 => "%s",\t-- x%d y%d' ,coord2addr(x3+border_width-1,y1+border_width-1,'bin',bitsX,bitsY),(x3+border_width),y1+border_width));
-disp(sprintf('3 => "%s",\t-- x%d y%d' ,coord2addr(x1+border_width-1,y2+border_width-1,'bin',bitsX,bitsY),(x1+border_width),y2+border_width));
-disp(sprintf('4 => "%s",\t-- x%d y%d' ,coord2addr(x2+border_width-1,y2+border_width-1,'bin',bitsX,bitsY),(x2+border_width),y2+border_width));
-disp(sprintf('5 => "%s",\t-- x%d y%d' ,coord2addr(x3+border_width-1,y2+border_width-1,'bin',bitsX,bitsY),(x3+border_width),y2+border_width));
-disp(sprintf('6 => "%s",\t-- x%d y%d' ,coord2addr(x1+border_width-1,y3+border_width-1,'bin',bitsX,bitsY),(x1+border_width),y3+border_width));
-disp(sprintf('7 => "%s",\t-- x%d y%d' ,coord2addr(x2+border_width-1,y3+border_width-1,'bin',bitsX,bitsY),(x2+border_width),y3+border_width));
-disp(sprintf('8 => "%s",\t-- x%d y%d',coord2addr(x3+border_width-1,y3+border_width-1,'bin',bitsX,bitsY),(x3+border_width),y3+border_width));
-disp(sprintf('9 => "%s"\t\t-- x%d y%d : info joueur' ,coord2addr(posJx, posJy,'bin',bitsX,bitsY),posJx,posJy));
-% init
-VRAM = zeros(nb_Y,nb_X);
-j = 0;
+
+fprintf('\t0 => "%s",\t-- x%d y%d\n' ,coord2addr(x1,y1,'bin',bitsX,bitsY),(x1),y1);
+fprintf('\t1 => "%s",\t-- x%d y%d\n' ,coord2addr(x2,y1,'bin',bitsX,bitsY),(x2),y1);
+fprintf('\t2 => "%s",\t-- x%d y%d\n' ,coord2addr(x3,y1,'bin',bitsX,bitsY),(x3),y1);
+fprintf('\t3 => "%s",\t-- x%d y%d\n' ,coord2addr(x1,y2,'bin',bitsX,bitsY),(x1),y2);
+fprintf('\t4 => "%s",\t-- x%d y%d\n' ,coord2addr(x2,y2,'bin',bitsX,bitsY),(x2),y2);
+fprintf('\t5 => "%s",\t-- x%d y%d\n' ,coord2addr(x3,y2,'bin',bitsX,bitsY),(x3),y2);
+fprintf('\t6 => "%s",\t-- x%d y%d\n' ,coord2addr(x1,y3,'bin',bitsX,bitsY),(x1),y3);
+fprintf('\t7 => "%s",\t-- x%d y%d\n' ,coord2addr(x2,y3,'bin',bitsX,bitsY),(x2),y3);
+fprintf('\t8 => "%s",\t-- x%d y%d\n' ,coord2addr(x3,y3,'bin',bitsX,bitsY),(x3),y3);
+fprintf('\t9 => "%s",\t-- x%d y%d : info joueur\n',coord2addr(posJx,  posJy, 'bin',bitsX,bitsY),posJx,posJy);
+fprintf('\t10 => "%s"\t-- x%d y%d : victoire\n'   ,coord2addr(victJx, victJy,'bin',bitsX,bitsY),victJx,victJy);
+
+%%
 
 
-% passage de toutes les cord
-for x=1:nb_X
-    for y=1:nb_Y
-        % détermination des lignes
-        if ((x==x1 || x==x2 || x==x3 || x==x4) && (y>=y1 && y<(y4+border_width)))
-            for(i=0:border_width-1)
-                VRAM(y,x+i) = 255;
-            end;
-        end;
-        
-        % détermination des colonnes
-        if ((y==y1 || y==y2 || y==y3 || y==y4) && (x>=x1 && x<(x4+border_width)))
-            for(i=0:border_width-1)
-                VRAM(y+i,x) = 255;
-            end;
-        end;
-        
-        if(x==(x1+border_width) && y==y1+border_width)
-            for(xi=0:cell_width)
-                for(yi=0:cell_width)
-                    VRAM(y+yi,x+xi) = 255;
-                end;
-            end;
-        end;
-        
-        % détermination des adresses
-        if(VRAM(y,x) == 255)
-            j = j+1;
-            addr(j) = coord2addr(x-1,y-1,'dec',bitsX,bitsY);
-        end;
-        
-    end;
-end;
+%constantes
+nb_bits = bitsX+bitsY;
+addr_size  = sprintf('%d downto 0', nb_bits-1);
+array_size = sprintf('(2**%d)-1 downto 0', nb_bits);
 
+% Récup du VHDL de la VRAM à compléter
+default_VRAM_file = fopen(default_VRAM, 'r+');
+default_VRAM = fread(default_VRAM_file,'*char');
+fclose(default_VRAM_file);
 
-% tri des adresses
-addr = sort(addr);
+% calcul du VHDL des datas
+disp('Generation VHDL...');
+vhd = img2vhdl(path_img,bitsX,bitsY);
 
+% completion du VHDL
+disp('Ecriture du fichier...');
+VRAM_vhdl = default_VRAM';
+VRAM_vhdl = regexprep(VRAM_vhdl,'%ADDR_SIZE%', addr_size);
+VRAM_vhdl = regexprep(VRAM_vhdl,'%ARRAY_SIZE%', array_size);
+VRAM_vhdl = regexprep(VRAM_vhdl,'%DATA_TYPE%', data_type);
+VRAM_vhdl = regexprep(VRAM_vhdl,'%DATAS%', vhd);
 
-% inscriptions dans un fichier
-file = fopen(file,'w+');
-for i=1:j
-    %line = sprintf('\t\t%d => x"%X",\n',addr(i),255);
-    line = sprintf('\t\t%d => ''%d'',\n',addr(i),1);
-    fwrite(file,line);
-end;
-fclose(file);
+vhd_file = fopen(path_vhdl,'w+');
+fwrite(vhd_file, VRAM_vhdl);
+fclose(vhd_file);
 
-
-% condensé
-a=1;
-old_addr = 0;
-new_addr = 0;
-lines = [];
-for i=1:j
-    new_addr = addr(i);
-    
-    if(new_addr == old_addr+1)
-        b = b+1;
-    else
-        a = a+1;
-        b = 1;
-    end;
-    
-    lines(a,b) = new_addr;
-    
-    old_addr = new_addr;
-end;
-
-disp(sprintf('Taille min de la RAM : %d (2^%d)\n', old_addr, ceil(log2(old_addr))));
-
-% écriture du condensé
-file = fopen(file_condensed,'w+');
-for i=1:a
-    line = lines(i,:);
-    
-    maxi = max(line);
-    if(maxi == 0)
-        continue;
-    end;
-    
-    [mini mini_pos] = min(line);
-    if(mini == 0)
-       mini = min(line(1:mini_pos-1));
-    end;
-    
-    %data = (sprintf('\t\t%d to %d => "11111111",\n',mini, maxi));
-    data = (sprintf('\t\t%d to %d => ''1'',\n',mini, maxi));
-    fwrite(file,data);
-end;
-fclose(file);
-
-
-% affichage
-figure();
-imshow(VRAM);
+fprintf('done\n');
