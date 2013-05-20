@@ -104,21 +104,27 @@ BEGIN
 		wait for 100 ns;
 		BTND <= '0';
 		wait for 200 ns;
+
 		
+		BTNR <= '1';	-- next
+		wait for 100 ns;
+		BTNR <= '0';
+		wait for 1000 ns;
+		
+		BTNS <= '1';	-- OK
+		wait for 100 ns;
+		BTNS <= '0';
+		wait for 1000 ns;
+
 		BTNL <= '1';	-- prev
 		wait for 100 ns;
 		BTNL <= '0';
 		wait for 1000 ns;
 		
---		BTNR <= '1';	-- next
---		wait for 100 ns;
---		BTNR <= '0';
---		wait for 1000 ns;
---		
---		BTNS <= '1';	-- OK
---		wait for 100 ns;
---		BTNS <= '0';
---		wait for 1000 ns;
+		BTNS <= '1';	-- OK
+		wait for 100 ns;
+		BTNS <= '0';
+		wait for 1000 ns;
 --		
 --
 --		BTNR <= '1';	-- next

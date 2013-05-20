@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="Z:/Dev/VHDL/Morpion/VHDL/Morpion/Morpion_TestBench_isim_beh.wdb" id="1" type="auto">
+         <top_modules>
+            <top_module name="morpion_testbench" />
+            <top_module name="numeric_std" />
+            <top_module name="std_logic_1164" />
+            <top_module name="std_logic_arith" />
+            <top_module name="std_logic_unsigned" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <WVObjectSize size="15" />
+   <wvobject fp_name="/morpion_testbench/clk" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#ffff00</obj_property>
+   </wvobject>
+   <wvobject fp_name="/morpion_testbench/btnr" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">btnr</obj_property>
+      <obj_property name="ObjectShortName">btnr</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#ffff00</obj_property>
+   </wvobject>
+   <wvobject fp_name="/morpion_testbench/btnl" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">btnl</obj_property>
+      <obj_property name="ObjectShortName">btnl</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#ffff00</obj_property>
+   </wvobject>
+   <wvobject fp_name="/morpion_testbench/btnd" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">btnd</obj_property>
+      <obj_property name="ObjectShortName">btnd</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#ffff00</obj_property>
+   </wvobject>
+   <wvobject fp_name="/morpion_testbench/btns" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">btns</obj_property>
+      <obj_property name="ObjectShortName">btns</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#ffff00</obj_property>
+   </wvobject>
+   <wvobject fp_name="/morpion_testbench/uut/enable_ram" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">enable_ram</obj_property>
+      <obj_property name="ObjectShortName">enable_ram</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#ff0000</obj_property>
+   </wvobject>
+   <wvobject fp_name="/morpion_testbench/uut/enable_bp" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">enable_bp</obj_property>
+      <obj_property name="ObjectShortName">enable_bp</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#ff0000</obj_property>
+   </wvobject>
+   <wvobject fp_name="/morpion_testbench/uut/enable_disp" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">enable_disp</obj_property>
+      <obj_property name="ObjectShortName">enable_disp</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#ff0000</obj_property>
+   </wvobject>
+   <wvobject fp_name="/morpion_testbench/uut/The_display/ok_val" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">ok_val[7:0]</obj_property>
+      <obj_property name="ObjectShortName">ok_val[7:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#00ffff</obj_property>
+   </wvobject>
+   <wvobject fp_name="/morpion_testbench/uut/The_display/pos_val" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">pos_val[7:0]</obj_property>
+      <obj_property name="ObjectShortName">pos_val[7:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#00ffff</obj_property>
+   </wvobject>
+   <wvobject fp_name="/morpion_testbench/uut/The_display/oldpos_val" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">oldpos_val[7:0]</obj_property>
+      <obj_property name="ObjectShortName">oldpos_val[7:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#00ffff</obj_property>
+   </wvobject>
+   <wvobject fp_name="/morpion_testbench/uut/The_display/player_val" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">player_val[7:0]</obj_property>
+      <obj_property name="ObjectShortName">player_val[7:0]</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#00ffff</obj_property>
+   </wvobject>
+   <wvobject fp_name="/morpion_testbench/uut/The_display/Disp_Img_Generation/grid_state" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">grid_state[8:0]</obj_property>
+      <obj_property name="ObjectShortName">grid_state[8:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/morpion_testbench/uut/The_display/Disp_Img_Generation/grid_player" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">grid_player[8:0]</obj_property>
+      <obj_property name="ObjectShortName">grid_player[8:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/morpion_testbench/uut/The_CPU/UC/instruction" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">instruction[7:0]</obj_property>
+      <obj_property name="ObjectShortName">instruction[7:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#ff00ff</obj_property>
+   </wvobject>
+</wave_config>
