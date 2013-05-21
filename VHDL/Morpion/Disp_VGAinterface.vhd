@@ -68,8 +68,15 @@ architecture Behavioral of Disp_VGAinterface is
 	signal pixel_out : std_logic;
 	signal pixel_in : std_logic;
 	signal img : std_logic;
+	
+	constant couleur0 : std_logic_vector(7 downto 0) := "00001000";
+	constant couleur1 : std_logic_vector(7 downto 0) := "00111000";
 begin
-	VRAM_dataOut <= (others => pixel_out) WHEN img='1' ELSE "00000000";
+	--VRAM_dataOut <= (others => pixel_out) WHEN img='1' ELSE "00000000";
+	VRAM_dataOut <=	couleur0 WHEN pixel_out = '0' AND img='1' ELSE
+							couleur1 WHEN pixel_out = '1' AND img='1' ELSE
+							"00000000";
+	
 	pixel_in <= VRAM_dataIn(0);
 
 	VGA_sync : Disp_VGAsync 
