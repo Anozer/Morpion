@@ -1,8 +1,9 @@
 ----------------------------------------------------------------------------------
--- Company: 
--- Engineer: 
--- 
--- Create Date:    09:53:15 04/15/2013 
+-- Company: ENSEIRB-MATMECA
+-- Engineer: Sylvain MARIEL (sylvain.mariel@otmax.fr)
+-- Engineer: Thomas MOREAU  (thomas.moreau-33@hotmail.fr)
+
+-- Create Date:    21/05/2013
 -- Design Name: 
 -- Module Name:    Morpion - Behavioral 
 -- Project Name: 

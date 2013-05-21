@@ -1,8 +1,9 @@
 ----------------------------------------------------------------------------------
--- Company: 
--- Engineer: 
--- 
--- Create Date:    13:40:00 02/15/2011 
+-- Company: ENSEIRB-MATMECA
+-- Engineer: Sylvain MARIEL (sylvain.mariel@otmax.fr)
+-- Engineer: Thomas MOREAU  (thomas.moreau-33@hotmail.fr)
+
+-- Create Date:    21/05/2013 
 -- Design Name: 
 -- Module Name:    CPU_8bits - Behavioral 
 -- Project Name: 

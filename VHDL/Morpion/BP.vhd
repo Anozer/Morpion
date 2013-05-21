@@ -1,8 +1,9 @@
 ----------------------------------------------------------------------------------
--- Company: 
--- Engineer: 
--- 
--- Create Date:    14:41:44 03/26/2013 
+-- Company: ENSEIRB-MATMECA
+-- Engineer: Sylvain MARIEL (sylvain.mariel@otmax.fr)
+-- Engineer: Thomas MOREAU  (thomas.moreau-33@hotmail.fr)
+
+-- Create Date:    21/05/2013
 -- Design Name: 
 -- Module Name:    BP - Behavioral 
 -- Project Name: 

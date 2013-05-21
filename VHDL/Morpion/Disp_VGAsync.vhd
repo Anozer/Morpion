@@ -1,8 +1,9 @@
 ----------------------------------------------------------------------------------
--- Company: 
--- Engineer: 
--- 
--- Create Date:    17:35:51 04/19/2013 
+-- Company: ENSEIRB-MATMECA
+-- Engineer: Sylvain MARIEL (sylvain.mariel@otmax.fr)
+-- Engineer: Thomas MOREAU  (thomas.moreau-33@hotmail.fr)
+
+-- Create Date:    21/05/2013
 -- Design Name: 
 -- Module Name:    Disp_VGAsync - Behavioral 
 -- Project Name: 

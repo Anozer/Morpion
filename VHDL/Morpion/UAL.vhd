@@ -1,8 +1,9 @@
 ----------------------------------------------------------------------------------
--- Company: 			ENSEIRB-Matmeca
--- Engineer:			Sylvain MARIEL & Thomas MOREAU
--- 
--- Create Date:		19:50:49 02/13/2013 
+-- Company: ENSEIRB-MATMECA
+-- Engineer: Sylvain MARIEL (sylvain.mariel@otmax.fr)
+-- Engineer: Thomas MOREAU  (thomas.moreau-33@hotmail.fr)
+
+-- Create Date:    21/05/2013
 -- Design Name: 		Unité de traitement
 -- Module Name:		UniteTraitement - Behavioral 
 -- Project Name: 		Processeur8bits
