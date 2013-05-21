@@ -73,6 +73,8 @@ component Disp_ImgGen_ShapeDetermination
 			OldPos		: IN  STD_LOGIC_VECTOR(7 downto 0);
 			Grid_State	: IN  STD_LOGIC_VECTOR(8 downto 0);
 			Grid_Player	: IN  STD_LOGIC_VECTOR(8 downto 0);
+			Win_J1		: IN  STD_LOGIC;
+			Win_J2		: IN  STD_LOGIC;
 			Shape_Load	: OUT STD_LOGIC;
 			Shape_Numb	: OUT STD_LOGIC_VECTOR(2 downto 0);
 			Area_Numb	: OUT STD_LOGIC_VECTOR(7 downto 0));
@@ -92,6 +94,13 @@ component Disp_ImgGen_ShapeGenerator
 		VRAM_enable	: OUT STD_LOGIC);
 end component;
 
+component win_manager is
+	Port( Grid_State		: IN STD_LOGIC_VECTOR(8 downto 0);
+			Grid_Player		: IN STD_LOGIC_VECTOR(8 downto 0);
+			Enable_win_J1	: OUT STD_LOGIC;
+			Enable_win_J2	: OUT STD_LOGIC);
+end component;
+
 signal Grid_state : std_logic_vector(8 downto 0);
 signal Grid_Player : std_logic_vector(8 downto 0);
 signal busy : std_logic;
@@ -99,13 +108,21 @@ signal Shape_Load : std_logic;
 signal Shape_Numb : std_logic_vector(2 downto 0); 
 signal area_numb : std_logic_vector(7 downto 0);
 signal OK_Load_sync : std_logic;
-
+signal Win_J1 : STD_LOGIC;
+signal Win_J2 : STD_LOGIC;
 
 
 begin
 
 	
 	VRAM_EnableW <= Busy;
+	
+	Win : Win_Manager
+	port map(
+	Grid_State		=> Grid_State,
+	Grid_Player		=> Grid_Player,
+	Enable_Win_J1	=> Win_J1,
+	Enable_Win_J2	=> Win_J2);
 	
 	Grid_Manager : Disp_ImgGen_GridManager 
 	port map(
@@ -134,6 +151,8 @@ begin
 		OldPos		=> OldPos_val,
 		Grid_State	=> Grid_state,
 		Grid_Player	=> Grid_player,
+		Win_J1		=>	Win_J1,
+		Win_J2		=>	Win_J2,
 		Shape_Load	=> Shape_Load,
 		Shape_Numb	=> Shape_Numb,
 		Area_Numb	=> Area_Numb);

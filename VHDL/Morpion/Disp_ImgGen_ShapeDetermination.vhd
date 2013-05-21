@@ -45,6 +45,8 @@ entity Disp_ImgGen_ShapeDetermination is
 			OldPos		: IN  STD_LOGIC_VECTOR(7 downto 0);
 			Grid_State	: IN  STD_LOGIC_VECTOR(8 downto 0);
 			Grid_Player	: IN  STD_LOGIC_VECTOR(8 downto 0);
+			Win_J1		: IN  STD_LOGIC;
+			Win_J2		: IN  STD_LOGIC;
 			Shape_Load	: OUT STD_LOGIC;
 			Shape_Numb	: OUT STD_LOGIC_VECTOR(2 downto 0);
 			Area_Numb	: OUT STD_LOGIC_VECTOR(7 downto 0));
@@ -53,7 +55,7 @@ end Disp_ImgGen_ShapeDetermination;
 architecture Behavioral of Disp_ImgGen_ShapeDetermination is
 
 -- Types et signaux correspondant aux états de la FSM
-type etats is (START, WAIT_CHANGE, NEW_OK, NEW_POS, OLD_POS, WAIT_BUSY_OLD, WAIT_BUSY, NEW_PLAYER);
+type etats is (START, WAIT_CHANGE, NEW_OK, NEW_POS, OLD_POS, WAIT_BUSY_OLD, WAIT_BUSY, NEW_PLAYER, WINNER, INIT, BUSY_INIT);
 signal etat_present		:etats := START;
 signal etat_futur			:etats := START;
 
@@ -78,12 +80,22 @@ begin
 	end process;
 	
 	-- Definition des etats futurs en fonction de la FSM	
-	process (etat_present, Pos_Load, Ok_Load, Busy, player_load )
+	process (etat_present, Pos_Load, Ok_Load, Busy, player_load, Win_J1, Win_J2 )
 	begin
 		CASE etat_present IS
 			WHEN START 			=>	
-				etat_futur <= WAIT_CHANGE;
-
+				etat_futur <= INIT;
+				
+			WHEN INIT 			=>	
+				etat_futur <= BUSY_INIT;
+				
+			WHEN BUSY_INIT 			=>	
+				if (busy = '0') then
+					etat_futur <=  WAIT_CHANGE;
+				else
+					etat_futur <= BUSY_INIT;
+				end if;
+				
 			WHEN WAIT_CHANGE 	=>
 				if (Ok_Load = '1') then
 					etat_futur <= NEW_OK;
@@ -91,6 +103,8 @@ begin
 					etat_futur <= NEW_PLAYER;
 				elsif (Pos_Load = '1') then
 					etat_futur <= OLD_POS;
+				elsif (Win_J1= '1' OR Win_J2 ='1') then
+					etat_futur <= WINNER;
 				else
 					etat_futur <= WAIT_CHANGE;
 				end if;
@@ -120,16 +134,29 @@ begin
 				else
 					etat_futur <= WAIT_BUSY;
 				end if;
+				
+			WHEN WINNER	=>
+					etat_futur <= WINNER;
 			
 			WhEN OTHERS			=>
 				etat_futur <= START;
 		END CASE;
 	end process;
 	
-	process (etat_present, grid_state, grid_player, oldPos, pos, OK, player)
+	process (etat_present, grid_state, grid_player, oldPos, pos, OK, player, Win_J1, Win_J2)
 	begin
 		CASE etat_present IS
 			WHEN START 				=>	
+				Shape_load	<= '0';
+				Shape_numb	<= "000";
+				Area_numb	<= (others => '0');
+				
+			WHEN INIT			=>
+				Shape_load	<= '1';
+				Shape_numb	<= "000";
+				Area_numb	<= "00001010";
+				
+			WHEN BUSY_INIT			=>
 				Shape_load	<= '0';
 				Shape_numb	<= "000";
 				Area_numb	<= (others => '0');
@@ -169,10 +196,16 @@ begin
 				Shape_numb	<= "000";
 				Area_numb	<= (others => '0');
 				
+			WHEN WINNER			=>
+				Shape_load	<= '1';
+				Shape_numb	<= "101";
+				Area_numb	<= "00001010";
+				
 			WHEN OTHERS				=>
 				Shape_load	<= '0';
 				Shape_numb	<= "000";
 				Area_numb	<= (others => '0');
+			
 		END CASE;
 		
 	end process;
