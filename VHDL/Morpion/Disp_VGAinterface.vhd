@@ -37,6 +37,7 @@ entity Disp_VGAinterface is
 			VRAM_enableW	: in  STD_LOGIC;
 			VRAM_addrW		: in	STD_LOGIC_VECTOR(18 downto 0);
 			VRAM_dataIn		: in  STD_LOGIC_VECTOR(7 downto 0);
+			SW					: in  STD_LOGIC_VECTOR(7 downto 0);
 			HS					: OUT STD_LOGIC;
 			VS					: OUT STD_LOGIC;
 			VRAM_dataOut	: OUT STD_LOGIC_VECTOR(7 downto 0));
@@ -69,13 +70,22 @@ architecture Behavioral of Disp_VGAinterface is
 	signal pixel_in : std_logic;
 	signal img : std_logic;
 	
-	constant couleur0 : std_logic_vector(7 downto 0) := "00001000";
-	constant couleur1 : std_logic_vector(7 downto 0) := "00111000";
+	signal couleur0: std_logic_vector(7 downto 0);
+	signal couleur1: std_logic_vector(7 downto 0);
 begin
-	--VRAM_dataOut <= (others => pixel_out) WHEN img='1' ELSE "00000000";
-	VRAM_dataOut <=	couleur0 WHEN pixel_out = '0' AND img='1' ELSE
-							couleur1 WHEN pixel_out = '1' AND img='1' ELSE
+	VRAM_dataOut <=	couleur0 WHEN img='1' AND pixel_out = '0' ELSE
+							couleur1 WHEN img='1' AND pixel_out = '1' ELSE
 							"00000000";
+	couleur1 <= SW;
+	couleur0(0) <= (SW(2) XOR SW(1)) OR (SW(2) AND NOT(SW(0)));
+	couleur0(1) <= '0';
+	couleur0(2) <= '0';
+	couleur0(3) <= (SW(5) XOR SW(4)) OR (SW(5) AND NOT(SW(3)));
+	couleur0(4) <= '0';
+	couleur0(5) <= '0';
+	couleur0(6) <= SW(7) AND NOT(SW(6));
+	couleur0(7) <= '0';
+
 	
 	pixel_in <= VRAM_dataIn(0);
 

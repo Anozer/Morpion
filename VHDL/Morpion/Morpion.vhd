@@ -37,6 +37,7 @@ entity Morpion is
 			BTNL			: IN  STD_LOGIC;
 			BTND			: IN  STD_LOGIC;
 			BTNS			: IN  STD_LOGIC;
+			SW				: IN	STD_LOGIC_VECTOR(7 downto 0);
 			VGA_RED		: OUT STD_LOGIC_VECTOR(2 downto 0);
 			VGA_GREEN	: OUT STD_LOGIC_VECTOR(2 downto 0);
 			VGA_BLUE		: OUT STD_LOGIC_VECTOR(1 downto 0);
@@ -95,6 +96,7 @@ architecture Behavioral of Morpion is
 				RW						: IN	STD_LOGIC;
 				AddrBus				: IN	STD_LOGIC_VECTOR (5 downto 0);
 				DataBus_fromCPU	: IN	STD_LOGIC_VECTOR (7 downto 0);
+				SW						: IN	STD_LOGIC_VECTOR (7 downto 0);
 				VGA_HS				: OUT	STD_LOGIC;
 				VGA_VS				: OUT STD_LOGIC;
 				VGA_Red				: OUT STD_LOGIC_VECTOR (2 downto 0);
@@ -121,8 +123,14 @@ architecture Behavioral of Morpion is
 	signal CE_3K				: std_logic;
 	
 begin
-	Reset <= BTND;	
+	Reset <= BTND;
 	
+	-- MUX du bus de données (periph vers cpu)
+	DataBus_p2cpu <=	DataBus_ram2cpu	WHEN Enable_ram = '1' ELSE
+							DataBus_bp2cpu		WHEN Enable_bp = '1' ELSE
+							(others => '0');
+	
+	-- CE maxi
 	CE_100M <= '1';
 	
 	-- Compteur pour tous les CE
@@ -152,12 +160,6 @@ begin
 		end if;
 	end process;
 	
-	
-	
-	-- MUX du bus de données (periph vers cpu)
-	DataBus_p2cpu <=	DataBus_ram2cpu	WHEN Enable_ram = '1' ELSE
-							DataBus_bp2cpu		WHEN Enable_bp = '1' ELSE
-							(others => '0');
 	
 	The_CPU : CPU_8bits port map (
 		Reset,
@@ -208,6 +210,7 @@ begin
 		RW,
 		AddrBus,
 		DataBus_cpu2p,
+		SW,
 		VGA_HS,
 		VGA_VS,
 		VGA_Red,

@@ -37,6 +37,7 @@ entity Display is	Port (Clk					: in  STD_LOGIC;
 			RW						: IN	STD_LOGIC;
 			AddrBus				: IN	STD_LOGIC_VECTOR (5 downto 0);
 			DataBus_fromCPU	: IN	STD_LOGIC_VECTOR (7 downto 0);
+			SW						: IN	STD_LOGIC_VECTOR (7 downto 0);
 			VGA_HS				: OUT	STD_LOGIC;
 			VGA_VS				: OUT STD_LOGIC;
 			VGA_Red				: OUT STD_LOGIC_VECTOR (2 downto 0);
@@ -86,6 +87,7 @@ architecture Behavioral of Display is
 				VRAM_enableW	: in  STD_LOGIC;
 				VRAM_addrW		: in	STD_LOGIC_VECTOR(18 downto 0);
 				VRAM_dataIn		: in  STD_LOGIC_VECTOR(7 downto 0);
+				SW					: in  STD_LOGIC_VECTOR(7 downto 0);
 				HS					: OUT STD_LOGIC;
 				VS					: OUT STD_LOGIC;
 				VRAM_dataOut	: OUT STD_LOGIC_VECTOR(7 downto 0));
@@ -148,6 +150,7 @@ begin
 		Clk				=> Clk,
 		CE					=> Ce,
 		Reset				=> Reset,
+		SW					=> SW,
 		VRAM_enableW	=> VRAM_enableW,
 		VRAM_addrW		=> VRAM_addrW,
 		VRAM_dataIn		=> VRAM_dataIn,
